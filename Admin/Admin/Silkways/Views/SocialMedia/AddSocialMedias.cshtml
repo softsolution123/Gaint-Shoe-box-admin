@@ -1,0 +1,57 @@
+﻿@model Silkways.Models.SocialMedia
+
+@{
+    ViewBag.Title = "AddSettings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-xs-9">
+    <h2>Add <strong>Social Media</strong></h2>
+</div>
+<div class="col-xs-3">
+    <input type="button" value="Manage Social Media" style="float:right;" class="btn btn-dark" data-toggle="modal" data-target="#modal-select" onclick="location.href = '/SocialMedia/ManageSocialMedias'">
+</div>
+<form method="post" enctype="multipart/form-data" id="FormUser">
+
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input id="hdn_UserID" type="hidden" name="hdn_UserID" />
+                                <label class="form-label">Title</label>
+                                @Html.TextBoxFor(x => x.Title, new { @placeholder = "Enter Title", @class = "form-control", @required = "required" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Link</label>
+                                @Html.TextBoxFor(x => x.Value, new { @placeholder = "Enter Value", @class = "form-control", @required = "required" })
+                            </div>
+                        </div>
+                    </div>
+                    <p><strong>NOTE : </strong>Must use complete name of social media, like Facebook, Twitter etc.</p>
+                    <div>
+                        @{
+                            string Text = "Add SocialMedias";
+                            if (Model != null)
+                            {
+                                Text = "Update SocialMedias";
+                            }
+                        }
+
+                        <input type="submit" id="btnSave" class=" btn btn-dark" value="@Text" name="Save" onclick="this.form.submit(); this.disabled = true;" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>
+
+
+
+

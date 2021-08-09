@@ -1,0 +1,161 @@
+﻿@model Silkways.Models.ColorModel
+@{
+    ViewBag.Title = "AddColor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-xs-9">
+    <div style="display:inline;">
+        <h2>Add <strong>New Color</strong></h2>
+        <h2 style="float: right;"><strong>Manage Color</strong></h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 portlets ui-sortable">
+        <div class="panel">
+            <div class="panel-content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" placeholder="Enter Color Name" id="ColorName" value="@ViewBag.Name" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Value</label>
+                            <input id="ColorValue" type="text" class="form-control" placeholder="Enter Color Value" value="@ViewBag.Val" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Company Code</label>
+                            <input id="CompanyCode" type="text" class="form-control" placeholder="Enter Color Code" value="@ViewBag.Company" />
+                        </div>
+                        <div>
+                            @{
+                                string Text = "";
+                                if (ViewBag.Edit != null)
+                                {
+                                    Text += "Update Color";
+                                }
+                                else
+                                {
+                                    Text += "Add Color";
+                                }
+                            }
+                            <input type="submit" id="btnSave" class=" btn btn-dark" value="@Text" name="Save" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Value</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.GetAllColors())
+                                {
+                                    <tr>
+                                        <td>@item.ColorName</td>
+                                        <td>
+                                            <div style="width:20px; height:20px; background-color:@item.ColorValue">&nbsp;</div>
+                                        </td>
+                                        <td>
+                                            @item.CompanyColorValue
+                                        </td>
+                                        <td>
+                                            @if (Model.DeleteColorProduct(item.ID) != false)
+                                            {
+                                                <a href='~/Color/AddColor?ID=@item.ID'>Edit Color </a>
+                                                <a class="modal-container" data-toggle="modal" data-target="#modal-bottomfull" onclick="GetImageNameInHiddenBox(@item.ID);">
+                                                    Delete
+                                                </a>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div class="modal fade modal-bottomfull" id="modal-bottomfull" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                                        <h4 class="modal-title"><strong>Are you</strong> Sure</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        You want to delete this info ?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal">Cancel</button>
+                                        <a href="" id="DeleteLink" class="btn btn-primary btn-embossed">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="JqueryID" src="~/Resources/global/plugins/jquery/jquery-1.11.1.min.js"></script>
+
+
+<script type="text/javascript">
+
+    function GetImageNameInHiddenBox(ID) {
+        $("#DeleteLink").attr("href", "/Color/Delete?ID=" + ID);
+    }
+</script>
+<script  src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.6/dist/loadingoverlay.min.js"></script>
+<script>
+    $(document).ready(function () {
+        //$("#JqueryID").html().remove();
+        $("#btnSave").click(function () {
+            var $j = jQuery.noConflict();
+            $.LoadingOverlay("show");
+            debugger
+            var Name = $("#ColorName").val();
+            var Value = $("#ColorValue").val();
+
+            if (Name == null || Name == "") {
+                $("#ColorName").css("border", "1px solid red");
+                $("#ColorName").focus();
+                return false;
+            }
+            else {
+                $("#ColorName").css("border", "1px solid #ccc");
+                $("#ColorName").focusout();
+            }
+            if (Value == null || Value == "") {
+                $("#ColorValue").css("border", "1px solid red");
+                $("#txtEml").focus();
+                return false;
+            }
+            else {
+                $("#ColorValue").css("border", "1px solid #ccc");
+                $("#ColorValue").focusout();
+            }
+
+            debugger
+            var colr =
+                {
+                    ColorName: Name,
+                    ColorValue: Value,
+                    CompanyColorValue: $("#CompanyCode").val(),
+                    Optionional: $("#Option").val(),
+                }
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("AddColor","Color")',
+                data: colr,
+                success: function (result) {
+                    window.location.reload();
+                }
+            })
+        })
+    })
+</script>

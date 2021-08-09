@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "SendEmailToSubscriber";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript">
+
+    function submitbtn() {
+        var Name = $('#Name').val();
+        var EmailSubject = $('#EmailSubject').val();
+        var Email = $('#Email').val();
+       
+        if (Name != "" && Email != "" && EmailSubject != "") {
+            $('#loaderDiv').css('display', 'block');
+           return true;
+        }
+        else
+        {
+            $('#erormsg').css('display', 'block');
+            return false;
+        }
+    }
+
+</script>
+<div class="col-xs-9">
+    <h2>Send Email To <strong>Subscribers</strong></h2>
+</div>
+<form method="post" enctype="multipart/form-data" id="FormUser">
+
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        <p> Currently you have <strong>@ViewBag.Count Subscribers</strong> </p>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">From Name</label>
+                                <input id="Name" name="Name" type="text" placeholder="Enter Title" class="form-control" required="required" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email Subject</label>
+                                <input id="EmailSubject" name="EmailSubject" type="text" placeholder="Email Subject" class="form-control" required="required" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">From Email</label>
+                                <input id="Email" name="Email" type="text" placeholder="Enter Email" class="form-control" required="required" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Content</label>
+                        <textarea id="editorid" name="EmailContent" class="form-control ckeditor"></textarea>
+                    </div>
+                    <div>
+                        <div style="display: none; position: absolute; margin-left: 135px; margin-top: -9px;" id="loaderDiv">
+                            Sending...
+                            <img src="~/Resources/images/loader.gif" />
+                        </div>
+                        <input type="submit" id="btnSave" onclick="return submitbtn();" class=" btn btn-dark" value="Send Email" name="Save" /><span style="color: red; display: none;" id="erormsg"> All fields are required !</span>
+                       <br />
+                        <span><b>Note </b>: This process could take few minutes. Dont close your brower, After completing this process you will be automatically redirected to Dashboard.</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+

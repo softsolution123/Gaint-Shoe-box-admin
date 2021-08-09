@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="fa0ecdf330de46699a95980e502ae81c" Name="Diagram1" ZoomLevel="49">
+        <EntityTypeShape EntityType="GaintShoeBoxModel.AboutU" Width="1.5" PointX="5.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.BookRequest" Width="1.5" PointX="11.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.Category" Width="1.5" PointX="9" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.Client" Width="1.5" PointX="2.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.ContactU" Width="1.5" PointX="18" PointY="22.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.ContactUs2" Width="1.5" PointX="23" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.ContentPage" Width="1.5" PointX="16" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.ContentUnit" Width="1.5" PointX="16" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.DliveryStatu" Width="1.5" PointX="0.75" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.FAQ" Width="1.5" PointX="7.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.Gallery" Width="1.5" PointX="20.75" PointY="21" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.GalleryCategory" Width="1.5" PointX="13.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.GalleryPhoto" Width="1.5" PointX="23" PointY="21.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.HomePageImage" Width="1.5" PointX="15.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.InquiryStatu" Width="1.5" PointX="15.75" PointY="23.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.InquiryStatus2" Width="1.5" PointX="20.75" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.Job" Width="1.5" PointX="18.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.JobApplication" Width="1.5" PointX="21" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.News" Width="1.5" PointX="21.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.OrderDetail" Width="1.5" PointX="11.25" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.OrderShippingDetail" Width="1.5" PointX="10.75" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.OtherImage" Width="1.5" PointX="8.25" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.OurApproach" Width="1.5" PointX="21.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.PanelMenu" Width="1.5" PointX="16.75" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.PanelMenuLink" Width="1.5" PointX="19" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.PanelMenuUserRelation" Width="1.5" PointX="19" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.PaymentMode" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.Policy" Width="1.5" PointX="18" PointY="19" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.PolicyCategory" Width="1.5" PointX="15.75" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.PracticeArea" Width="1.5" PointX="12.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.ProductBrand" Width="1.5" PointX="3.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.ProductCategory" Width="1.5" PointX="11.25" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.ProductCategory1" Width="1.5" PointX="3.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.ProductPhoto" Width="1.5" PointX="8.25" PointY="14.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.ProductSize" Width="1.5" PointX="0.75" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.ProfileImage" Width="1.5" PointX="8" PointY="21.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.ProfileVideo" Width="1.5" PointX="8" PointY="23.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.Publication" Width="1.5" PointX="23.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.Service" Width="1.5" PointX="0.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.Setting" Width="1.5" PointX="2.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.ShippingProductDetail" Width="1.5" PointX="13" PointY="19.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.SocialMedia" Width="1.5" PointX="23.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.Subscriber" Width="1.5" PointX="23.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.SystemSetting" Width="1.5" PointX="23.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.tblBanner" Width="1.5" PointX="22.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.tblCity" Width="1.5" PointX="1.5" PointY="20.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.tblColor" Width="1.5" PointX="9" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.tblMember" Width="1.5" PointX="0.75" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.tblPage" Width="1.5" PointX="14.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.tblProductColor" Width="1.5" PointX="11.25" PointY="14.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.tblSlider" Width="1.5" PointX="24.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.tblTeamMember" Width="1.5" PointX="25.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.tblVideo" Width="1.5" PointX="25.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.TechnologyProfile" Width="1.5" PointX="5.75" PointY="18.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.Testimonial" Width="1.5" PointX="7.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.URLBasedCMSPage" Width="1.5" PointX="16" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.User" Width="1.5" PointX="13.75" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.Brand" Width="1.5" PointX="25.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.Feature" Width="1.5" PointX="9.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.ProductFeature" Width="1.5" PointX="11.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.Review" Width="1.5" PointX="25.75" PointY="13.75" IsExpanded="true" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_Categories_Categories" ManuallyRouted="false" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_ProductCategories_ProductCategories" ManuallyRouted="false" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_ContactUs_InquiryStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_ContactUs2_InquiryStatus2" ManuallyRouted="false" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_ContentPages_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_ContentUnit_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_GalleryPhotos_Gallery" ManuallyRouted="false" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_JobApplication_Job" ManuallyRouted="false" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK__OrderDeta__Color__5FB337D6" ManuallyRouted="false" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_ShippingProductDetail_ShippingOrderID" ManuallyRouted="false" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_PanelMenuLink_PanelMenu" ManuallyRouted="false" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_PanelMenuUserRelation_PanelMenu" ManuallyRouted="false" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_PanelMenuUserRelation_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_Policy_PolicyCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_ProductCategory_ProductCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_ProfileImages_TechnologyProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_ProfileVideos_TechnologyProfiles" ManuallyRouted="false" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_tblMembers_tblCity" ManuallyRouted="false" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK__tblProduc__Color__3D2915A8" ManuallyRouted="false" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_URLBasedCMSPages_Users" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.OrderCart" Width="1.5" PointX="10.5" PointY="31.125" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.tblcart" Width="1.5" PointX="8.25" PointY="29.75" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_OrderCarts_CartID" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.tblPromoCode" Width="1.5" PointX="8.375" PointY="11.75" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.Order" Width="1.5" PointX="18.625" PointY="0.75" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_Order_DliveryStatus" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_Order_Order1" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_Order_PaymentMode" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_Order_ProductSize" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_Order_PromoCode" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_Order_tblMembers" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_OrderCarts_OrderID" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_OrderDetails_Order" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.Product" Width="1.5" PointX="21" PointY="0.75" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_OrderDetails_Product" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_OtherImages_Product" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK__tblProduc__Produ__6B24EA82" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_Product_ProductBrands" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_Product_ProductCategory" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_Product_ProductSize" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_ProductCategories_Product" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_ProductPhotos_Product" />
+        <AssociationConnector Association="GaintShoeBoxModel.FK_tblcart_ProductID" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

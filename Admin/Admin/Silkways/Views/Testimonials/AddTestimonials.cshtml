@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewBag.Title = "AddTestimonials";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Silkways.Models.Testimonial
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<style>
+    .scrollC {
+        overflow-x: scroll;
+    }
+
+    .cropit-image-preview {
+        background-color: #f8f8f8;
+        background-size: cover;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin-top: 7px;
+        width: 550px;
+        height: 327px;
+        cursor: move;
+    }
+
+    .cropit-image-background {
+        opacity: .2;
+        cursor: auto;
+    }
+
+    .image-size-label {
+        margin-top: 10px;
+    }
+
+    input {
+        display: block;
+    }
+
+    .export {
+        margin-top: 10px;
+    }
+</style>
+
+<div class="col-xs-9">
+    <h2>Add/Update <strong>Testimonial</strong></h2>
+</div>
+<div class="col-xs-3">
+    <input type="button" value="Manage Testimonials" style="float:right;" class="btn btn-dark" data-toggle="modal" data-target="#modal-select" onclick="location.href = '/Testimonials/ManageTestimonials'">
+</div>
+<form method="post" enctype="multipart/form-data" id="FormUser">
+
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input id="hdn_UserID" type="hidden" name="hdn_UserID" />
+                                <label class="form-label">Name</label>
+                                @Html.TextBoxFor(x => x.Name, new { @placeholder = "John Doe", @class = "form-control", @required = "required" })
+                            </div>
+                            <div class="form-group">
+                                <input id="hdn_UserID" type="hidden" name="hdn_UserID" />
+                                <label class="form-label">Designation</label>
+                                @Html.TextBoxFor(x => x.Designation, new { @placeholder = "Designer", @class = "form-control", @required = "required" })
+                            </div>
+                            <div class="form-group">
+                                <input id="hdn_UserID" type="hidden" name="hdn_UserID" />
+                                <label class="form-label">Comment</label>
+                                @Html.TextAreaFor(x => x.Comment, new { @placeholder = "", @class = "form-control", @required = "required" })
+                            </div>
+                            <div class="form-group">
+
+                                <label class="form-label">Sort order</label>
+                                @Html.TextBoxFor(x => x.SortOrder, new { @placeholder = "Enter Sort Order", @class = "form-control", @required = "required", @type = "number" })
+                            </div>
+                            <div class="form-group">
+                                <div class="image-editor">
+                                    <input type="file" class="form-control" name="file" id="file">
+                                </div>
+                                @if (Model != null)
+                                {
+                                    <br />
+                                    <img data-src="" src="@Model.Image" class="img-responsive" style="height:327px; width:550px" alt="gallery 3">
+                                    <br />
+                                }
+                            </div>
+                            <div>
+                                @{
+                                    string Text = "Add Testimonial";
+                                    if (Model != null)
+                                    {
+                                        Text = "Update Testimonial";
+                                    }
+                                }
+
+                                <input type="submit" id="btnSave" class=" btn btn-dark" value="@Text" name="Save" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+

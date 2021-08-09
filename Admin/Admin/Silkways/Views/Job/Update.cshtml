@@ -1,0 +1,119 @@
+﻿@model Silkways.Models.Job
+@{
+    ViewBag.Title = "Update";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .scrollC {
+        overflow-x: scroll;
+    }
+
+    .cropit-image-preview {
+        background-color: #f8f8f8;
+        background-size: cover;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin-top: 7px;
+        width: 550px;
+        height: 327px;
+        cursor: move;
+    }
+
+    .cropit-image-background {
+        opacity: .2;
+        cursor: auto;
+    }
+
+    .image-size-label {
+        margin-top: 10px;
+    }
+
+    input {
+        display: block;
+    }
+
+    .export {
+        margin-top: 10px;
+    }
+</style>
+
+@{
+    string Text = "Add Jobs";
+    if (Model != null)
+    {
+        Text = "Update Jobs";
+    }
+}
+
+<div class="col-xs-9">
+    <h2>Add <strong>Jobs</strong></h2>
+</div>
+<div class="col-xs-3">
+    <input type="button" value="Manage Jobs" style="float:right;" class="btn btn-dark" data-toggle="modal" data-target="#modal-select" onclick="location.href = '/Job/ManageJobs'">
+</div>
+<form method="post" enctype="multipart/form-data" id="FormUser">
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Job Title</label>
+                                @Html.TextBoxFor(x => x.JobTitle, new { @placeholder = "Enter Job Title", @class = "form-control", @required = "required" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Experience</label>
+                                @Html.TextBoxFor(x => x.Experience, new { @placeholder = "Enter Experience", @class = "form-control", @required = "required" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">No of Positions</label>
+                                @Html.TextBoxFor(x => x.NoOfPeople, new { @placeholder = "Enter No of Positions", @class = "form-control", @required = "required" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Application DeadLine</label>
+                                @Html.TextBoxFor(model => model.DeadLine,
+new { @type = "date", @class = "form-control", @Value = Model.DeadLine.Value.ToString("yyyy-MM-dd") })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Qualification Requirement</label>
+                                @Html.TextBoxFor(x => x.Qualification, new { @placeholder = "Enter Qualification", @class = "form-control", @required = "required" })
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Description</label>
+                              
+                                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control ckeditor", @id = "editorid" })
+                                
+                            </div>
+                        </div>
+                     
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.CheckBoxFor(m => m.Active, new { @class = "form-control" })
+                                <label class="form-label">Active </label>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div>
+                        <input type="submit" id="btnSave" class=" btn btn-dark" value="@Text" name="Save" onclick="this.form.submit(); this.disabled = true;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

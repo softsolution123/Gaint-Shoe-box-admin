@@ -1,0 +1,53 @@
+﻿@model Silkways.Models.PanelMenu
+@{
+    ViewBag.Title = "AddPanelMenus";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-xs-9">
+    <h2>Add <strong>PanelMenus</strong></h2>
+</div>
+<div class="col-xs-3">
+    <input type="button" value="Manage Panel Menus" style="float:right;" class="btn btn-dark" data-toggle="modal" data-target="#modal-select" onclick="location.href = '/PanelMenu/ManagePanelMenus'">
+</div>
+<form method="post" enctype="multipart/form-data" id="FormUser">
+
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input id="hdn_UserID" type="hidden" name="hdn_UserID" />
+                                <label class="form-label">Title</label>
+                                @Html.TextBoxFor(x => x.Name, new { @placeholder = "Enter Title", @class = "form-control", @required = "required" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Status</label>
+                                <label class="form-control">
+                                    @Html.CheckBoxFor(x => x.IsActive) Is Active?
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        @{
+                            string Text = "Add Panel Menus";
+                            if (Model != null)
+                            {
+                                Text = "Update Panel Menus";
+                            }
+                        }
+
+                        <input type="submit" id="btnSave" onclick="return Valid(); this.form.submit(); this.disabled = true;" class=" btn btn-dark" value="@Text" name="Save" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>

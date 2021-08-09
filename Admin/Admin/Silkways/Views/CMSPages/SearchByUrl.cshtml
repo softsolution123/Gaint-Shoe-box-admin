@@ -1,0 +1,27 @@
+﻿@model Silkways.Models.URLBasedCMSPage
+@{
+    Layout = null;
+}
+
+@{
+    if (Model != null)
+    {
+            <tr>
+                <td style="display:none;">
+                    @Html.DisplayFor(modelItem => Model.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.PageName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.URL)
+                </td>
+                <td>
+                    <a href='~/CMSPages/AddCMSPage?ID=@Model.ID'>Edit</a>-
+                    <a class="modal-container" data-toggle="modal" onclick="GetImageNameInHiddenBox(@Model.ID);" data-target=" #modal-bottomfull">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+    }
+}

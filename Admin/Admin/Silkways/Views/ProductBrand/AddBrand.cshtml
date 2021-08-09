@@ -1,0 +1,115 @@
+﻿@model Silkways.Models.ProductBrand
+
+@{
+    ViewBag.Title = "AddBrands";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+
+            $('#erormsg').css('display', 'block');
+            return false;
+        }
+        else {
+            $('#erormsg').css('display', 'none');
+            return true;
+        }
+    }
+</script>
+@*<script>
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+
+            $('#erormsg').css('display', 'block');
+            return false;
+        }
+        else {
+            $('#erormsg').css('display', 'none');
+            return true;
+        }
+    }
+</script>*@
+
+@*<script>
+    function createUrl(evt) {
+        var Value = $("#Name").val();
+        Value = Value.toLowerCase();
+        Value = Value.replace(/[^A-Z0-9]/ig, "-");
+        $("#Url").val(Value);
+    }
+</script>*@
+<div class="col-xs-9">
+    <h2>Add <strong>Brand</strong></h2>
+</div>
+<div class="col-xs-3">
+    <input type="button" value="Manage Brands" style="float:right;" class="btn btn-dark" data-toggle="modal" data-target="#modal-select" onclick="location.href = '/ProductBrand/ManageBrands'">
+</div>
+
+<form method="post" enctype="multipart/form-data" id="FormUser">
+    <input id="HdnName" type="hidden" name="HdnName" value="@ViewBag.Name" />
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Brand Name*</label>
+                                @Html.TextBoxFor(model => model.BrandName, new { @class = "form-control", @placeholder = "Enter Brand Name" })
+                            </div>
+                        </div>
+                    </div>
+                    <label class="form-label">Description*</label><br />
+                    <div>
+                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control ckeditor", @id = "editorid" })
+                    </div>
+                    <br />
+                    <div>
+                        @if (Model != null && Model.IsShowHome == true)
+                        {
+                            <input type="checkbox" name="CheckBox" checked="checked" /><label class="form-label">show home</label>
+                        }
+                        else
+                        {
+                            <input type="checkbox" name="CheckBox" /><label class="form-label">show home</label>
+                        }
+                    </div>
+                    <br />
+                    <h2>Upload logo</h2>
+                    <br />
+                    <label class="form-label">Select Images</label>
+                    <div>
+                        <input type="file" id="File1" name="file" class="upload" accept="image/*" />
+                    </div>
+                    <ul class="proimgs" id="proimgs">
+                        @Html.Raw(ViewBag.img)
+                    </ul>
+                    <div>
+                        @{
+                            string Text = "Add Brand";
+                            if (Model != null)
+                            {
+                                Text = "Update Brand";
+                            }
+                        }
+                        <br />
+                        <input type="submit" id="btnSave" class=" btn btn-dark" value="@Text" name="Save" onclick="this.form.submit(); this.disabled = true;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+
+

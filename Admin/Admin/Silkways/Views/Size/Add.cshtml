@@ -1,0 +1,91 @@
+﻿@model Silkways.Models.ProductSize
+
+@{
+    ViewBag.Title = "AddCategory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+
+            $('#erormsg').css('display', 'block');
+            return false;
+        }
+        else {
+            $('#erormsg').css('display', 'none');
+            return true;
+        }
+    }
+</script>
+<script>
+    function ImageRemove(Image) {
+        debugger;
+        var ImageId = $(Image).attr("value");
+        $.ajax({
+
+            type: "POST",
+            url: "/AlbumImages/DeleteAlbumImage",
+            data: { ID: ImageId },
+            success: function (data) {
+                debugger;
+                alert("done");
+            }
+        });
+        $(Image).parent('li').remove();
+    }
+</script>
+
+<div class="col-xs-9">
+    <h2>Add <strong>New Size</strong></h2>
+</div>
+<div class="col-xs-3">
+    <input type="button" value="Manage Category" style="float:right;" class="btn btn-dark" data-toggle="modal" data-target="#modal-select" onclick="location.href = '/Size/add'">
+</div>
+
+<form method="post" enctype="multipart/form-data" id="FormUser">
+  
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+
+                <div class="panel-content">
+                    @*<p>Here you can define different System users who can access this system</p>*@
+                    <div class="row">
+                        <div class="col-md-6">
+                         
+
+                            <div class="form-group">
+                                <label class="form-label">Size</label>
+                                @Html.TextBoxFor(x => x.Size, new { @placeholder = "Enter Size", @class = "form-control", @required = "required" })
+                            </div>
+                       
+                            <div class="form-group">
+                                <label class="form-label">SortOrder</label>
+                                <span style="color:red; display:none;" id="erormsg">Enter Numeric Charaters only</span>
+                                @Html.TextBoxFor(x => x.SortNumber, new { @placeholder = "Enter SortOrder", @class = "form-control", @onkeypress = "return isNumber(event)" })
+                            </div>
+                           
+                            <br />
+                        </div>
+                    </div>
+                    <br />
+                    <div>
+                        @{
+                            string Text = "Add Size";
+                            if (Model != null)
+                            {
+                                Text = "Update Size";
+                            }
+                        }
+
+                        <input type="submit" id="btnSave" class=" btn btn-dark" value="@Text" name="Save" onclick="this.form.submit(); this.disabled = true;" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>

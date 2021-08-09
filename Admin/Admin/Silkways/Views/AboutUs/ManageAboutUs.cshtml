@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Silkways.Models.AboutU>
+
+@{
+    ViewBag.Title = "ManageAboutUs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="col-xs-9">
+    <h2>Manage<strong>About Us</strong></h2>
+</div>
+<div class="col-xs-3">
+    <input type="button" value="Add About Us" style="float:right;" class="btn btn-dark" data-toggle="modal" data-target="#modal-select" onclick="location.href = '/AboutUs/AddAboutUs'">
+</div>
+<body>
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-content pagination2 table-responsive">
+                    <table class="table table-hover table-dynamic">
+                        <thead>
+                            <tr>
+                                <th style="display:none;">ID</th>
+                                <th>Description</th>
+                                <th>Action</th>  
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (Model != null)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td style="display:none;">
+                                                @Html.DisplayFor(modelItem => item.ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Descriptions)
+                                            </td>
+                                            @*<td>
+                                                <a href='~/AboutUs/AddAboutUs?ID=@item.ID'>Edit</a>-
+                                                <a class="modal-container" data-toggle="modal" onclick="GetImageNameInHiddenBox(@item.ID);" data-target=" #modal-bottomfull">
+                                                    Delete
+                                                </a>
+                                            </td>*@
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <div class="modal fade modal-bottomfull" id="modal-bottomfull" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                                    <h4 class="modal-title"><strong>Are you</strong> Sure</h4>
+                                </div>
+                                <div class="modal-body">
+                                    You want to delete this info ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal">Cancel</button>
+                                    <a href="" id="DeleteLink" class="btn btn-primary btn-embossed">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

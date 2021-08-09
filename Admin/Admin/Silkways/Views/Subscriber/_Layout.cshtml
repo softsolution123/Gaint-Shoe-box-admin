@@ -1,0 +1,445 @@
+﻿@using StudyAbroadMVC.Models;
+
+@model StudyAbroadMVC.ViewModel.InquiryFormViewModel
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta https-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="~/UserEnd/login/favicon.ico" type="image/x-icon" />
+
+
+    @{
+        string pageName = HttpContext.Current.Request.Url.AbsolutePath;
+    }
+
+
+    @*<script type="text/javascript">
+
+            function load_css_async(filename) {
+
+
+                var cb = function () {
+                    var l = document.createElement('link'); l.rel = 'stylesheet';
+                    l.href = filename;
+                    var h = document.getElementsByTagName('head')[0]; h.parentNode.insertBefore(l, h);
+                };
+                var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+                    webkitRequestAnimationFrame || msRequestAnimationFrame;
+                if (raf) raf(cb);
+                else window.addEventListener('load', cb);
+
+
+            }
+
+        </script>
+
+
+        @Styles.RenderFormat("<script type=\"text/javascript\">load_css_async('{0}')</script>",StudyAbroadMVC.Commen.GenericFunctions.StyleVersion, "~/bundles/LayoutStyle")*@
+
+    @Styles.RenderFormat(StudyAbroadMVC.Commen.GenericFunctions.StyleVersion,"~/bundles/LayoutStyle")
+    <script>
+        var isnewsPayed = false;
+    </script>
+    @if (pageName.Contains("guides"))
+    {
+
+        <link href="~/UserEnd/Design/slick/slick.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/UserEnd/Design/slick/slick-theme.css">
+    }
+
+
+
+    @*<link href="~/UserEnd/Design/member-area.css" rel="stylesheet" />*@
+
+
+
+
+    @if (!pageName.Contains("guides/study-in") && !pageName.Contains("consultants/") && !pageName.Contains("/"))
+    {
+        <link rel="stylesheet" href="~/UserEnd/Design/js/responsive-table/css/responsivetables.css" />
+    }
+    @Scripts.Render("~/bundles/jquery2")
+    @if (!pageName.Contains("guides/study-in") && !pageName.Contains("consultants/") && !pageName.Contains("/") && !pageName.Contains("embassy/embassy-in"))
+    {
+        <script src="~/UserEnd/Design/js/responsive-table/js/responsivetables.min.js"></script>
+    }
+    @if (pageName.Contains("guides"))
+    {
+        <script src="~/UserEnd/Design/js/slick/slick.min.js"></script>
+        <script src="~/UserEnd/Design/js/Guides/Intializer.js"></script>
+    }
+
+
+
+    @{
+
+        if (Model.CurrentPageMetaTags != null)
+        {
+            if (Model.CurrentPageMetaTags.MetaTitle != null)
+            {
+                <title>@Model.CurrentPageMetaTags.MetaTitle</title>
+            }
+            if (Model.CurrentPageMetaTags.MetaDescription != null)
+            {
+                <meta name="description" content="@Model.CurrentPageMetaTags.MetaDescription" />
+            }
+            if (Model.CurrentPageMetaTags.MetaKeywords != null)
+            {
+                <meta name="keywords" content="@Model.CurrentPageMetaTags.MetaKeywords" />
+            }
+
+            <meta property="og:type" content="website">
+            <meta property="og:site_name" content="Studyabroad.pk" />
+            if (Model.CurrentPageMetaTags.MetaTitle != null)
+            {
+                <meta property="og:title" content="@Model.CurrentPageMetaTags.MetaTitle" />
+            }
+            if (Model.CurrentPageMetaTags.MetaDescription != null)
+            {
+                <meta property="og:description" content="@Model.CurrentPageMetaTags.MetaDescription" />
+            }
+            if (Model.CurrentPageMetaTags.Url != null)
+            {
+                var url = @Model.CurrentPageMetaTags.Url.Replace("http:", "https:");
+                <meta property="og:url" content="@url" />
+            }
+            if (Model.CurrentPageMetaTags.ImageName != null)
+            {
+                
+                
+                var i = Model.CurrentPageMetaTags.ImageName.Replace("http:", "https:");
+                <meta property="og:image" content="@i" />
+            }
+            <meta property="fb:app_id" content="277117662711415" />
+            <meta property="og:image:width" content="400" />
+            <meta property="og:image:height" content="400" />
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    @RenderSection("Metatags", required: false)
+
+
+
+
+</head>
+<input type="hidden" id="IsRedirect" value="true" />
+@{
+    List<tblStudyAbroadAd> lst = new StudyAdsModel().GetTop3Recod().ToList();
+    HttpCookie cooki = Request.Cookies["SALogin"];
+    string MemberName = "";
+    int MemberID = 0;
+    string memberTypeID = "";
+
+    if (cooki != null)
+    {
+        MemberID = Convert.ToInt32(cooki.Values["memberId"]);
+        MemberName = cooki.Values["memberName"];
+        memberTypeID = cooki.Values["memberType"];
+    }
+    string Pic = "";
+    string PicUrl = "";
+    string Url = "";
+    StudyAbroadMVC.Models.tblMember m = new MembersModel().GetMemberInfo(MemberID);
+
+    if (memberTypeID == "1")
+    {
+        Url = "/student-home";
+
+        if (m != null)
+        {
+            if (!string.IsNullOrEmpty(m.photo))
+            {
+                PicUrl = "/Images/StudentPhoto/";
+                Pic = m.photo;
+            }
+            else
+            {
+                PicUrl = "/UserEnd/Design/images/avatar.jpg";
+            }
+        }
+        else { PicUrl = "/UserEnd/Design/images/avatar.jpg"; }
+
+    }
+    else if (memberTypeID == "2")
+    {
+        PicUrl = "/Images/University/";
+        try
+        {
+            if (!string.IsNullOrEmpty(m.photo))
+            {
+                Pic = m.photo;
+            }
+        }
+        catch
+        {
+
+        }
+        Url = "/university-home";
+    }
+    else if (memberTypeID == "3")
+    {
+        try
+        {
+
+            if (m.tblConsultants.FirstOrDefault().Logo.Contains("companylogo/"))
+            {
+                PicUrl = "/Images/";
+            }
+            else
+            {
+                PicUrl = "/Images/CompanyLogo/";
+            }
+        }
+        catch
+        {
+            PicUrl = "unknown";
+        }
+        try
+        {
+            Pic = m.tblConsultants.FirstOrDefault().Logo;
+        }
+        catch
+        {
+            Pic = "unknown";
+        }
+        Url = "/consultant-member-home";
+    }
+}
+<body>
+    <div class="wrapper guidesPage">
+        <div class="shadowLayer"></div>
+        <header>
+            <!-- Brand and toggle get grouped for better mobile display -->
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-brand-centered">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <input type="hidden" value="@MemberID" id="MemberID" />
+            <section id="headerTop">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-12">
+                            <div class="logo">
+                                <a href="/"><img src="~/UserEnd/Design/images/logo.png" class="img-responsive" /></a>
+                                @*Start Google search code*@
+
+
+
+
+
+                                @*End Google search code*@
+                            </div>
+                            <div class="topMobileNav" style="display:none">
+                                @{
+
+                                    if (cooki == null)
+                                    {
+                                        <a href="javascript:void(0)" onclick="openLoginScreenPopup();" class="pull-right loginmenu">
+                                            Login / Register
+                                        </a>
+                                    }
+                                    else
+                                    {
+
+                                        <div class="userBoxAfterLogin">
+                                            <div class="mBx">
+
+                                                <b>Hi @MemberName</b>
+                                                <span>
+                                                    <img src="@PicUrl@Pic" alt="">
+                                                </span>
+                                            </div>
+                                            <div class="lstBxOuter">
+                                                <div class="lstBx">
+                                                    <a href="@Url">Dashboard</a>
+                                                    <a href="/logout">Log Out</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <style>
+                            .search-bar {
+                                float: left;
+                                padding: 10% 0
+                            }
+                            .client-banner{
+                                display:none
+                            }
+                            @@media screen and (max-width:767px) {
+                                .search-bar {
+                                    padding: 0.5% 0;
+                                    display:none
+                                }
+                                .client-banner{
+                                    display:block
+                                }
+                            }
+                        </style>
+                        <div class="col-md-3 col-sm-12">
+                            <div class="search-bar">
+
+                                <div class="gcse-searchbox-only" style="margin:auto" data-queryParameterName="q" data-resultsUrl="/GoogleSearch/Search"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 hiddensXs">
+                            @{
+                                if (Common.Baner.Count > 0)
+                                {
+                                    <div class="banner-holder" id="@Common.Baner.FirstOrDefault().Title"><a style="cursor:pointer;"><img src="https://www.studyabroad.pk/images/Banner/@Common.Baner.FirstOrDefault().Banner" onclick="BannerHit(@Common.Baner.FirstOrDefault().ID,'@Common.Baner.FirstOrDefault().Url.Replace("http:", "https:")')" alt="@Common.Baner.FirstOrDefault().Title" /></a></div>
+                                }
+
+                            }
+
+                        </div>
+                    </div>
+                </div><div class="clearfix"></div>
+
+
+            </section><!-- headerTop End -->
+            <section id="headerBottom">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-10 left">
+                            <nav class="navbar navbar-default mianNaviagtion" role="navigation">
+                                <!-- Collect the nav links, forms, and other content for toggling -->
+                                <div class="collapse navbar-collapse" id="navbar-brand-centered">
+                                    @{
+                                        string NewsEventActive = "";
+                                        string SCHOLARSHIPSActive = "";
+                                        string UNIVERSITIESActive = "";
+                                        string CONSULTANTSActive = "";
+                                        string GUIDESActive = "";
+                                        string EMBASSY = "";
+                                        string TESTSActive = "";
+                                        string FAQSActive = "";
+                                        string STUDYADSActive = "";
+                                        string VISAActive = "";
+                                        string VIDEOSActive = "";
+                                        string homeActive = "";
+                                        if (pageName.Contains("news-event"))
+                                        {
+                                            NewsEventActive = "active";
+                                        }
+                                        else if (pageName.Contains("scholarships"))
+                                        {
+                                            SCHOLARSHIPSActive = "active";
+                                        }
+                                        else if (pageName.Contains("universities"))
+                                        {
+                                            UNIVERSITIESActive = "active";
+                                        }
+                                        else if (pageName.Contains("consultants"))
+                                        {
+                                            CONSULTANTSActive = "active";
+                                        }
+                                        else if (pageName.Contains("guides"))
+                                        {
+                                            GUIDESActive = "active";
+                                        }
+                                        else if (pageName.Contains("embassy"))
+                                        {
+                                            EMBASSY = "active";
+                                        }
+                                        else if (pageName.Contains("test-preparation"))
+                                        {
+                                            TESTSActive = "active";
+                                        }
+                                        else if (pageName.Contains("faqs"))
+                                        {
+                                            FAQSActive = "active";
+                                        }
+                                        else if (pageName.Contains("study-ads"))
+                                        {
+                                            STUDYADSActive = "active";
+                                        }
+                                        else if (pageName.Contains("visa"))
+                                        {
+                                            VISAActive = "active";
+                                        }
+                                        else if (pageName.Contains("videos"))
+                                        {
+                                            VIDEOSActive = "active";
+                                        }
+                                        else
+                                        {
+                                            homeActive = "active";
+                                        }
+
+
+                                    }
+                                    <ul class="nav navbar-nav">
+                                        <li class="@homeActive"><a href="/">Home</a></li>
+                                        <li class="@NewsEventActive"><a href="/news-event">NEWS</a></li>
+                                        <li class="@SCHOLARSHIPSActive"><a href="/scholarships">SCHOLARSHIPS</a></li>
+                                        <li class="@UNIVERSITIESActive"><a href="/universities">UNIVERSITIES</a></li>
+                                        <li class="@CONSULTANTSActive"><a href="/consultants">CONSULTANTS</a></li>
+                                        <li class="@GUIDESActive"><a href="/guides">GUIDES</a></li>
+                                        <li class="@EMBASSY"><a href="/embassy">Embassy</a></li>
+                                        <li class="@TESTSActive"><a href="/test-preparation">TESTS</a></li>
+                                        <li class="@FAQSActive"><a href="/faqs">FAQS</a></li>
+                                        <li class="@STUDYADSActive"><a href="/study-ads">STUDY ADS</a></li>
+                                        <li class="@VISAActive"><a href="/visa">VISA GUIDES</a></li>
+                                        <li class="@VIDEOSActive"><a href="/videos">VIDEOS</a></li>
+                                        @*<li><a href="/flights">Flights</a></li>*@
+                                        <li><a href="https://play.google.com/store/apps/details?id=com.softsolutions.studyabroad" target="_blank">APP</a></li>
+
+                                    </ul>
+
+                                </div><!-- /.navbar-collapse -->
+
+                            </nav>
+                        </div>
+                        @{
+                            <div class="col-md-2 right">
+                                @if (cooki == null)
+                                {
+                                    <a href="javascript:void(0)" id="OpenUserLoginPopup" class="pull-right loginmenu">
+                                        Login / Register
+                                    </a>
+                                }
+                                else
+                                {
+                                    <div class="userBoxAfterLogin">
+                                        <div class="mBx">
+                                            <b>Hi @MemberName</b>
+                                            <span>
+                                                <img style="height:33px; width:33px;" src="@PicUrl@Pic" alt="">
+                                            </span>
+                                        </div>
+                                        <div class="lstBxOuter">
+                                            <div class="lstBx">
+                                                <a href="@Url">Dashboard</a>
+                                                <a href="/logout">Log Out</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </section>
+
+        </hea

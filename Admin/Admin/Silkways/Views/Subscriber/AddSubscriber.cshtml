@@ -1,0 +1,48 @@
+﻿@model Silkways.Models.Subscriber
+@{
+    ViewBag.Title = "AddSubscriber";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-xs-9">
+    <h2>Add <strong>Subscriber</strong></h2>
+</div>
+<div class="col-xs-3">
+    <input type="button" value="Manage Subsciber" style="float:right;" class="btn btn-dark" data-toggle="modal" data-target="#modal-select" onclick="location.href = '/Subscriber/ManageSubsciber'">
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<form method="post" enctype="multipart/form-data" id="FormUser">
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input id="hdn_UserID" type="hidden" name="hdn_UserID" />
+                                <label class="form-label">Email</label>
+                                @Html.TextBoxFor(x => x.Email, new {@class = "form-control", @required = "required", @type = "Email" , @placeholder="username@yahoo.com"})
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        @{
+                            string Text = "Add Subscriber";
+                            if (Model != null)
+                            {
+                                Text = "Update Subscriber";
+                            }
+                        }
+
+                        <input type="submit" id="btnSave" class=" btn btn-dark" value="@Text" name="Save" onclick="this.form.submit(); this.disabled = true;" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>
+
+

@@ -1,0 +1,374 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="admin-themes-lab">
+    <meta name="author" content="themes-lab">
+    <link rel="shortcut icon" href="~/Resources/global/images/favicon.png" type="image/png">
+    <title>Admin Panel</title>
+    <!-- CK Editor -->
+    <script src="~/ckeditor/ckeditor_source.js"></script>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/ckeditor/config.js"></script>
+
+    <!-- End  CK Editor -->
+    <link href="~/Resources/global/css/style.css" rel="stylesheet">
+    <link href="~/Resources/global/css/theme.css" rel="stylesheet">
+    <link href="~/Resources/global/css/ui.css" rel="stylesheet">
+    <link href="~/Resources/admin/layout1/css/layout.css" rel="stylesheet" />
+    <link href="~/Resources/global/plugins/summernote/summernote.min.css" rel="stylesheet">
+
+    <link href="../assets/admin/layout4/css/layout.css" rel="stylesheet">
+    <!-- BEGIN PAGE STYLE -->
+    @*<link href="../assets/global/plugins/datatables/dataTables.min.css" rel="stylesheet" id="style11">*@
+    <!-- END PAGE STYLE -->
+    <script src="../assets/global/plugins/modernizr/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+
+</head>
+
+<body class="fixed-topbar fixed-sidebar theme-sdtl color-default">
+
+    @{
+        new Silkways.Models.SilkwaysFunction.GernalFunction().CheckAdminLogin();
+        string PictureName = "";
+        string Name = "";
+        string FullName = "";
+        string hiddenPw = "";
+        bool admin = false;
+        int ID = 0;
+        HttpCookie cookie = HttpContext.Current.Request.Cookies["AdminCookies"];
+        if (cookie != null)
+        {
+            ID = Convert.ToInt32(cookie.Values["ID"]);
+            var user = new Silkways.Models.UserModel().GetUserByID(ID);
+            hiddenPw = user.Password;
+            PictureName = user.Image;
+            Name = user.UserName;
+            FullName = user.FullName;
+            admin = user.IsAdmin;
+        }
+        else
+        { }
+
+        <section>
+            <!-- BEGIN SIDEBAR -->
+            <div class="sidebar">
+                <div class="logopanel">
+                    <input id="hdn_login_UserID" type="hidden" name="hdn_login_UserID" value="@ID" />
+
+                    <h1>
+                        <a href="~/User/DashboardIndex"></a>
+                    </h1>
+                </div>
+                <div class="sidebar-inner">
+                    <div class="menu-title">
+                    </div>
+
+                    <ul class="nav nav-sidebar">
+                        <li><a href="~/User/DashboardIndex"><i></i><span></span></a></li>
+
+                        <li><a href="~/User/DashboardIndex"><i></i><span></span></a></li>
+                        <li><a href="~/User/DashboardIndex"><i></i><span></span></a></li>
+
+                        <li><a href="~/User/DashboardIndex"><i class="icon-home"></i><span>Dashboard</span></a></li>
+                        <li class="nav-parent">
+                            <a href=""><i class="icon-screen-desktop"></i><span>Manage Catalog</span><span class="fa arrow"></span></a>
+                            <ul class="children collapse">
+                                <li><a href="~/Category/ManageCategory"> Manage Category</a></li>
+                                <li><a href="~/ProductBrand/ManageBrands"> Manage Brands</a></li>
+                                <li><a href="~/Product/ManageProduct"> Products</a></li>
+                                <li><a href="~/Product/Search"> Search Products</a></li>
+                            </ul>
+                        </li>
+
+                        @{
+                            if (admin == true)
+                            {
+                                <li class="nav-parent">
+                                    <a href=""><i class="icon-screen-desktop"></i><span>Setting</span><span class="fa arrow"></span></a>
+                                    <ul class="children collapse">
+                                        <li><a href="~/User/ManageUsers"> System Users</a></li>
+                                        <li><a href="~/Settings/ManageSettings"> Settings</a></li>
+                                    </ul>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-parent">
+                                    <a href=""><i class="icon-screen-desktop"></i><span>Setting</span><span class="fa arrow"></span></a>
+                                    <ul class="children collapse">
+                                        <li><a href="~/User/AddUser?ID=@ID"> Edit Profile</a></li>
+                                        <li><a href="~/Settings/ManageSettings"> Settings</a></li>
+                                    </ul>
+                                </li>
+                            }
+                        }
+
+
+                        <li class="nav-parent" id="menu">
+                            <a href=""><i class="icon-screen-desktop"></i><span>Manage News</span><span class="fa arrow"></span></a>
+                            <ul class="children collapse" id="submenu">
+                                <li><a href="~/News/ManageNews"> News</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-parent">
+                            <a href=""><i class="icon-screen-desktop"></i><span>Manage Sliders</span><span class="fa arrow"></span></a>
+                            <ul class="children collapse">
+                                <li><a href="/Sliders/ManageSliders"> Manage Sliders</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-parent">
+                            <a href=""><i class="icon-screen-desktop"></i><span>Manage Content</span><span class="fa arrow"></span></a>
+                            <ul class="children collapse">
+                                <li><a href="~/ContentUnit/ManageContentUnit">Content Unit</a></li>
+                                <li><a href="~/ContentPage/ManageContentPage">Content Pages</a></li>
+                                <li><a href="~/CMSPages/URLBasedCMSPages">URL Based CMS</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-parent">
+                            <a href=""><i class="icon-screen-desktop"></i><span>Manage Subscriber</span><span class="fa arrow"></span></a>
+                            <ul class="children collapse">
+                                <li><a href="~/Subscriber/ManageSubscriber"> Subscriber</a></li>
+                                <li><a href="~/Subscriber/SendEmailToSubscriber"> Email To Subscriber</a></li>
+                            </ul>
+                        </li>
+                        @*<li class="nav-parent">
+                                <a href=""><i class="icon-screen-desktop"></i><span>Manage Scholarships</span><span class="fa arrow"></span></a>
+                                <ul class="children collapse">
+                                    <li><a href="/Scholarships/ManageScholarship"> Manage Scholarships</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-parent">
+                                <a href=""><i class="icon-screen-desktop"></i><span>Manage Students</span><span class="fa arrow"></span></a>
+                                <ul class="children collapse">
+                                    <li><a href="~/Students/ManageStudents">Manage Students</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-parent">
+                                <a href=""><i class="icon-screen-desktop"></i><span>Manage Guides</span><span class="fa arrow"></span></a>
+                                <ul class="children collapse">
+                                    <li><a href="/Guides/ManageGuides"> Manage Guides</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-parent">
+                                <a href=""><i class="icon-screen-desktop"></i><span>Universities And Courses</span><span class="fa arrow"></span></a>
+                                <ul class="children collapse">
+                                    <li><a href="/UniCourses/ManageUni">Universities</a></li>
+                                    <li><a href="/UniCourses/ManageCCategory">Course Categories</a></li>
+                                    <li><a href="/UniCourses/ManageCourses">Courses</a></li>
+                                </ul>
+                            </li>*@
+
+                        <li class="nav-parent">
+                            <a href=""><i class="icon-screen-desktop"></i><span>Manage Banners</span><span class="fa arrow"></span></a>
+                            <ul class="children collapse">
+                                <li><a href="~/Banners/ManageBanners">Banners</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-parent">
+                            <a href=""><i class="icon-screen-desktop"></i><span>Manage Gallery</span><span class="fa arrow"></span></a>
+                            <ul class="children collapse">
+                                <li><a href="~/Album/ManageAlbum"> Manage Photos</a></li>
+                                <li><a href="/Videos/ManageVideos"> Manage Videos</a></li>
+                            </ul>
+                        </li>
+                        @*<li class="nav-parent">
+                                <a href=""><i class="icon-screen-desktop"></i><span>Manage Scholarships</span><span class="fa arrow"></span></a>
+                                <ul class="children collapse">
+                                    <li><a href="#"> Manage Scholarships</a></li>
+                                </ul>
+                            </li>*@
+                        <li class="nav-parent">
+                            <a href=""><i class="icon-screen-desktop"></i><span>Manage Testimonials</span><span class="fa arrow"></span></a>
+                            <ul class="children collapse">
+                                <li><a href="~/Testimonial/ManageTestimonials">Manage Testimonials</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-parent">
+                            <a href=""><i class="icon-screen-desktop"></i><span>Manage FAQs</span><span class="fa arrow"></span></a>
+                            <ul class="children collapse">
+                                <li><a href="~/FAQs/ManageFAQs"> FAQs</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                    <!-- SIDEBAR WIDGET FOLDERS -->
+
+                    <div class="sidebar-footer clearfix">
+                        <a class="pull-left toggle_fullscreen" href="#" data-rel="tooltip" data-placement="top" data-original-title="Fullscreen">
+                            <i class="icon-size-fullscreen"></i>
+                        </a>
+                        <a class="pull-left" href="/User/LockScreen?ID=@ID" data-rel="tooltip" data-placement="top" data-original-title="Lockscreen">
+                            <i class="icon-lock"></i>
+                        </a>
+                        <a class="pull-left btn-effect" href="~/User/Login" data-modal="modal-1" data-rel="tooltip" data-placement="top" data-original-title="Logout">
+                            <i class="icon-power"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- END SIDEBAR -->
+            <div class="main-content">
+                <!-- BEGIN TOPBAR -->
+                <div class="topbar">
+                    <div class="header-left">
+                        <div class="topnav">
+                            <a class="menutoggle" href="#" data-toggle="sidebar-collapsed"><span class="menu__handle"><span>Menu</span></span></a>
+
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <ul class="header-menu nav navbar-nav">
+
+                            <!-- BEGIN NOTIFICATION DROPDOWN -->
+                            <!-- BEGIN USER DROPDOWN -->
+                            <li class="dropdown" id="user-header">
+                                <a href="#" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                    <img src="~/Resources/AdminPictures/@PictureName" alt="user image">
+                                    <span class="username">Hi, @Name</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="~/User/ChangePassword"><i class="icon-settings"></i><span>Change Password</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="~/User/Login"><i class="icon-logout"></i><span>Logout</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- END USER DROPDOWN -->
+                            <!-- CHAT BAR ICON -->
+
+                        </ul>
+                    </div>
+                    <!-- header-right -->
+                </div>
+                <!-- END TOPBAR -->
+                <!-- BEGIN PAGE CONTENT -->
+                <div class="page-content">
+                    @*ALERT FOR TASK PERFORMED*@
+                    <input id="Hidden_Pass" type="hidden" name="Hidden_Pass" value="@hiddenPw" />
+                    <div class="alertForTask">
+
+                        <ul class="noty_inline_layout_container i-am-new" style="width: auto; height: auto; margin: 0px; padding: 0px; list-style-type: none; z-index: 9999999; top: 0px; left: 0px;">
+                            <li class="made noty_container_type_alert animated fadeIn" style="cursor: pointer; height: 63px;">
+                                <div class="noty_bar noty_type_alert" id="noty_1004447543995130600">
+                                    <div class="noty_message">
+                                        <span class="noty_text">
+                                            <div class="alert alert-success media fade in">
+                                                <p><strong>@TempData["AlertTask"]</strong></p>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    @*ALERT FOR TASK PERFORMED*@
+                    @RenderBody()
+                </div>
+                <!-- END PAGE CONTENT -->
+            </div>
+            <!-- END MAIN CONTENT -->
+
+        </section>
+    <!-- BEGIN QUICKVIEW SIDEBAR -->
+
+    <!-- END QUICKVIEW SIDEBAR -->
+    <!-- BEGIN SEARCH -->
+
+            <!-- /morphsearch-content -->
+
+    <!-- END SEARCH -->
+    <!-- BEGIN PRELOADER -->
+
+
+    }
+    <!-- END PRELOADER -->
+    <!-- END PRELOADER -->
+    <a href="#" class="scrollup"><i class="fa fa-angle-up"></i></a>
+    <script src="~/Resources/global/plugins/jquery/jquery-1.11.1.min.js"></script>
+    <script src="~/Resources/global/plugins/jquery/jquery-migrate-1.2.1.min.js"></script>
+    <script src="~/Resources/global/plugins/jquery-ui/jquery-ui-1.11.2.min.js"></script>
+    <script src="~/Resources/global/plugins/gsap/main-gsap.min.js"></script>
+    <script src="~/Resources/global/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Resources/global/plugins/jquery-cookies/jquery.cookies.min.js"></script> <!-- Jquery Cookies, for theme -->
+    <script src="~/Resources/global/plugins/jquery-block-ui/jquery.blockUI.min.js"></script> <!-- simulate synchronous behavior when using AJAX -->
+    <script src="~/Resources/global/plugins/bootbox/bootbox.min.js"></script> <!-- Modal with Validation -->
+    <script src="~/Resources/global/plugins/mcustom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script> <!-- Custom Scrollbar sidebar -->
+    <script src="~/Resources/global/plugins/bootstrap-dropdown/bootstrap-hover-dropdown.min.js"></script> <!-- Show Dropdown on Mouseover -->
+    <script src="~/Resources/global/plugins/charts-sparkline/sparkline.min.js"></script> <!-- Charts Sparkline -->
+    <script src="~/Resources/global/plugins/retina/retina.min.js"></script> <!-- Retina Display -->
+    <script src="~/Resources/global/plugins/select2/select2.min.js"></script> <!-- Select Inputs -->
+    <script src="~/Resources/global/plugins/icheck/icheck.min.js"></script> <!-- Checkbox & Radio Inputs -->
+    <script src="~/Resources/global/plugins/backstretch/backstretch.min.js"></script> <!-- Background Image -->
+    <script src="~/Resources/global/plugins/bootstrap-progressbar/bootstrap-progressbar.min.js"></script> <!-- Animated Progress Bar -->
+    <script src="~/Resources/global/plugins/charts-chartjs/Chart.min.js"></script>
+    <script src="~/Resources/global/js/builder.js"></script><!-- Theme Builder -->
+    <script src="~/Resources/global/js/sidebar_hover.js"></script> <!-- Sidebar on Hover -->
+    <script src="~/Resources/global/js/application.js"></script> <!-- Main Application Script -->
+    <script src="~/Resources/global/js/plugins.js"></script> <!-- Main Plugin Initialization Script -->
+    <script src="~/Resources/global/js/widgets/notes.js"></script> <!-- Notes Widget -->
+    <script src="~/Resources/global/js/quickview.js"></script> <!-- Chat Script -->
+    <script src="~/Resources/global/js/pages/search.js"></script> <!-- Search Script -->
+    <!-- BEGIN PAGE SCRIPT -->
+    <script src="~/Resources/global/plugins/bootstrap/js/jasny-bootstrap.min.js"></script> <!-- File Upload and Input Masks -->
+    <!-- END PAGE SCRIPTS -->
+    <script src="~/Resources/global/plugins/summernote/summernote.min.js"></script> <!-- Simple HTML Editor -->
+
+    <script src="~/Resources/global/plugins/cke-editor/ckeditor.js"></script> <!-- Advanced HTML Editor -->
+    <script src="~/Resources/global/plugins/cke-editor/adapters/adapters.min.js"></script>
+
+    <script src="~/Resources/global/plugins/noty/jquery.noty.packaged.min.js"></script>  <!-- Notifications -->
+    <script src="~/Resources/global/js/pages/notifications.js"></script>
+
+    <script src="~/Resources/admin/layout1/js/layout.js"></script>
+
+    <script src="~/Resources/global/js/pages/search.js"></script> <!-- Search Script -->
+    <!-- BEGIN PAGE SCRIPTS -->
+    @*<script src="~/Resources/global/plugins/datatables/jquery.dataTables.min.js" id="style13"></script>*@ <!-- Tables Filtering, Sorting & Editing -->
+    @*<script src="~/Resources/global/js/pages/table_dynamic.js"></script>*@
+    <!-- END PAGE SCRIPTS -->
+    <script src="~/Resources/admin/layout4/js/layout.js"></script>
+    <script src="~/Resources/global/plugins/bootstrap/js/jasny-bootstrap.min.js"></script> <!-- File Upload and Input Masks -->
+    <script src="~/Scripts/cropimg/jquery.cropit.js"></script>
+
+    <script>
+        var alerttexthere = '@Html.Raw(HttpUtility.JavaScriptStringEncode((string)TempData["AlertTask"]))';
+        $(document).ready(function () {
+            var baseURICurrent = $('.nav')[0].baseURI;
+            var totalObjectsSideBar = $('.nav')[0].attributes[0].ownerElement.children.length;
+            for (var a = 0; a < totalObjectsSideBar; a++) {
+                var MainLi = $('.nav')[0].attributes[0].ownerElement.children[a];
+                var MainInnerTags = MainLi.children.length;
+                if (MainInnerTags > 1) {
+                    var innerLI = MainLi.children[1].children.length;
+                    for (var b = 0; b < innerLI; b++) {
+                        var innerLIDetails = MainLi.children[1].children[b];
+                        var urldOnView = innerLIDetails.children[0].href;
+                        if (urldOnView == baseURICurrent) {
+                            MainLi.className = "nav-parent nav-active active";
+                            MainLi.children[1].style.display = "Block";
+                            innerLIDetails.className = "active";
+                        }
+                    }
+                }
+            }
+            if (alerttexthere != "") {
+                $('.alertForTask').hide().delay(1000);
+                $('.alertForTask').fadeIn('slow').delay(6000).fadeOut('slow');
+            }
+            else {
+                $('.alertForTask').hide();
+            }
+        });
+
+        //$('.table-dynamic').dataTable({
+        //    "iDisplayLength": 50,
+
+        //}).fnDestroy();
+    </script>
+</body>
+</html>

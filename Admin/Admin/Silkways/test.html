@@ -1,0 +1,258 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" media="all" href="https://www.html5rocks.com/static/css/v2-combined.min.css?20131111">
+    <style>
+        figure img {
+            border: 1px solid #ccc;
+        }
+
+        h1, h2, h3, h4 {
+            clear: both;
+        }
+        /* Prevent the contents of draggable elements from being selectable. */
+        [draggable] {
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+            /* Required to make elements draggable in old WebKit */
+            -khtml-user-drag: element;
+            -webkit-user-drag: element;
+        }
+
+        dd {
+            padding: 5px 0;
+        }
+
+        .column {
+            height: 150px;
+            width: 150px;
+            float: left;
+            border: 2px solid #666666;
+            background-color: #ccc;
+            margin-right: 5px;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            -o-border-radius: 10px;
+            -ms-border-radius: 10px;
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 3px #000;
+            -moz-box-shadow: inset 0 0 3px #000;
+            -ms-box-shadow: inset 0 0 3px #000;
+            -o-box-shadow: inset 0 0 3px #000;
+            box-shadow: inset 0 0 3px #000;
+            text-align: center;
+            cursor: move;
+            margin-bottom: 30px;
+        }
+
+            .column header {
+                color: #fff;
+                text-shadow: #000 0 1px;
+                box-shadow: 5px;
+                padding: 5px;
+                background: -moz-linear-gradient(left center, rgb(0,0,0), rgb(79,79,79), rgb(21,21,21));
+                background: -webkit-gradient(linear, left top, right top, color-stop(0, rgb(0,0,0)), color-stop(0.50, rgb(79,79,79)), color-stop(1, rgb(21,21,21)));
+                background: -webkit-linear-gradient(left center, rgb(0,0,0), rgb(79,79,79), rgb(21,21,21));
+                background: -ms-linear-gradient(left center, rgb(0,0,0), rgb(79,79,79), rgb(21,21,21));
+                background: -o-linear-gradient(left center, rgb(0,0,0), rgb(79,79,79), rgb(21,21,21));
+                border-bottom: 1px solid #ddd;
+                -webkit-border-top-left-radius: 10px;
+                -moz-border-radius-topleft: 10px;
+                -ms-border-radius-topleft: 10px;
+                -o-border-radius-topleft: 10px;
+                border-top-left-radius: 10px;
+                -webkit-border-top-right-radius: 10px;
+                -moz-border-radius-topright: 10px;
+                -ms-border-radius-topright: 10px;
+                -o-border-radius-topright: 10px;
+                border-top-right-radius: 10px;
+            }
+
+        #columns-full .column {
+            -webkit-transition: -webkit-transform 0.2s ease-out;
+            -moz-transition: -moz-transform 0.2s ease-out;
+            -o-transition: -o-transform 0.2s ease-out;
+            -ms-transition: -ms-transform 0.2s ease-out;
+        }
+
+            #columns-full .column.over,
+            #columns-dragOver .column.over,
+            #columns-dragEnd .column.over,
+            #columns-almostFinal .column.over {
+                border: 2px dashed #000;
+            }
+
+            #columns-full .column.moving {
+                opacity: 0.25;
+                -webkit-transform: scale(0.8);
+                -moz-transform: scale(0.8);
+                -ms-transform: scale(0.8);
+                -o-transform: scale(0.8);
+            }
+
+            #columns-full .column .count {
+                padding-top: 15px;
+                font-weight: bold;
+                text-shadow: #fff 0 1px;
+            }
+    </style>
+</head>
+<body>
+    <div style="background: #F9F9F9;border: 1px solid #AAA;border-radius: 4px;-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);box-shadow: 0 1px 1px rgba(0,0,0,.05);display: table;margin-bottom: 1em;padding: 10px;position: relative;width: auto;">
+        <div class="ez-toc-title-container">
+            <p class="ez-toc-title">Table of Contents</p>
+        </div>
+        <ul style="list-style:none;padding:0px;">
+            <li><a style="color: #428bca;text-decoration:none;display:block;line-height:1.6;list-style:none" href="#Top_6_Best_Whitewater_Kayak_For_Beginners" title="Top 6 Best Whitewater Kayak For Beginners">Top 6 Best Whitewater Kayak For Beginners</a></li>
+            <li>
+                <a style="color: #428bca;text-decoration:none;display:block;line-height:1.6;list-style:none" href="#1_Ocean_Kayak_Venus" title="1. Ocean Kayak Venus">1. Ocean Kayak Venus</a>
+                <ul style="list-style:none">
+                    <li><a style="color: #428bca;text-decoration:none;display:block;line-height:1.6;list-style:none" href="#2_Malibu_Two_Tandem_Sit-On-Top_Ocean_Kayak" title="2. Malibu Two Tandem Sit-On-Top Ocean Kayak">2. Malibu Two Tandem Sit-On-Top Ocean Kayak</a></li>
+                    <li><a style="color: #428bca;text-decoration:none;display:block;line-height:1.6;list-style:none" href="#3_Intex_Excursion_Pro_Kayak" title="3. Intex Excursion Pro Kayak">3. Intex Excursion Pro Kayak</a></li>
+                    <li><a style="color: #428bca;text-decoration:none;display:block;line-height:1.6;list-style:none" href="#4_Pelican_Solo_6_Feet_Sit-on-top_Youth_Kayak" title="4. Pelican Solo 6 Feet Sit-on-top Youth Kayak">4. Pelican Solo 6 Feet Sit-on-top Youth Kayak</a></li>
+                    <li><a style="color: #428bca;text-decoration:none;display:block;line-height:1.6;list-style:none" href="#5_Sun_Dolphin_Aruba" title="5. Sun Dolphin Aruba">5. Sun Dolphin Aruba</a></li>
+                    <li><a style="color: #428bca;text-decoration:none;display:block;line-height:1.6;list-style:none" href="#6_Third_Coast_Arbor_100_Sit_in_Recreational_Kayak" title="6. Third Coast Arbor 100 Sit in Recreational Kayak">6. Third Coast Arbor 100 Sit in Recreational Kayak</a></li>
+                </ul>
+            </li>
+            <li><a style="color: #428bca;text-decoration:none;display:block;line-height:1.6;list-style:none" href="#How_to_select_a_kayak" title="How to select a kayak?">2. How to select a kayak?</a></li>
+            <li><a style="color: #428bca;text-decoration:none;display:block;line-height:1.6;list-style:none" href="#What_basic_things_are_to_be_looked_for_before_buying_a_kayak" title="What basic things are to be looked for before buying a kayak?">3. What basic things are to be looked for before buying a kayak?</a></li>
+            <li><a style="color: #428bca;text-decoration:none;display:block;line-height:1.6;list-style:none" href="#Creek_boat_VS_River_runner" title="Creek boat VS River runner">4. Creek boat VS River runner</a></li>
+            <li><a style="color: #428bca;text-decoration:none;display:block;line-height:1.6;list-style:none" href="#How_many_variations_of_kayaks_are_there" title="How many variations of kayaks are there?">5. How many variations of kayaks are there?</a></li>
+        </ul>
+    </div>
+    <div style="padding-top: 10px;padding-bottom: 10px;margin: 30px auto;background: #f9f9f9;border: solid 2px #32b200;">
+        <div style="display: -ms-flexbox;margin-top: calc(100px/2);display: flex;-ms-flex-flow: row wrap;flex-flow: row wrap;padding: 10px;">
+            <div style="-ms-flex: 1 0 0px;flex: 1 0 0;background: #fff;margin: 0 15px;border: 1px solid #eee;">
+                <div style="margin-bottom: 20px;margin-top: calc(-100px/2);text-align: center;">
+                    <div style="width: 100px;height: 100px;position: relative;border-radius: 100%;margin: 0 auto;color: #fff;background: #27c110;"> <i class="far fa-thumbs-up"></i></div>
+                    <h4 style="margin: 0;padding: 0;font-size: 24px;line-height: 24px;font-weight: 500;margin-top: 10px;">Pros</h4>
+                </div>
+                <ul>
+                    <li>Lightweight</li>
+                    <li>Includes side carrying handles and toggle handles for ease Portable</li>
+                    <li>Easy to use</li>
+                    <li>Provides lumbar support</li>
+                    <li>It’s very suitable for various water bodies Comfortable</li>
+                    <li>It’s available in beautiful colours</li>
+                </ul>
+            </div>
+            <div style="-ms-flex: 1 0 0px;flex: 1 0 0;background: #fff;margin: 0 15px;border: 1px solid #eee;">
+                <div style="margin-bottom: 20px;margin-top: calc(-100px/2);text-align: center;">
+                    <div style="width: 100px;height: 100px;position: relative;border-radius: 100%;margin: 0 auto;color: #fff;background: red;"> <i class="far fa-thumbs-down"></i></div>
+                    <h4 style="margin: 0;padding: 0;font-size: 24px;line-height: 24px;font-weight: 500;margin-top: 10px;">Cons</h4>
+                </div>
+                <ul>
+                    <li>This is specifically designed for and won’t ideal for usage by men.</li>
+                </ul>
+            </div>
+        </div>
+        <div style="text-align: center;margin: 10px 0 0;">
+            <a style="text-decoration:none;margin: 0;padding: 12px 24px; text-align: center;box-shadow: none;font-size: 16px;line-height: 1.5;font-weight: 300;display: inline-block;color: #fff;background: #32b200;border-radius: 5px;" href="https://amzn.to/2qjPKcN" target="_blank" rel="nofollow external noopener noreferrer" data-wpel-link="external"> CHECK PRICE ON AMAZON </a>
+        </div>
+    </div>
+    <h2 id="toc-examples">Examples</h2>
+
+    <p>Here is the final product with a little more polish and a counter for each move:</p>
+    <div id="columns-full">
+        <div class="column"><header>A</header><div class="count" data-col-moves="0"><img src="Resources/images/loader.gif" /></div></div>
+        <div class="column"><header>B</header><div class="count" data-col-moves="0"><img src="Resources/News/NoImage.jpg" /></div></div>
+        <div class="column"><header>C</header><div class="count" data-col-moves="0"></div></div>
+        <div class="column"><header>D</header><div class="count" data-col-moves="0"></div></div>
+        <div class="column"><header>A</header><div class="count" data-col-moves="0"><img src="Resources/images/loader.gif" /></div></div>
+        <div class="column"><header>B</header><div class="count" data-col-moves="0"><img src="Resources/News/NoImage.jpg" /></div></div>
+        <div class="column"><header>C</header><div class="count" data-col-moves="0"></div></div>
+        <div class="column"><header>D</header><div class="count" data-col-moves="0"></div></div>
+        <div class="column"><header>A</header><div class="count" data-col-moves="0"><img src="Resources/images/loader.gif" /></div></div>
+        <div class="column"><header>B</header><div class="count" data-col-moves="0"><img src="Resources/News/NoImage.jpg" /></div></div>
+        <div class="column"><header>C</header><div class="count" data-col-moves="0"></div></div>
+        <div class="column"><header>D</header><div class="count" data-col-moves="0"></div></div>
+        <div class="column"><header>A</header><div class="count" data-col-moves="0"><img src="Resources/images/loader.gif" /></div></div>
+        <div class="column"><header>B</header><div class="count" data-col-moves="0"><img src="Resources/News/NoImage.jpg" /></div></div>
+        <div class="column"><header>C</header><div class="count" data-col-moves="0"></div></div>
+        <div class="column"><header>D</header><div class="count" data-col-moves="0"></div></div>
+    </div>
+
+
+    <script src="https://www.html5rocks.com/static/js/modernizr.custom.82437.js"></script>
+    <script>
+        (function() {
+  var id_ = 'columns-full';
+  var cols_ = document.querySelectorAll('#' + id_ + ' .column');
+  var dragSrcEl_ = null;
+
+  this.handleDragStart = function(e) {
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', this.innerHTML);
+
+    dragSrcEl_ = this;
+
+    // this/e.target is the source node.
+    this.addClassName('moving');
+  };
+
+  this.handleDragOver = function(e) {
+    if (e.preventDefault) {
+      e.preventDefault(); // Allows us to drop.
+    }
+
+    e.dataTransfer.dropEffect = 'move';
+
+    return false;
+  };
+
+  this.handleDragEnter = function(e) {
+    this.addClassName('over');
+  };
+
+  this.handleDragLeave = function(e) {
+    // this/e.target is previous target element.
+    this.removeClassName('over');
+  };
+
+  this.handleDrop = function(e) {
+    // this/e.target is current target element.
+
+    if (e.stopPropagation) {
+      e.stopPropagation(); // stops the browser from redirecting.
+    }
+
+    // Don't do anything if we're dropping on the same column we're dragging.
+    if (dragSrcEl_ != this) {
+      dragSrcEl_.innerHTML = this.innerHTML;
+      this.innerHTML = e.dataTransfer.getData('text/html');
+
+      // Set number of times the column has been moved.
+      var count = this.querySelector('.count');
+      var newCount = parseInt(count.getAttribute('data-col-moves')) + 1;
+      count.setAttribute('data-col-moves', newCount);
+      //count.textContent = 'moves: ' + newCount;
+    }
+
+    return false;
+  };
+
+  this.handleDragEnd = function(e) {
+    // this/e.target is the source node.
+    [].forEach.call(cols_, function (col) {
+      col.removeClassName('over');
+      col.removeClassName('moving');
+    });
+  };
+
+  [].forEach.call(cols_, function (col) {
+    col.setAttribute('draggable', 'true');  // Enable columns to be draggable.
+    col.addEventListener('dragstart', this.handleDragStart, false);
+    col.addEventListener('dragenter', this.handleDragEnter, false);
+    col.addEventListener('dragover', this.handleDragOver, false);
+    col.addEventListener('dragleave', this.handleDragLeave, false);
+    col.addEventListener('drop', this.handleDrop, false);
+    col.addEventListener('dragend', this.handleDragEnd, false);
+  });
+})();
+    </script>
+</body>
+</html>

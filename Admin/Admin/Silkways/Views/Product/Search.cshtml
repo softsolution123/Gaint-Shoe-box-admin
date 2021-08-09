@@ -1,0 +1,654 @@
+﻿@model Silkways.ViewModels.ProductsSearchViewModel
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_LayoutSearch.cshtml";
+}
+@*<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">*@
+@*
+    <style>
+        .append-icon i {
+            z-index: 9999;
+            color: #1b1e25;
+        }
+    </style>*@
+@*
+    <script src="~/Scripts/jquery-2.2.0.min.js"></script>*@
+
+<div class="col-xs-9">
+    <h2>Search <strong>Products</strong></h2>
+</div>
+<script type="text/javascript">
+    function GetImageNameInHiddenBox(ID) {
+        $("#DeleteLink").attr("href", "/Product/Deleted?ID=" + ID);
+    }
+</script>
+<script>
+    function isNumber(evt, id) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            $('#' + id + '').css('display', 'block');
+            return false;
+        }
+        else {
+            $('#' + id + '').css('display', 'none');
+            return true;
+        }
+    }
+</script>
+
+@*
+    <script>
+
+            $(document).ready(function () {
+                $('#example').DataTable({
+                    "paging": false,
+                    "ordering": false,
+                    "info": false
+                });
+
+                //$("#from").datepicker({ dateFormat: "dd-mm-yy" }).val();
+                //$("#to").datepicker({ dateFormat: "dd-mm-yy" }).val();
+                //$('.alertForTask').hide();
+                //alert = function () { };
+            });
+    </script>*@
+<div class="clearfix"></div>
+<form method="post" enctype="multipart/form-data" id="FormUser">
+
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label class="form-label">Product Name</label>
+                                @if (Session["Name"] != null)
+                                {
+                                    <input type="text" name="Name" placeholder="Enter Product Name" class="form-control" maxlength="50" value="@Session[" name"]">
+                                }
+                                else
+                                {
+                                    <input type="text" name="Name" placeholder="Enter Product Name" class="form-control" maxlength="50" value="@ViewBag.Email">
+                                }
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Auther Name</label>
+                                @if (Session["Auther"] != null)
+                                {
+                                    <input type="text" name="SKU" placeholder="Enter Auther Name" class="form-control" maxlength="50" value="@Session[" sku"]">
+                                }
+                                else
+                                {
+                                    <input type="text" name="SKU" placeholder="Enter Auther Name" class="form-control" maxlength="50" value="@ViewBag.Auther">
+                                }
+
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">ISBN Number</label>
+                                @if (Session["Model"] != null)
+                                {
+
+                                    <input type="text" name="Model" placeholder="Enter ISBN Number" class="form-control" maxlength="50" value="@Session["model"]">
+                                }
+                                else
+                                {
+                                    <input type="text" name="Model" placeholder="Enter ISBN Number" class="form-control" maxlength="50" value="@ViewBag.Email">
+                                }
+
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Category</label>
+                                <select name="CategoryID" class="form-control" data-search="true">
+                                    @*@if (Session["CategoryID"] != null)
+                                        {*@
+                                    @*int CategoryID = Convert.ToInt32(Session["CategoryID"]);
+                                        var v = Silkways.Controllers.CategoryController.CategoriesByParent().FirstOrDefault(x => x.ID == CategoryID);
+                                        if (v != null)
+                                        {
+
+                                        <option value="@v.ID">@v.CategoryName</option>
+                                        <option value="0">Select Category</option>
+                                        }
+                                        else
+                                        {
+                                        <option value="0">Select Category</option>
+                                        }
+                                        }
+                                        else
+                                        {
+                                        <option value="0">Select Category</option>
+                                        }*@
+                                    <option value="0">Select Category</option>
+                                    @foreach (var itm in Silkways.Controllers.CategoryController.CategoriesByParent())
+                                    {
+                                        int CategoryID = Convert.ToInt32(Session["CategoryID"]);
+                                        if (CategoryID == itm.ID)
+                                        {
+                                            <option value="@itm.ID" selected>@itm.CategoryName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@itm.ID">@itm.CategoryName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Select Brand*</label>
+                                <select name="BrandID" class="form-control" data-search="true">
+                                    @*@if (Session["BrandID"] != null)
+                                        {
+
+                                        int BrandID = Convert.ToInt32(Session["BrandID"]);
+                                        var Brand = Silkways.Controllers.ProductBrandController.GetBrands().FirstOrDefault(x => x.ID == BrandID);
+                                        if (Brand != null)
+                                        {
+                                        <option value="@Brand.ID">@Brand.BrandName</option>
+                                        <option value="0">Select Brand</option>
+                                        }
+                                        else
+                                        {
+                                        <option value="0">Select Brand</option>
+                                        }
+
+                                        }
+                                        else
+                                        {
+                                        <option value="0">Select Brand</option>
+                                        }*@
+                                    @{
+                                        <option value="0">Select Brand</option>
+                                        int BrandID = Convert.ToInt32(Session["BrandID"]);
+                                        foreach (var itm in new Silkways.Controllers.ProductBrandController().GetBrands())
+                                        {
+
+                                            if (BrandID == itm.ID)
+                                            {
+                                                <option value="@itm.ID" selected>@itm.BrandName</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@itm.ID">@itm.BrandName</option>
+                                            }
+
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+
+                        <input type="submit" id="btnSave" class="btn btn-dark" value="Search" name="Save" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>
+
+@if (Model.Products != null && Model.Products.Count() > 0)
+{
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-content pagination2 table-responsive">
+                    <form method="post" action="/Product/UpdateDiscountOnAllProducts" enctype="multipart/form-data" name="tableForm" id="Form1">
+                        <h2 style="font-weight:bold">Apply Discounts on All Products</h2>
+                        <p>Total @Model.Products.Count() Products Found</p><br />
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Discount Percent%</label>
+                                    <input type="text" value="0.00" name="AllDisPer" id="AllDisPer" class="form-control" style="background:transparent" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Discount Fixed Value</label>
+                                    <input type="text" value="0.00" name="AllDisFix" id="AllDisFix" class="form-control" style="background:transparent" />
+                                </div>
+                            </div>
+                            @foreach (var item in Model.Products)
+                            {
+                                <input type="hidden" name="ProductIDs" value="@item.ID" />
+                            }
+                            <div class="col-md-8">
+                                <input type="button" value="Apply Discounts to All @Model.Products.Count Products" style="margin-top:20px" class="btn btn-dark modal-container" data-toggle="modal" @*onclick="GetProductUpdation();" *@ data-target="#modal-discount">
+                                <input type="button" data-toggle="modal" data-target=" #modal-OverAllDeleted" value="Delete All Products" style="margin-top:20px" name="DeleteButton" class="btn btn-dark">
+                                <input type="button" data-toggle="modal" data-target=" #modal-OverAllOutofStock" value="All Product Out of Stock" style="margin-top:20px" name="DeleteButton" class="btn btn-dark">
+                            </div>
+
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="modal fade" id="modal-discount" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                        <h4 class="modal-title"><strong>Are you</strong> Sure</h4>
+                    </div>
+                    <div class="modal-body">
+                        The given discount of <p id="discountPara" style="display: inline;">0.00</p> will apply to all 22 products!
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal">Cancel</button>
+                        <input type="submit" value="Confirm" id="UpdateLink" class="btn btn-primary btn-embossed">
+                    </div>
+                </div>
+            </div>
+        </div>*@
+}
+
+
+@if (Model.Products != null && Model.Products.Count() > 0)
+{
+    <div class="col-xs-9">
+        <h2>Search <strong>Result ( @Model.Products.Count )</strong></h2>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-content pagination2 table-responsive">
+                    <form method="post" action="/Product/UpdateAllPriceAndQuantity" enctype="multipart/form-data" name="tableForm" id="tableForm">
+                        <table class="table table-hover table-dynamic" id="example">
+                            <thead>
+                                <tr>
+                                    <th style="display: none;">ID</th>
+                                    <th></th>
+                                    <th>Brand</th>
+                                    <th>Name</th>
+                                    @*<th>Weight</th>*@
+                                    <th>URL</th>
+                                    <th>Auther Name</th>
+                                    <th>SKU Number</th>
+                                    @*<th>Quantity</th>*@
+                                    <th>ISBN</th>
+                                    <th>Price</th>
+                                    <th>Discount<br />%age</th>
+                                    <th>Discount<br />Fixed</th>
+                                    <th>NetTotal</th>
+                                    <th>Quantity</th>
+                                    @*<th>Action</th>*@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+
+    foreach (var item in Model.Products)
+    {
+        <tr>
+            <td style="display: none;">
+                <input type="hidden" value="@item.ID" name="ID" />
+
+                <img src="~/Resources/global/images/avatars/avatar11.png" />
+            </td>
+            <td>
+                @if (item.ID != null)
+                {
+                    <input type="checkbox" value="@item.ID" name="ProductID" style="width:70px;" />
+                }
+                else
+                {
+                    <input type="checkbox" value="@item.ID" name="ProductID" style="width:70px;" />
+                }
+            <td>
+                <select name="SBrandID" class="form-control" data-search="true">
+                    @foreach (var itm in new Silkways.Controllers.ProductBrandController().GetBrands())
+                    {
+
+                        if (item.BrandName.ToLower().Trim() == itm.BrandName.ToLower().Trim())
+                        {
+                            <option value="@itm.ID" selected>@itm.BrandName</option>
+                        }
+                        else
+                        {
+                            <option value="@itm.ID">@itm.BrandName</option>
+                        }
+
+                    }
+                </select>
+            </td>
+            <td>
+                @if (item.ProductName != null)
+                {
+                    <input type="text" value="@item.ProductName" name="ProductName" style="width:70px;" />
+                }
+                else
+                {
+                    <input type="text" value="" name="ProductName" style="width:70px;" />
+                }
+            </td>
+            @*<td>
+                    @if (item.weight != null)
+                    {
+                    <input type="text" value="@item.weight" name="weight" style="width:70px;" />
+                    }
+                    else
+                    {
+                    <input type="text" value="" name="weight" style="width:70px;" />
+                    }
+                </td>*@
+            <td>
+                @if (item.Url != null)
+                {
+                    <input type="text" value="@item.Url" name="Url" style="width:70px;" />
+                }
+                else
+                {
+                    <input type="text" value="" name="Url" style="width:70px;" />
+                }
+            </td>
+            <td>
+                @if (item.Authorname != null)
+                {
+                    <input type="text" value="@item.Authorname" name="AutherName" style="width:70px;" />
+                }
+                else
+                {
+                    <input type="text" value="" name="AutherName" style="width:70px;" />
+                }
+            </td>
+            <td>
+                @if (item.SKU != null)
+                {
+                    <input type="text" value="@item.SKU" name="SKU" style="width:70px;" />
+                }
+                else
+                {
+                    <input type="text" value="" name="SKU" style="width:70px;" />
+                }
+            </td>
+            @*<td>
+                @if (item.Quantity != null)
+                {
+                    <input type="text" value="@item.Quantity" name="Quantity" style="width:70px;" />
+                }
+                else
+                {
+                    <input type="text" value="" name="Quantity" style="width:70px;" />
+                }
+            </td>*@
+            <td>
+                @if (item.isbn_number != null)
+                {
+                    <input type="text" value="@item.isbn_number" name="isbn_number" style="width:70px;" />
+                }
+                else
+                {
+                    <input type="text" value="" name="isbn_number" style="width:70px;" />
+                }
+            </td>
+            <td class="PriceTd">
+                @{
+        int Price = Convert.ToInt32(item.Price);
+        <input type="number" value="@item.Price" name="Price" class="Price" id="Price" min="0" style="width:70px;" />
+                }
+
+            </td>
+            <td class="DisPerTd">
+                @{
+
+        decimal DicountPer = Math.Round(Convert.ToDecimal(item.DiscountPercentage), 2);
+
+        <input type="number" value="@item.DiscountPercentage" name="DiscountPercentage" class="DisPer" id="DisPer" min="0" style="width:70px;" />
+                }
+            </td>
+
+            <td class="DisFixTd">
+                <input type="number" value="@item.Discountfixed" name="DiscountFixed" min="0" class="DisFix" style="width:70px;" />
+            </td>
+            <td class="NetTtlTd">
+                <input type="number" value="@item.NetPrice" name="NetTotal" min="0" class="NetTtl" style="width:70px;" />
+            </td>
+            <td>
+                <input type="number" value="@item.Quantity" name="Quantity" min="0" style="width: 70px #;" />
+            </td>
+            <td>
+                <a href='~/Product/AddProduct?ID=@item.ID'>Edit Product </a>
+                @*<a class="modal-container" data-toggle="modal" onclick="GetImageNameInHiddenBox(@item.ID);" data-target=" #modal-bottomfull">
+                    Delete
+                </a>*@
+            </td>
+
+        </tr>
+    }
+
+                                }
+                            </tbody>
+                        </table>
+                        <input type="submit" value="Update All Products" style="float:left;" name="UpdateButton" class="btn btn-dark">
+                        <input type="button" data-toggle="modal" data-target=" #modal-AllDeleted" value="Delete All Products" style="" name="DeleteButton" class="btn btn-dark">
+                        <input type="button" data-toggle="modal" data-target=" #modal-OutOfStockAll" value="Selected Product Out of Stock" style="" name="DeleteButton" class="btn btn-dark">
+                    </form>
+
+                    
+                    @*<div class="customPagination">
+                            @Html.Raw(Model.pagination)
+
+                        </div>*@
+
+
+
+
+                    @* new *@
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade @*modal-bottomfull*@" id="modal-discount" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                    <h4 class="modal-title"><strong>Are you</strong> Sure</h4>
+                </div>
+                <div class="modal-body">
+                    The given discount of <p id="discountPara" style="display: inline;">0.00</p> will apply to all @Model.Products.Count products!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal">Cancel</button>
+                    <button type="submit" form="Form1" formaction="/product/UpdateDiscountOnAllProducts" id="UpdateLink" class="btn btn-primary btn-embossed">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="modal-OverAllDeleted" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                    <h4 class="modal-title"><strong>Are you</strong> Sure</h4>
+                </div>
+                <div class="modal-body">
+                   You want to delete all products!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal">Cancel</button>
+                    <button type="submit" form="tableForm" formaction="/product/DeleteAllProducts" id="UpdateLink" class="btn btn-primary btn-embossed">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-OutOfStockAll" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                    <h4 class="modal-title"><strong>Are you</strong> Sure</h4>
+                </div>
+                <div class="modal-body">
+                    do you want to Update All Out of Stock!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal">Cancel</button>
+                    <button type="submit" form="tableForm" formaction="/product/UpdateAllOutOfStockCheckBox" id="UpdateLink" class="btn btn-primary btn-embossed">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-OverAllOutofStock" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                    <h4 class="modal-title"><strong>Are you</strong> Sure</h4>
+                </div>
+                <div class="modal-body">
+                    You want all products out of stock!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal">Cancel</button>
+                    <button type="submit" form="Form1" formaction="/product/UpdateAllOutOfStock" id="UpdateLink" class="btn btn-primary btn-embossed">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade modal-bottomfull" id="modal-bottomfull" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                    <h4 class="modal-title"><strong>Are you</strong> Sure</h4>
+                </div>
+                <div class="modal-body">
+                    You want to delete this info ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal">Cancel</button>
+                    <a href="" id="DeleteLink" class="btn btn-primary btn-embossed">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="modal-AllDeleted" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                    <h4 class="modal-title"><strong>Are you</strong> Sure</h4>
+                </div>
+                <div class="modal-body">
+                    you want to delete all selected products!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal">Cancel</button>
+                    <button type="submit" form="tableForm" formaction="/Product/DeleteAllPricesAndQuantities" id="UpdateLink" class="btn btn-primary btn-embossed">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>No Record Found</p>
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(".DisPer").keyup(function () {
+            debugger;
+            var Discount = $(this).val();
+            var Price = $(this).parent().siblings(".PriceTd").find(".Price").val();
+            var NetTotal = Price - ((Discount / 100) * Price);
+            //$(".NetTtl").val(NetTotal);
+            //var NetTotal = 1000;
+            NetTotal = Math.round(NetTotal * 100) / 100;
+            $(this).parent().siblings(".NetTtlTd").find(".NetTtl").val(NetTotal); //(" ("td").find(".NetTtl").val(NetTotal | 0);
+            $(this).parent().siblings(".DisFixTd").find(".DisFix").val(0);
+            if ($(this).val() == 0 && $(this).parent().siblings(".DisFixTd").find(".DisFix").val() == 0) {
+                $(this).parent().siblings(".NetTtlTd").find(".NetTtl").val(Price);
+            }
+        })
+
+        $(".DisFix").keyup(function () {
+            debugger;
+            var FixedAmmount = $(this).val();
+            var Price = $(this).parent().siblings(".PriceTd").find(".Price").val();
+            var NetTotal = Price - FixedAmmount;
+            NetTotal = Math.round(NetTotal * 100) / 100;
+            $(this).parent().siblings(".NetTtlTd").find(".NetTtl").val(NetTotal);
+            $(this).parent().siblings(".DisPerTd").find(".DisPer").val(0);
+            if ($(this).val() == 0 && $(this).parent().siblings(".DisPerTd").find(".DisPer").val() == 0) {
+                $(this).parent().siblings(".NetTtlTd").find(".NetTtl").val(Price);
+            }
+
+        })
+        //if ($(".DisFix").val() == 0 && $(".DisPer").val() == 0) {
+        //    $(this).parent().siblings(".NetTtlTd").find(".NetTtl").val(Price);
+        //}
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#AllDisPer").keyup(function () {
+            debugger;
+            var AllDisPer = $("#AllDisPer").val() + '%';
+            $("#discountPara").text(AllDisPer);
+            //var Discount = $(this).val();
+            //var Price = $("#Price").val();
+            //var NetTotal = Price - ((Discount / 100) * Price);
+            //$(".NetTtl").val(NetTotal);
+            //var NetTotal = 1000;
+            //NetTotal = Math.round(NetTotal * 100) / 100;
+            //$("#NetTtl").val(NetTotal); //(" ("td").find(".NetTtl").val(NetTotal | 0);
+            $("#AllDisFix").val(0.00);
+            //if ($(this).val() == 0 && $("#DisFix").val() == 0) {
+            //    $("#NetTtl").val(Price);
+            //}
+        })
+
+        $("#AllDisFix").keyup(function () {
+            debugger;
+            var AllDisFix = $("#AllDisFix").val();
+            $("#discountPara").text(AllDisFix);
+            //var FixedAmmount = $(this).val();
+            //var Price = $("#Price").val();
+            //var NetTotal = Price - FixedAmmount;
+            //NetTotal = Math.round(NetTotal*100)/100;
+            //$("#NetTtl").val( NetTotal);
+            $("#AllDisPer").val(0.00);
+            //if ($(this).val() == 0 && $("#DisPer").val() == 0) {
+            //    $("#NetTtl").val(Price);
+            //}
+
+        })
+        //if ($(".DisFix").val() == 0 && $(".DisPer").val() == 0) {
+        //    $(this).parent().siblings(".NetTtlTd").find(".NetTtl").val(Price);
+        //}
+    });
+</script>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#style13").attr("disabled", "disabled");
+    })
+</script>

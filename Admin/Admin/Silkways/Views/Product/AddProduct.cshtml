@@ -1,0 +1,636 @@
+﻿@model Silkways.Models.Product
+
+@{
+    ViewBag.Title = "AddProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var Colors = new Silkways.Models.ProductModel().GetallColor();
+    var Sizes = new Silkways.Models.ProductModel().GetallSizes();
+
+
+    var Brands   =  new Silkways.Models.ProductModel().GetBrands();
+
+
+    //var tblColor = new Silkways.Models.ProductModel().getColor(Model.ID);
+
+
+
+    //Silkways.Models.tblProductColor ProductColor = new Silkways.Models.ProductModel().getColor(Model.ID);
+
+
+     var ProductColor = new Silkways.Models.ProductModel().getColors(Model.ID);
+
+
+}
+@*<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>*@
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<link href="~/Scripts/select2/select2.min.css" rel="stylesheet" />
+<script src="~/Scripts/select2/select2.min.js"></script>
+
+@section Scripts{
+
+    <script>
+        //$(".chosen-select").chosen({
+        //    no_results_text: "Oops, nothing found!",
+        //    width: "95%",
+        //})
+
+
+        //$('#mySelect2').select2({
+        //    closeOnSelect: false
+        //});
+
+        function setsongmuiltselect() {
+
+            $('#MultipleSongs').multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: true,
+                includeSelectAllOption: true,         /*To enable the Select all Option*/
+                selectAllValue: 'multiselect-all',     /*The value used for the select all option can be configured using the selectAllValue*/
+                enableFiltering: true,   /*A filter input will be added to dynamically filter all the options*/
+                enableCaseInsensitiveFiltering: true,  /*To enable Case Insenstitive Filtering (Upper and Lower Case Letters)*/
+                maxHeight: '300',
+                //buttonWidth: '235',
+
+            });
+
+        }
+        setsongmuiltselect();
+
+    </script>
+
+    <script>
+        function createUrl(evt) {
+
+            debugger;
+
+            var Value = $("#ProductName").val();
+            Value = Value.toLowerCase();
+            Value = Value.replace(/[^A-Z0-9]/ig, "-");
+            Value = Value.replace("---", "-");
+            Value = Value.replace("--", "-");
+            $("#Url").val(Value);
+        }
+    </script>
+    
+    <script>
+        function isNumber(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            else {
+                ChangePrice();
+                return true;
+            }
+        }
+
+        function ChangePrice() {
+            debugger
+
+            var Price = $("#Price").val();
+            var Discount = $("#Discount").val();
+            var DiscountPrice = 0;
+            var TotalPrice = 0;
+            if (Price != undefined && Price != "") {
+                if (Discount != undefined && Discount != "" && Discount > 0) {
+                    DiscountPrice = ((Price / 100) * Discount);
+                    TotalPrice = Price - DiscountPrice;
+                    $("#TotalPrice").val(TotalPrice);
+                    $("#DiscountPrice").val(DiscountPrice);
+                }
+                else {
+                    $("#TotalPrice").val(Price);
+                    $("#DiscountPrice").val(0);
+                }
+            } else {
+                $("#TotalPrice").val(0);
+            }
+        }
+
+
+        //function createUrl() {
+        //    var Value = $("#ProductName").val();
+        //    Value = Value.toLowerCase();
+        //    Value = Value.replace(/[^A-Z0-9]/ig, "-");
+        //    $("#url").val(Value);
+        //}
+
+        function Checkboxclick(e, element) {
+            debugger
+            var size = $('#Size').val();
+            if (element.checked) {
+                size += $(element).val() + ',';
+            }
+            else {
+                size = size.replace($(element).val() + ',', "");
+            }
+            $('#Size').val(size);
+        }
+
+        function uploadimg(e) {
+            var files = e.target.files;
+
+            if (files.length > 0) {
+                $.each(files, function (i, file) {
+
+                    var reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function (e) {
+
+                        var data = "<div class='col-md-3 product-img' id='product_img_0_" + i + "'><img src='" + e.currentTarget.result + "' style='width:100%;' /><span class='removeImage' onclick='removeimage('#product_img_0_" + i + "', 0)'>x</span></div>"
+
+                        //var FileType = files[i].type;
+                        //// get file extension..
+                        //var fileExtension = FileType.substr((FileType.lastIndexOf('/') + 1));
+                        //var Extension = fileExtension.toUpperCase();
+                        //filecollection.push(file); // i created an array and insert selected files to it.
+                        $('#imgPreviewer').append(data); // preview image after selection
+
+                    };
+                });
+            }
+        }
+        $(document).ready(function () { $("#Colors").select2(); });
+        function removeimage(element, id) {
+            $.ajax({
+                /*  url: '/product/deleteimg?ID=' + id,*/
+
+                url: '/product/DeleteProductImageByImageID?ID=' + id,
+                method: 'get',
+                success: function (response) {
+                    $(element).remove();
+                }
+            });
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+    }
+
+
+    <div class="col-xs-9">
+        <h2>Add <strong>New Product</strong></h2>
+    </div>
+    <div class="col-xs-3">
+        <input type="button" value="Manage Product" style="float:right;" class="btn btn-dark" data-toggle="modal" data-target="#modal-select" onclick="location.href = '/product/manage'">
+    </div>
+
+    <form method="post" enctype="multipart/form-data" id="FormUser">
+
+        <div class="row">
+            <div class="col-lg-12 portlets">
+                <div class="panel">
+
+                    <div class="panel-content">
+                        @*<p>Here you can define different System users who can access this system</p>*@
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Product Name </label>
+                                    @Html.TextBoxFor(x => x.ProductName, new { @placeholder = "Enter ProductName", @class = "form-control", @required = "required", @onkeyup = "return createUrl(event)" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Url</label>
+                                    @*@Html.TextBoxFor(x => x.Url, new { @placeholder = " Url", @class = "form-control", @required = "required"  })*@
+                                    <input class="form-control" type="text" name="Url" value="@Model.Url" id="Url" readonly />
+
+                                </div>
+                            </div>
+
+
+                            @{
+                                if (Model != null)
+                                {
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Quantity</label>
+                                            @*@Html.TextBoxFor(x => x.Quantity, new { @placeholder = "Enter Quantity", @class = "form-control", @required = "required", @readonly = "readonly" })*@
+                                            <input id="QuantityID" value="@Model.Quantity" type="text" name="Quantity" placeholder="Quantity" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                }
+                                else
+                                {
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Quantity</label>
+                                            @*@Html.TextBoxFor(x => x.Quantity, new { @placeholder = "Enter Quantity", @class = "form-control", @required = "required", @readonly = "readonly" })*@
+                                            <input id="QuantityID" type="text" name="Quantity" placeholder="Quantity" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                }
+
+                            }
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Short Description</label>
+                                    @Html.TextBoxFor(x => x.ShortDescription, new { @placeholder = "Enter Short Desc", @class = "form-control" })
+                                </div>
+                            </div>
+                            @*<div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Price</label>
+                                    @Html.TextBoxFor(x => x.Price, new { @placeholder = "Enter ProductName", @class = "form-control", @required = "required", @onkeydown = "return isNumber(event)", @onkeyup = " isNumber(event)" })
+                                </div>
+                            </div>*@
+
+                            @*<div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Discount (%)</label>
+                                    @Html.TextBoxFor(x => x.Discount, new { @placeholder = "Enter ProductName", @class = "form-control", @required = "required", @onkeydown = "return isNumber(event)", @onkeyup = " isNumber(event)" })
+                                    @Html.HiddenFor(x => x.DiscountPrice)
+                                </div>
+                            </div>*@
+                            @*<div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Total price</label>
+                                    @Html.TextBoxFor(x => x.TotalPrice, new { @placeholder = "Enter ProductName", @class = "form-control", @required = "required", @readonly = "readonly" })
+                                </div>
+                            </div>*@
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Show Home</label>
+                                    @Html.CheckBoxFor(x => x.ShowHome)<span>Is Show Home</span>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="col-md-6">
+                                <style>
+                                    .multiselect-native-select {
+                                        display: block;
+                                    }
+
+                                        .multiselect-native-select .btn-group {
+                                            width: 100%;
+                                        }
+
+                                    multiselect dropdown-toggle btn btn-default {
+                                        width: 100%;
+                                    }
+
+                                    ul.multiselect-container.dropdown-menu {
+                                        height: 300px;
+                                        overflow-y: auto;
+                                    }
+                                </style>
+                                <label class="form-label">Select Color</label>
+                                <select multiple="multiple" id="MultipleSongs" name="Category_Id" class="chosen-select">
+                                    @foreach (var item in Colors)
+                                    {
+
+                                        if (ProductColor != null)
+                                        {
+
+
+
+                                            if (ProductColor.Where(x => x.ColorID == item.ID).Count() > 0)
+                                            {
+                                                <option value="@item.ID" selected="selected">@item.ColorName</option>
+                                            }
+
+                                            else
+                                            {
+                                                <option value="@item.ID">@item.ColorName</option>
+                                            }
+
+
+
+                                        }
+
+                                        else
+                                        {
+
+                                            <option value="@item.ID">@item.ColorName</option>
+
+                                        }
+
+
+
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label class="form-label">Select Size</label>
+                                    @Html.DropDownListFor(x => x.SizeID, new SelectList(Sizes, "ID", "Size"), "Select Size", new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label class="form-label">Select Brand</label>
+                                    @Html.DropDownListFor(x => x.BrandID, new SelectList(Brands, "ID", "BrandName"), "Select Brand", new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label class="form-label">Video Embed Url </label>
+                                    @Html.TextBoxFor(x => x.VideoEmbed, new { @placeholder = "Enter Video Embed URL ", @class = "form-control", @required = "required" })
+                                </div>
+                            </div>
+                            @*<div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Small Length </label>
+                                    @Html.TextBoxFor(x => x.SmallLength, new { @placeholder = "Enter Small Length ", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Small Width </label>
+                                    @Html.TextBoxFor(x => x.SmallWidth, new { @placeholder = "Enter Small Width ", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Small Height </label>
+                                    @Html.TextBoxFor(x => x.SmallHeight, new { @placeholder = "Enter Small Height ", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Small Pair Of Shoes </label>
+                                    @Html.TextBoxFor(x => x.SmallPairOfShoes, new { @placeholder = "Enter Small Pair Of Shoes  ", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Small Price </label>
+                                    @Html.TextBoxFor(x => x.SmallPrice, new { @placeholder = "Enter Small Price   ", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Medium Length </label>
+                                    @Html.TextBoxFor(x => x.MediumLength, new { @placeholder = "Enter Medium Length ", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Medium Width </label>
+                                    @Html.TextBoxFor(x => x.MediumWidth, new { @placeholder = "Enter Medium Width ", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Medium Height </label>
+                                    @Html.TextBoxFor(x => x.MediumHeight, new { @placeholder = "Enter Medium Height ", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Medium Pair Of Shoes </label>
+                                    @Html.TextBoxFor(x => x.MediumPairOfShoes, new { @placeholder = "Enter Medium Pair Of Shoes  ", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Medium Price </label>
+                                    @Html.TextBoxFor(x => x.MediumPrice, new { @placeholder = "Enter Medium Price   ", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Large Length </label>
+                                    @Html.TextBoxFor(x => x.LargeLength, new { @placeholder = "Enter Large Length ", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Large Width </label>
+                                    @Html.TextBoxFor(x => x.LargeWidth, new { @placeholder = "Enter Large Width ", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Large Height </label>
+                                    @Html.TextBoxFor(x => x.LargeHeight, new { @placeholder = "Enter Large Height ", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Large Pair Of Shoes </label>
+                                    @Html.TextBoxFor(x => x.LargePairOfShoes, new { @placeholder = "Enter Large Pair Of Shoes  ", @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Large Price </label>
+                                    @Html.TextBoxFor(x => x.LargePrice, new { @placeholder = "Enter Large Price   ", @class = "form-control" })
+                                </div>*@
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="size-box">
+                                                <label>Small</label>
+                                                <div class="size-grid">
+                                                    <div class="grid-box">
+                                                        @Html.TextBoxFor(x => x.SmallLength, new {  @class = "form-control" })<br />
+                                                        <label>L</label>
+                                                    </div>
+                                                    <div class="grid-box">
+                                                        @*<input type="text" /><br />*@
+                                                        @Html.TextBoxFor(x => x.SmallWidth, new { @class = "form-control" })<br />
+                                                        <label>W</label>
+                                                    </div>
+                                                    <div class="grid-box">
+                                                        @*<input type="text" /><br />*@
+                                                        @Html.TextBoxFor(x => x.SmallHeight, new { @class = "form-control" })<br />
+                                                        <label>H</label>
+                                                    </div>
+                                                </div>
+                                                <div class="size-desc">
+                                                    <label>No of pair shoes: </label>
+                                                    @*<input type="text" />*@
+                                                    @Html.TextBoxFor(x => x.SmallPairOfShoes, new { @class = "form-control" })<br />
+                                                </div>
+                                                <div class="size-price">
+                                                    <label>Amount: </label>
+                                                    @*<input type="text" />*@
+                                                    @Html.TextBoxFor(x => x.SmallPrice, new { @class = "form-control" })<br />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="size-box">
+                                                <label>Medium</label>
+                                                <div class="size-grid">
+                                                    <div class="grid-box">
+                                                        @*<input type="text" /><br />*@
+                                                        @Html.TextBoxFor(x => x.MediumLength, new { @class = "form-control" })<br />
+                                                        <label>L</label>
+                                                    </div>
+                                                    <div class="grid-box">
+                                                        @*<input type="text" /><br />*@
+                                                        @Html.TextBoxFor(x => x.MediumWidth, new { @class = "form-control" })<br />
+                                                        <label>W</label>
+                                                    </div>
+                                                    <div class="grid-box">
+                                                        @*<input type="text" /><br />*@
+                                                        @Html.TextBoxFor(x => x.MediumHeight, new { @class = "form-control" })<br />
+                                                        <label>H</label>
+                                                    </div>
+                                                </div>
+                                                <div class="size-desc">
+                                                    <label>No of pair shoes: </label>
+                                                    @*<input type="text" />*@
+                                                    @Html.TextBoxFor(x => x.MediumPairOfShoes, new { @class = "form-control" })<br />
+                                                </div>
+                                                <div class="size-price">
+                                                    <label>Ammount: </label>
+                                                    @*<input type="text" />*@
+                                                    @Html.TextBoxFor(x => x.MediumPrice, new { @class = "form-control" })<br />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="size-box">
+                                                <label>Large</label>
+                                                <div class="size-grid">
+                                                    <div class="grid-box">
+                                                        @*<input type="text" /><br />*@
+                                                        @Html.TextBoxFor(x => x.LargeLength, new { @class = "form-control" })<br />
+                                                        <label>L</label>
+                                                    </div>
+                                                    <div class="grid-box">
+                                                        @*<input type="text" /><br />*@
+                                                        @Html.TextBoxFor(x => x.LargeWidth, new { @class = "form-control" })<br />
+                                                        <label>W</label>
+                                                    </div>
+                                                    <div class="grid-box">
+                                                        @*<input type="text" /><br />*@
+                                                        @Html.TextBoxFor(x => x.LargeHeight, new { @class = "form-control" })<br />
+                                                        <label>H</label>
+                                                    </div>
+                                                </div>
+                                                <div class="size-desc">
+                                                    <label>No of pair shoes: </label>
+                                                    @*<input type="text" />*@
+                                                    @Html.TextBoxFor(x => x.LargePairOfShoes, new { @class = "form-control" })<br />
+                                                </div>
+                                                <div class="size-price">
+                                                    <label>Ammount: </label>
+                                                    @*<input type="text" />*@
+                                                    @Html.TextBoxFor(x => x.LargePrice, new { @class = "form-control" })<br />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Description</label>
+                                    @Html.TextAreaFor(x => x.Description, new { @class = "form-control ckeditor", @id = "editorid" })
+                                </div>
+                            </div>
+
+
+                            @*<div class="col-md-12">*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <br />
+                            <input type="hidden" name="SortOrder" id="order" />
+                            <br />
+
+
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Images</label>
+                                    <input type="file" name="images" onchange="uploadimg(event)" multiple />
+
+                                </div>
+                            </div>
+                            <div class="col-md-12" id="imgPreviewer">
+                                @{
+                                    if (Model != null && Model.ProductPhotos != null && Model.ProductPhotos.Count() > 0)
+                                    {
+                                        foreach (var item in Model.ProductPhotos)
+                                        {
+                                            <div class="col-md-3 product-img" id="product_img_@item.PhotoID">
+                                                <img src="~/Resources/ProductsImages/@item.Thumbnail" style="width:100%;" />
+                                                <span class="removeImage" onclick="removeimage('#product_img_@item.PhotoID', @item.PhotoID)">x</span>
+                                            </div>
+                                        }
+                                    }
+                                }
+
+                            </div>
+
+                        </div>
+                        <br />
+                        <div>
+                            @{
+                                string Text = "Add Product";
+                                if (Model != null)
+                                {
+                                    Text = "Update Product";
+                                }
+                            }
+
+                            <input type="submit" id="btnSave" class=" btn btn-dark" value="@Text" name="Save" onclick="this.form.submit(); this.disabled = true;" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>

@@ -1,0 +1,617 @@
+﻿@model Silkways.Models.TechnologyProfile
+@{
+    ViewBag.Title = "AddNews";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-xs-9">
+    <h2>Add <strong>News</strong></h2>
+</div>
+<div class="col-xs-3">
+    <input type="button" value="Manage News" style="float:right;" class="btn btn-dark" data-toggle="modal" data-target="#modal-select" onclick="location.href = '/News/ManageNews'">
+</div>
+<style>
+    .scrollC {
+        overflow-x: scroll;
+    }
+
+    .cropit-image-preview {
+        background-color: #f8f8f8;
+        background-size: cover;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin-top: 7px;
+        width: 550px;
+        height: 327px;
+        cursor: move;
+    }
+
+    .cropit-image-background {
+        opacity: .2;
+        cursor: auto;
+    }
+
+    .image-size-label {
+        margin-top: 10px;
+    }
+
+    input {
+        display: block;
+    }
+
+    .export {
+        margin-top: 10px;
+    }
+</style>
+@*<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>*@
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+    function createUrl(evt) {
+        var Value = $("#Heading").val();
+        Value = Value.toLowerCase();
+        Value = Value.replace(/[^A-Z0-9]/ig, "-");
+        Value = Value.replace("---", "-");
+        Value = Value.replace("--", "-");
+        $("#Url").val(Value);
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        $("#imgBlock").hide();
+        $("#file").click(function () {
+            debugger;
+            $("#imgBlock").show();
+            //$(".image-editor").addClass("scrollC");
+        });
+        $('.image-editor').cropit();
+
+        $('#FormUser').submit(function () {
+            debugger;
+            // Move cropped image data to hidden input
+            var imageData = $('.image-editor').cropit('export');
+            $('.hidden-image-data').val(imageData);
+
+            document.getElementById('Image').value = imageData;
+            return true;
+        });
+    });
+</script>
+
+
+<script>
+    function ImageRemove(Image) {
+
+        var retVal = confirm("Do you want to Delete ?");
+        var ImageId = $(Image).attr("id");
+        if (retVal == true) {
+            if (ImageId == null) {
+                var Id = $(Image).attr("value");
+                $.ajax({
+
+                    type: "POST",
+                    url: "/TechnologyProfile/DeleteProfileImage/" + Id,
+                    success: function (data) {
+                        $(Image).parent('li').remove();
+                        alert("All has done");
+                    }
+                });
+            }
+            else {
+                debugger
+                alert("Data has deleted");
+                $('#' + ImageId + '').remove();
+                $('#proimgs #' + ImageId + ' ').remove();
+            }
+        }
+        else {
+
+        }
+    }
+</script>
+
+
+
+<form method="post" enctype="multipart/form-data" id="FormUser">
+
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                <h3 class="form-label">Information About Developer  </h3>
+                                <label class="form-label">Name </label>
+                                @Html.TextBoxFor(x => x.Name, new { @placeholder = "Enter Name", @class = "form-control", @required = "required" })
+
+                                <div class="form-group">
+                                    <label class="form-label">Entity Name:</label>
+                                    @Html.TextBoxFor(x => x.EntityName, new { @placeholder = "Enter Entity Name", @class = "form-control" })
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Qualification:</label>
+                                    @Html.TextBoxFor(x => x.Qualification, new { @placeholder = "Enter Qualification", @class = "form-control" })
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Affiliation Name:</label>
+                                    @Html.TextBoxFor(x => x.AffiliationName, new { @placeholder = "Enter Affliation", @class = "form-control" })
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Nationality:</label>
+                                    @Html.TextBoxFor(x => x.Nationality, new { @placeholder = "Enter Nationality:", @class = "form-control" })
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Contact details, if more than one person developed the technology, provide all above: :</label>
+                                    @Html.TextBoxFor(x => x.ContactDetails, new { @placeholder = "Enter Contact Details:", @class = "form-control" })
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="form-label">Contact details of technical resources available to support technology manufacturing:</label>
+                                    @Html.TextBoxFor(x => x.ContactDetailsOfTechnicalResources, new { @placeholder = "Enter Contact Details:", @class = "form-control" })
+                                </div>
+
+
+                                <H3 class="form-label">3. Technology Production Capacity  </H3>
+                                <div class="form-group">
+                                    <label class="form-label">a) Research Centre/ Lab/ Facility used to develop the Technology:</label>
+                                    @Html.TextBoxFor(x => x.ReserchCentreToDevelopTechnology, new { @placeholder = "Enter Research Centre to Develop Technology:", @class = "form-control" })
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="form-label">b) Is the facility currently available to develop the product / technology on Pilot scale:</label>
+                                    @Html.TextBoxFor(x => x.FacilityAvailability, new { @class = "form-control" })
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">c) Are raw material available to develop the product / technology on Pilot scale:</label>
+                                    @Html.TextBoxFor(x => x.RawMaterialAvailability, new { @class = "form-control" })
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">d) If pilot production facility is unavailable, identify what resources and investment would be required to enable pilot production:</label>
+                                    @Html.TextBoxFor(x => x.ResourcesToEnablePilotPro, new { @class = "form-control" })
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="form-label">e) Present production capacity (daily/ monthly/ annually):</label>
+                                    @Html.TextBoxFor(x => x.ProductionCapacity, new { @class = "form-control" })
+                                </div>
+
+
+
+                                <H3 class="form-label">5. Sales and Marketing </H3>
+                                <div class="form-group">
+                                    <label class="form-label">a) Has Technology/Product/Process been sold yet?</label>
+                                    @Html.TextBoxFor(x => x.TechnologySold, new { @class = "form-control" })
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">b) Sale Price of Technology:</label>
+                                    @Html.TextBoxFor(x => x.SalePrice, new { @class = "form-control" })
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="form-label">c) What are the competing local / imported products?</label>
+                                    @Html.TextBoxFor(x => x.competingProductsSalesMarketing, new { @class = "form-control" })
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="form-label">d) What is the Unique Selling Point (USP) of the Technology?</label>
+                                    @Html.TextBoxFor(x => x.UniqueSellingPointSalesMarketing, new { @class = "form-control" })
+                                </div>
+
+                                <H3 class="form-label">7. Perceived Estimated Impact </H3>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        a) What is the perceived impact of this technology on:
+                                    </label>
+                                    <label class="form-label">
+                                        Local Economy
+                                    </label>
+
+                                    @Html.TextBoxFor(x => x.PerceivedImpactOnLocalEconomy, new { @class = "form-control" })
+                                </div>
+
+                                <div>
+
+                                    <label class="form-label">
+                                        National Economy
+                                    </label>
+
+                                    @Html.TextBoxFor(x => x.PerceivedImpactOnLocalEconomy, new { @class = "form-control" })
+                                </div>
+
+
+                                <div>
+
+                                    <label class="form-label">
+                                        Service Delivery
+                                    </label>
+
+                                    @Html.TextBoxFor(x => x.PerceivedImpactOnServiceDelivery, new { @class = "form-control" })
+                                </div>
+
+
+                                <div>
+
+                                    <label class="form-label">
+                                        Employment Generation
+                                    </label>
+
+                                    @Html.TextBoxFor(x => x.PerceivedImpactOnEmploymentGeneration, new { @class = "form-control" })
+                                </div>
+
+                                <div>
+
+                                    <label class="form-label">
+                                        Environment
+                                    </label>
+
+                                    @Html.TextBoxFor(x => x.PerceivedImpactOnEnvironment, new { @class = "form-control" })
+                                </div>
+
+                                <div>
+
+                                    <label class="form-label">
+                                        Society / Culture
+                                    </label>
+
+                                    @Html.TextBoxFor(x => x.Society, new { @class = "form-control" })
+                                </div>
+
+
+                            </div>
+
+                            @*@Html.HiddenFor(m => m.Image)*@
+                        </div>
+                        <div class="col-md-6">
+
+
+
+                            <H3 class="form-label">2. Technology Development  </H3>
+                            <div class="form-group">
+                                <label class="form-label">a) Technology/Product/Process Name:</label>
+                                @Html.TextBoxFor(x => x.TechnologyName, new { @placeholder = "Enter Technology Name:", @class = "form-control" })
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="form-label">b) Synopsis::</label>
+                                @Html.TextBoxFor(x => x.Synopsis, new { @placeholder = "Enter Synopsis:", @class = "form-control" })
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">c) Is the prototype available?</label>
+                                @Html.TextBoxFor(x => x.PrototypeAvailable, new { @placeholder = "Prototype Availability:", @class = "form-control" })
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">d) Purpose of this Technology:</label>
+                                @Html.TextBoxFor(x => x.Purpose_of_Technology, new { @placeholder = "Enter Technology Purpose:", @class = "form-control" })
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">e) Which industry sector the technology targets?</label>
+                                @Html.TextBoxFor(x => x.TechnologyTargets, new { @placeholder = "Enter Technology Targets:", @class = "form-control" })
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label class="form-label">f) Year in which you developed this technology</label>
+                                @Html.TextBoxFor(x => x.DevelopedYear, new { @placeholder = "Enter Developer Year:", @class = "form-control" })
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <label class="form-label">g) Any patent filed, regulatory, or other approvals required (list):</label>
+                                @Html.TextBoxFor(x => x.ApprovalsRequired, new { @class = "form-control" })
+                            </div>
+
+
+
+
+                            <div class="form-group">
+                                <label class="form-label">h) Any patent filed, regulatory, or other approvals required (list):</label>
+                                @Html.TextBoxFor(x => x.OtherApprovalsRequired, new { @class = "form-control" })
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="form-label">i) Potential beneficiaries of this technology:</label>
+                                @Html.TextBoxFor(x => x.PotentialBenefiaciaries, new { @class = "form-control" })
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="form-label">j) Who would be the end user of the technology/product/process?</label>
+                                @Html.TextBoxFor(x => x.EndUserOfTechnology, new { @placeholder = "Enter End User:", @class = "form-control" })
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="form-label">k) How would the end user benefit from the technology?</label>
+                                @Html.TextBoxFor(x => x.BenefitsOfTechnology, new { @placeholder = "Enter End User Benefits:", @class = "form-control" })
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">l) How would the end user benefit from the technology?</label>
+                                @Html.TextBoxFor(x => x.BenefitsOfTechnology2, new { @placeholder = "Enter End User Benefits:", @class = "form-control" })
+                            </div>
+
+
+
+
+
+
+
+
+                            <H3 class="form-label">4. Cost of Production </H3>
+                            <div class="form-group">
+                                <label class="form-label">a) What is the cost of producing one unit within own facility:</label>
+                                @Html.TextBoxFor(x => x.ProductionCost, new { @placeholder = "Enter Research Centre to Develop Technology:", @class = "form-control" })
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="form-label">b) What is the cost of producing one unit, if at mass scale production (State figures):</label>
+                                @Html.TextBoxFor(x => x.OneUnitCost, new { @class = "form-control" })
+                            </div>
+
+
+
+
+                            <H3 class="form-label">6. Sustainability </H3>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    a) How “Green” (environmental friendly and ecologically responsible) is your technology, and what is its ‘carbon footprint’*?*Carbon footprint definition: The total amount of greenhouse gases (including carbon dioxide and methane) that are generated by our actions.
+                                </label>
+                                @Html.TextBoxFor(x => x.HowGreen, new { @class = "form-control" })
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="form-label">b) Are you using sustainable products and processes for the development of your technology?</label>
+                                @Html.TextBoxFor(x => x.SustainableProducts, new { @class = "form-control" })
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">c) What are the competing local / imported products?</label>
+                                @Html.TextBoxFor(x => x.CompetingProductsSustainability, new { @class = "form-control" })
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="form-label">d) What is the Unique Selling Point (USP) of the Technology?</label>
+                                @Html.TextBoxFor(x => x.UniqueSellingPointSustainability, new { @class = "form-control" })
+                            </div>
+
+
+                            <H3 class="form-label">8. What Support Do You Expect From Stedec? </H3>
+                            <div class="form-group">
+                                @Html.TextBoxFor(x => x.Supportexpectation, new { @class = "form-control" })
+                            </div>
+
+
+
+
+
+
+                        </div>
+                    </div>
+                    @*<div>
+            @Html.TextAreaFor(model => model.Description, new { @class = "form-control ckeditor", @id = "editorid" })
+        </div>*@
+                    @*<div class="form-group">
+            <div class="fileinput fileinput-new" data-provides="fileinput">
+                <p><strong>Image uploader</strong></p>
+
+
+            </div>
+
+        </div>*@
+
+
+
+
+                    <br />
+
+                    <input type="hidden" name="SortOrder" id="order" />
+                    <br />
+                    <h2>Upload Gallery Images</h2>
+                    <br />
+                    <label class="form-label">Select Images</label>
+                    <div>
+                        <input type="file" id="File1" name="file" multiple class="upload" accept="image/*" />
+                    </div>
+                    <div id="hide">
+                    </div>
+                    <ul class="proimgs" id="proimgs">
+                        @Html.Raw(ViewBag.img)
+                    </ul>
+                    <div id="hd">
+
+                    </div>
+
+                    @{
+
+                        if (Model != null)
+
+                        {
+
+
+
+
+                            if (Model.ProfileVideos.Count > 0)
+                            {
+
+                                <div class="form-group">
+                                    <label class="form-label">Embed Video Link</label><br />
+
+
+                                    <input type="text" name="VideoEmbed" value="@Model.ProfileVideos.FirstOrDefault().VideoLink" />
+
+                                </div>
+
+
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    <label class="form-label">Embed Video Link</label><br />
+                                    <input type="text" name="VideoEmbed" />
+
+                                </div>
+
+                            }
+                        }
+
+
+
+                    }
+
+
+
+
+                    @*<div class="form-group">
+            <div class="image-editor">
+                <input type="file" class="cropit-image-input" name="file" id="file">
+                <div id="imgBlock">
+                    <div class="cropit-image-preview"></div>
+
+                    <input type="hidden" name="Image" id="Image" class="hidden-image-data" />
+                </div>
+            </div>
+
+        </div>*@
+                    <div>
+                        @{
+                            string Text = "Add News";
+                            if (Model != null)
+                            {
+                                Text = "Update News";
+                            }
+                        }
+
+
+                        <input type="submit" id="btnSave" @*onclick=" this.form.submit(); this.disabled = true; GetImageNameInHiddenBox(); "*@ class=" btn btn-dark" value="@Text" name="Save" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>
+
+
+<script>
+    $("#btnSave").click(function () {
+
+        $(this).css("opacity", "0.5");
+
+    })
+    var cloneCount = 0;
+    var source = "";
+    var src = "";
+    var third = "";
+    $("#btnSave").mouseover(function () {
+        $("#order").val("");
+        $("#proimgs li").each(function (i, li) {
+            source = $(this).find('input').val();
+            src = src + "," + source;
+        })
+        $("#order").val(src);
+        src = "";
+    })
+
+    $('#File1').on('change', function () {
+
+        var files = $(this).files;
+        var count = '1' + cloneCount;
+        var n = $(this).get(0).files.length;
+
+        imagesPreview(this, 'proimgs', count);
+        var cln = $(this).clone();
+        cln.attr('id', '1' + cloneCount).insertAfter("#id");
+        cloneCount++;
+        $("#hide").append(cln);
+        $("#hide").css("display", "none");
+        $('#File1').val("");
+    });
+    var newFName = "";
+    function imagesPreview(input, placeToInsertImagePreview, count) {
+        debugger
+        if (input.files) {
+            var p = 0;
+            var filesAmount = input.files.length;
+            for (var i = 0; i < filesAmount; i++) {
+                debugger
+                if (filesAmount > 1) {
+                    var newcount = "file-" + p;
+                    var filename = i + "-" + input.files[i].name;
+                    var reader = new FileReader();
+                    reader.fileName = input.files[i].name;
+                    reader.onload = function (event) {
+                        var image = new Image();
+                        image.src = event.target.result;
+                        image.onload = function () {
+                            var height = this.height;
+                            var width = this.width;
+                            //if (height < 450 || width < 450) {
+                            ////    alert("Image height should be greater than 450px");
+                            ////    return false;
+                            //}
+                            //else {
+                            newcount = "file-" + p;
+                            $("#proimgs").append('<li id="' + newcount + '" class="ui-state-default" style="width:215px; height:215px;"><span onclick="ImageRemove(this);" class="close" id="' + newcount + '">X</span><img src="' + event.target.result + '" width="200px" height="200px" style="float: left; height:200px; width=200px; margin: 0px;" /> <input id="one" type="text" value="' + event.target.fileName + '" style="display:none;" /></li>');
+                            p = p + 1;
+                            //}
+                        }
+
+                    }
+                    reader.readAsDataURL(input.files[i]);
+                }
+                else {
+                    var fileName = input.files[i].name;
+                    var splited = fileName.split('.');
+                    fileName = splited[0] + "." + splited[1];
+                    var reader = new FileReader();
+                    reader.onload = function (event) {
+                        var image = new Image();
+                        image.src = event.target.result;
+                        image.onload = function () {
+                            var height = this.height;
+                            var width = this.width;
+                            //if (width < 450) {
+                            //    alert("Image Width should be greater than 450px");
+                            //    return false;
+                            //}
+                            //else {
+
+                            //}
+                            $("#proimgs").append('<li ondrag="dragging(event)" id="' + count + '" class="ui-state-default" style="width:215px; height:215px;"><span onclick="ImageRemove(this);" ondrag="dragging(event)" class="close" id="' + count + '">X</span><img ondrag="dragging(event)" src="' + event.target.result + '" width="200px" height="200px" style="float: left; height:200px; width=200px; margin: 0px;" /> <input id="one" type="text" value="' + fileName + '" style="display:none;" /></li>');
+                        }
+                    }
+                    reader.readAsDataURL(input.files[i]);
+                }
+            }
+        }
+
+    }
+
+  /*  })*/
+
+</script>

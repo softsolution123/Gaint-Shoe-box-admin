@@ -1,0 +1,294 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="admin-themes-lab">
+    <meta name="author" content="themes-lab">
+    <link rel="shortcut icon" href="~/Resources/global/images/favicon.png" type="image/png">
+    <title>Admin Panel</title>
+    <!-- CK Editor -->
+    <script src="~/ckeditor/ckeditor_source.js"></script>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/ckeditor/config.js"></script>
+    @{
+        Silkways.Models.GaintShoeBoxEntities db = new Silkways.Models.GaintShoeBoxEntities();
+        var logo = db.Settings.FirstOrDefault();
+        var l = "";
+        if (logo.WebLogo != "")
+        {
+            l = @Constants.WebLogos2 + logo.WebLogo;
+        }
+        else
+        {
+            l = "";
+        }
+
+    }
+    <!-- End  CK Editor -->
+    <link href="~/Resources/global/css/style.css" rel="stylesheet">
+    <link href="~/Resources/global/css/theme.css" rel="stylesheet">
+    <link href="~/Resources/global/css/ui.css" rel="stylesheet">
+    <link href="~/Resources/admin/layout1/css/layout.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-multiselector/css/bootstrap-multiselect.css" rel="stylesheet">
+    @if (l == "")
+    {
+        <style>
+            .sidebar .logopanel h1 a {
+                background: url(../images/logo/InnerLogo.png) no-repeat;
+                display: block;
+                height: 144px;
+                margin-top: -8px;
+            }
+        </style>
+    }
+    else
+    {
+        <style>
+            .sidebar .logopanel h1 a {
+                background: url(@l) no-repeat;
+                display: block;
+                height: 144px;
+                margin-top: -8px;
+            }
+        </style>
+    }
+
+</head>
+
+<body class="fixed-topbar fixed-sidebar theme-sdtl color-default">
+
+    @{
+
+        new Silkways.Models.SilkwaysFunction.GernalFunction().CheckAdminLogin();
+        List<Silkways.Models.PanelMenu> panelMenus = new List<Silkways.Models.PanelMenu>();
+        string PictureName = "";
+        string Name = "";
+        string FullName = "";
+        string hiddenPw = "";
+        bool admin = false;
+        int ID = 0;
+        HttpCookie cookie = HttpContext.Current.Request.Cookies["AdminCookies"];
+        if (cookie != null)
+        {
+            ID = Convert.ToInt32(cookie.Values["ID"]);
+            var user = new Silkways.Models.UserModel().GetUserByID(ID);
+            if (user != null && user.ID > 0)
+            {
+                hiddenPw = user.Password;
+                PictureName = user.Image;
+                Name = user.UserName;
+                FullName = user.FullName;
+                admin = user.IsAdmin;
+                panelMenus = new Silkways.Models.SideMenuModel().GetMenuUserWise(ID);
+            }
+            else
+            {
+
+                Response.Redirect("/user/login");
+            }
+        }
+        else
+        {
+            Response.Redirect("/user/login");
+        }
+
+        <section>
+            <!-- BEGIN SIDEBAR -->
+            <div class="sidebar">
+                <div class="logopanel">
+                    <input id="hdn_login_UserID" type="hidden" name="hdn_login_UserID" value="@ID" />
+
+                    <h1>
+
+                        @*@if (l == "")
+                            {*@
+                        <a href="~/User/DashboardIndex">
+
+                        </a>
+                        @*}
+                            else
+                            {
+                                <a href="~/User/DashboardIndex">
+                                    <img src="@l" />
+                                </a>
+                            }*@
+
+                    </h1>
+                </div>
+                <div class="sidebar-inner">
+                    <div class="menu-title">
+                    </div>
+
+                    <ul class="nav nav-sidebar">
+                        <li><a href="~/User/DashboardIndex"><i></i><span></span></a></li>
+
+                        <li><a href="~/User/DashboardIndex"><i></i><span></span></a></li>
+                        <li><a href="~/User/DashboardIndex"><i></i><span></span></a></li>
+
+                        <li><a href="~/User/DashboardIndex"><i class="icon-home"></i><span>Dashboard</span></a></li>
+
+                        @if (panelMenus != null && panelMenus.Count > 0)
+                        {
+                            foreach (var item in panelMenus.Where(x => x.IsActive == true))
+                            {
+                                <li class="nav-parent">
+                                    <a href=""><i class="icon-screen-desktop"></i><span>@item.Name</span><span class="fa arrow"></span></a>
+                                    <ul class="children collapse">
+                                        @foreach (var subitem in item.PanelMenuLinks)
+                                        {
+                                            <li><a href="@subitem.Link"> @subitem.Title</a></li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                        }
+                    </ul>
+                    <!-- SIDEBAR WIDGET FOLDERS -->
+
+                    <div class="sidebar-footer clearfix">
+                        <a class="pull-left toggle_fullscreen" href="#" data-rel="tooltip" data-placement="top" data-original-title="Fullscreen">
+                            <i class="icon-size-fullscreen"></i>
+                        </a>
+                        <a class="pull-left" href="/User/LockScreen?ID=@ID" data-rel="tooltip" data-placement="top" data-original-title="Lockscreen">
+                            <i class="icon-lock"></i>
+                        </a>
+                        <a class="pull-left btn-effect" href="~/User/Login" data-modal="modal-1" data-rel="tooltip" data-placement="top" data-original-title="Logout">
+                            <i class="icon-power"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- END SIDEBAR -->
+            <div class="main-content">
+                <!-- BEGIN TOPBAR -->
+                <div class="topbar">
+                    <div class="header-left">
+                        <div class="topnav">
+                            <a class="menutoggle" href="#" data-toggle="sidebar-collapsed"><span class="menu__handle"><span>Menu</span></span></a>
+
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <ul class="header-menu nav navbar-nav">
+
+                            <!-- BEGIN NOTIFICATION DROPDOWN -->
+                            <!-- BEGIN USER DROPDOWN -->
+                            <li class="dropdown" id="user-header">
+                                <a href="#" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                    <img src="~/Resources/AdminPictures/@PictureName" alt="">
+                                    <span class="username">Hi, @Name</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="~/User/ChangePassword"><i class="icon-settings"></i><span>Change Password</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="~/User/Login"><i class="icon-logout"></i><span>Logout</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- END USER DROPDOWN -->
+                            <!-- CHAT BAR ICON -->
+
+                        </ul>
+                    </div>
+                    <!-- header-right -->
+                </div>
+                <!-- END TOPBAR -->
+                <!-- BEGIN PAGE CONTENT -->
+                <div class="page-content">
+                    @*ALERT FOR TASK PERFORMED*@
+                    <input id="Hidden_Pass" type="hidden" name="Hidden_Pass" value="@hiddenPw" />
+                    <div class="alertForTask">
+
+                        <ul class="noty_inline_layout_container i-am-new" style="width: auto; height: auto; margin: 0px; padding: 0px; list-style-type: none; z-index: 9999999; top: 0px; left: 0px;">
+                            <li class="made noty_container_type_alert animated fadeIn" style="cursor: pointer; height: 63px;">
+                                <div class="noty_bar noty_type_alert" id="noty_1004447543995130600">
+                                    <div class="noty_message">
+                                        <span class="noty_text">
+                                            <div class="alert alert-success media fade in">
+                                                <p><strong>@TempData["AlertTask"]</strong></p>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    @*ALERT FOR TASK PERFORMED*@
+                    @RenderBody()
+                </div>
+                <!-- END PAGE CONTENT -->
+            </div>
+            <!-- END MAIN CONTENT -->
+
+        </section>
+        <!-- BEGIN QUICKVIEW SIDEBAR -->
+
+        <!-- END QUICKVIEW SIDEBAR -->
+        <!-- BEGIN SEARCH -->
+
+        <!-- /morphsearch-content -->
+
+        <!-- END SEARCH -->
+        <!-- BEGIN PRELOADER -->
+
+
+    }
+    <!-- END PRELOADER -->
+    <!-- END PRELOADER -->
+    <a href="#" class="scrollup"><i class="fa fa-angle-up"></i></a>
+    <script id="JqueryID" src="~/Resources/global/plugins/jquery/jquery-1.11.1.min.js"></script>
+    <script src="~/Resources/global/plugins/jquery/jquery-migrate-1.2.1.min.js"></script>
+    <script src="~/Resources/global/plugins/jquery-ui/jquery-ui-1.11.2.min.js"></script>
+    <script src="~/Resources/global/plugins/bootstrap/js/bootstrap.min.js"></script>
+    @*<script src="~/Resources/global/plugins/select2/select2.min.js"></script>*@
+
+    <script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
+   
+
+
+    <script src="~/Content/bootstrap-multiselector/js/bootstrap-multiselect.js"></script> <!-- Select Inputs -->
+    <script src="~/Resources/global/js/application.js"></script>
+    <script src="~/Resources/global/js/plugins.js"></script>
+    <script src="~/Resources/global/plugins/cke-editor/ckeditor.js"></script>
+    <script src="~/Resources/global/plugins/cke-editor/adapters/adapters.min.js"></script>
+    <script src="~/Resources/admin/layout1/js/layout.js"></script>
+    <script src="~/Resources/global/plugins/datatables/jquery.dataTables.min.js" id="style13"></script> <!-- Tables Filtering, Sorting & Editing -->
+    <script src="~/Resources/global/js/pages/table_dynamic.js"></script>
+    <script src="~/Scripts/cropimg/jquery.cropit.js"></script>
+    @RenderSection("Scripts", false)
+    <script>
+        var alerttexthere = '@Html.Raw(HttpUtility.JavaScriptStringEncode((string)TempData["AlertTask"]))';
+        $(document).ready(function () {
+            var baseURICurrent = $('.nav')[0].baseURI;
+            var totalObjectsSideBar = $('.nav')[0].attributes[0].ownerElement.children.length;
+            for (var a = 0; a < totalObjectsSideBar; a++) {
+                var MainLi = $('.nav')[0].attributes[0].ownerElement.children[a];
+                var MainInnerTags = MainLi.children.length;
+                if (MainInnerTags > 1) {
+                    var innerLI = MainLi.children[1].children.length;
+                    for (var b = 0; b < innerLI; b++) {
+                        var innerLIDetails = MainLi.children[1].children[b];
+                        var urldOnView = innerLIDetails.children[0].href;
+                        if (urldOnView == baseURICurrent) {
+                            MainLi.className = "nav-parent nav-active active";
+                            MainLi.children[1].style.display = "Block";
+                            innerLIDetails.className = "active";
+                        }
+                    }
+                }
+            }
+            if (alerttexthere != "") {
+                $('.alertForTask').hide().delay(1000);
+                $('.alertForTask').fadeIn('slow').delay(6000).fadeOut('slow');
+            }
+            else
+            {
+                $('.alertForTask').hide();
+            }
+        });
+    </script>
+</body>
+</html>

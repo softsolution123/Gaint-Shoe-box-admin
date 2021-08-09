@@ -1,0 +1,474 @@
+﻿@model Silkways.Models.Gallery
+@{
+    ViewBag.Title = "AddGallery";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<style>
+    #sortable {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 450px;
+    }
+
+        #sortable li {
+            margin: 3px 3px 3px 0;
+            padding: 1px;
+            float: left;
+            width: 100px;
+            height: 90px;
+            font-size: 4em;
+            text-align: center;
+        }
+</style>
+@*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
+<script>
+    $(function () {
+        $("#proimgs").sortable();
+        $("#proimgs").disableSelection();
+    });
+</script>
+
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script>
+    function createUrl(evt) {
+        var Value = $("#Name").val();
+        Value = Value.toLowerCase();
+        Value = Value.replace(/[^A-Z0-9]/ig, "-");
+        $("#Url").val(Value);
+    }
+</script>
+<script>
+    function isNumber(evt, id) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            $('#' + id + '').css('display', 'block');
+            return false;
+        }
+        else {
+            $('#' + id + '').css('display', 'none');
+            return true;
+        }
+    }
+</script>
+<script>
+    function ImageRemove(Image) {
+
+        var retVal = confirm("Do you want to Delete ?");
+        var ImageId = $(Image).attr("id");
+        if (retVal == true) {
+            if (ImageId == null) {
+                var Id = $(Image).attr("value");
+                $.ajax({
+
+                    type: "POST",
+                    url: "/Gallery/DeleteGalleryImage/" + Id,
+                    success: function (data) {
+                        $(Image).parent('li').remove();
+                        alert("All has done");
+                    }
+                });
+            }
+            else {
+                debugger
+                alert("Data has deleted");
+                $('#' + ImageId + '').remove();
+                $('#proimgs #' + ImageId + ' ').remove();
+            }
+        }
+        else {
+
+        }
+    }
+</script>
+
+<div class="col-xs-7">
+    <h2>Add <strong>Gallery</strong></h2>
+</div>
+<div class="col-xs-5">
+    <input type="button" value="Manage Gallery" style="float:right;" class="btn btn-dark" data-toggle="modal" data-target="#modal-select" onclick="location.href = '/Gallery/ManageGallery'">
+</div>
+
+<form method="post" enctype="multipart/form-data" id="FormUser">
+    @Html.HiddenFor(a => a.ID)
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Select Category  *</label>
+                                <select name="CategoryID" id="CategoryID">
+
+
+                                    <option value="1" @(Model != null && Model.CategoryID.ToString() == "1" ? "selected" : "")>All</option>
+                                    <option value="2" @(Model != null && Model.CategoryID.ToString() == "2" ? "selected" : "")>Events</option>
+                                    <option value="3" @(Model != null && Model.CategoryID.ToString() == "3" ? "selected" : "")>Public Demo</option>
+                                    <option value="4" @(Model != null && Model.CategoryID.ToString() == "4" ? "selected" : "")>Meetings</option>
+                                    <option value="5" @(Model != null && Model.CategoryID.ToString() == "5" ? "selected" : "")>Videos</option>
+
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Sort Number *</label>
+                                @Html.TextBoxFor(model => model.SortNumber, new { @class = "form-control ProductAM" })
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <br />
+                    <br />
+
+                    <br />
+
+                    <input type="hidden" name="SortOrder" id="order" />
+                    <br />
+                    <h2>Upload Gallery Images</h2>
+                    <br />
+                    <label class="form-label">Select Images</label>
+                    <div>
+                        <input type="file" id="File1" name="file" multiple class="upload" accept="image/*" />
+                    </div>
+                    <div id="hide">
+                    </div>
+                    <ul class="proimgs" id="proimgs">
+                        @Html.Raw(ViewBag.img)
+                    </ul>
+                    <div id="hd">
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Embed Video Link</label><br />
+                        @Html.TextBoxFor(x => x.VideoEmbed, new { @placeholder = "Enter Video Link", @class = "form-control" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Show Home</label>
+                            @Html.CheckBoxFor(x => x.IsHome)<span>Is Show Home</span>
+                        </div>
+                    </div>
+
+
+
+
+                    <div>
+                        @{
+                            string Text = "Add Gallery";
+                            if (Model != null)
+                            {
+                                Text = "Update Gallery";
+                            }
+                        }
+                        <br />
+                        <input type="submit" id="btnSave" class=" btn btn-dark" value="@Text" name="Save" onclick="if (SetValueOfCatagories()) { this.form.submit(); this.disabled = true; }" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    //$('#FormUser').submit(function () {
+    //
+    //    var Idies = $("#CatagoriesId").val();
+    //    return false;
+    //});
+    function SetValueOfCatagories() {
+
+        var Idies = $("#CatagoriesId").val();
+        var CatagoriesIdText = Idies.toString();
+        $("#CatagoriesIdText").val(CatagoriesIdText);
+        var CatagoriesId = $("#CatagoriesIdText").val();
+        return false;
+    }
+    $(document).ready(function () {
+        //$('#FormUser').submit(function () {
+        //
+        //    var Idies = $("#CatagoriesId").val();
+        //    return false;
+        //});
+
+        var PRESELECTED_CategriesArry = "@ViewBag.SelectesCatagories";
+        var PRESELECTED_Categries = PRESELECTED_CategriesArry.split(',');
+
+        $("#CatagoriesId").select2({
+            maximumSelectionLength: 20
+        });
+        $("#CatagoriesId").val(PRESELECTED_Categries).trigger('change');
+        //var PRESELECTED_Categries = ['1', '2', '3'];
+
+        //$('.select-2').select2({}).select2('val', PRESELECTED_Categries);
+        //$.fn.select2.defaults.reset();
+        //$('select-2').select2();
+        //$('.multipleSelect').fastselect();
+        //$('.multipleSelect').Fastselect.defaults.maxItems=7;
+
+        $("#btnSave").click(function () {
+
+            $(this).css("opacity", "0.5");
+
+        })
+        var cloneCount = 0;
+        var source = "";
+        var src = "";
+        var third = "";
+        $("#btnSave").mouseover(function () {
+            $("#order").val("");
+            $("#proimgs li").each(function (i, li) {
+                source = $(this).find('input').val();
+                src = src + "," + source;
+            })
+            $("#order").val(src);
+            src = "";
+        })
+
+        $('#File1').on('change', function () {
+
+            var files = $(this).files;
+            var count = '1' + cloneCount;
+            var n = $(this).get(0).files.length;
+
+            imagesPreview(this, 'proimgs', count);
+            var cln = $(this).clone();
+            cln.attr('id', '1' + cloneCount).insertAfter("#id");
+            cloneCount++;
+            $("#hide").append(cln);
+            $("#hide").css("display", "none");
+            $('#File1').val("");
+        });
+        var newFName = "";
+        function imagesPreview(input, placeToInsertImagePreview, count) {
+            debugger
+            if (input.files) {
+                var p = 0;
+                var filesAmount = input.files.length;
+                for (var i = 0; i < filesAmount; i++) {
+                    debugger
+                    if (filesAmount > 1) {
+                        var newcount = "file-" + p;
+                        var filename = i + "-" + input.files[i].name;
+                        var reader = new FileReader();
+                        reader.fileName = input.files[i].name;
+                        reader.onload = function (event) {
+                            var image = new Image();
+                            image.src = event.target.result;
+                            image.onload = function () {
+                                var height = this.height;
+                                var width = this.width;
+                                //if (height < 450 || width < 450) {
+                                ////    alert("Image height should be greater than 450px");
+                                ////    return false;
+                                //}
+                                //else {
+                                newcount = "file-" + p;
+                                $("#proimgs").append('<li  id="' + newcount + '" class="ui-state-default" style="width:215px; height:215px;"><span onclick="ImageRemove(this);" class="close" id="' + newcount + '">X</span><img src="' + event.target.result + '"  width="200px"  height="200px" style="float: left; height:200px; width=200px; margin: 0px;" /> <input id="one" type="text" value="' + event.target.fileName + '" style="display:none;"/></li>');
+                                p = p + 1;
+                                //}
+                            }
+
+                        }
+                        reader.readAsDataURL(input.files[i]);
+                    }
+                    else {
+                        var fileName = input.files[i].name;
+                        var splited = fileName.split('.');
+                        fileName = splited[0] + "." + splited[1];
+                        var reader = new FileReader();
+                        reader.onload = function (event) {
+                            var image = new Image();
+                            image.src = event.target.result;
+                            image.onload = function () {
+                                var height = this.height;
+                                var width = this.width;
+                                //if (width < 450) {
+                                //    alert("Image Width should be greater than 450px");
+                                //    return false;
+                                //}
+                                //else {
+
+                                //}
+                                $("#proimgs").append('<li ondrag="dragging(event)" id="' + count + '" class="ui-state-default" style="width:215px; height:215px;"><span onclick="ImageRemove(this);" ondrag="dragging(event)" class="close" id="' + count + '">X</span><img ondrag="dragging(event)" src="' + event.target.result + '"  width="200px"  height="200px" style="float: left; height:200px; width=200px; margin: 0px;" /> <input id="one" type="text" value="' + fileName + '" style="display:none;"/></li>');
+                            }
+                        }
+                        reader.readAsDataURL(input.files[i]);
+                    }
+                }
+            }
+
+        }
+
+    })
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#Price , #DisPer").focusout(function () {
+
+            var Discount = $("#DisPer").val();
+            var Price = $("#Price").val();
+            var NetTotal = Price - ((Discount / 100) * Price);
+            NetTotal = Math.round(NetTotal * 100) / 100;
+            $("#NetTtl").val(NetTotal);
+            if ($("#DisPer").val() != 0) {
+
+                $("#DisFix").val(0);
+            }
+            if ($("#DisPer").val() == 0 && $("#DisFix").val() == 0) {
+                $("#NetTtl").val(Price);
+            }
+        })
+
+        $("#DisFix,#Price").keyup(function () {
+
+            var FixedAmmount = $("#DisFix").val();
+            var Discount = $("#DisPer").val();
+            var Price = $("#Price").val();
+            var NetTotal = Price - FixedAmmount;
+            if (FixedAmmount == 0 && Discount != 0) {
+
+                NetTotal = Price - ((Discount / 100) * Price);
+            }
+
+            NetTotal = Math.round(NetTotal * 100) / 100;
+
+            $("#NetTtl").val(NetTotal);
+            if ($("#DisFix").val() != 0) {
+                $("#DisPer").val(0)
+            }
+
+            if ($("#DisFix").val() == 0 && $("#DisPer").val() == 0) {
+                $("#NetTtl").val(Price);
+            }
+
+        })
+
+    });
+</script>
+
+<script type="text/javascript">
+    var productError = false;
+
+    var ProductAM = $(".ProductAM").val();
+    $(document).ready(function () {
+        $(".ProductAM").focusout(function () {
+            if (ProductAM != $(".ProductAM").val()) {
+                var Value = $("#ProductName").val();
+                Value = Value.toLowerCase();
+                Value = Value.replace(/[^A-Z0-9]/ig, "-");
+                $("#Url").val(Value);
+                check_productNameAM();
+            }
+            //else
+            //{
+            //    productError = false;
+            //    $("#Span1").hide();
+
+            //}
+        });
+        $(".txtProduct").focusout(function () {
+            var Value = $("#ProductName").val();
+            Value = Value.toLowerCase();
+            Value = Value.replace(/[^A-Z0-9]/ig, "-");
+            $("#Url").val(Value);
+            check_productName();
+        });
+
+        $("#FormUser").submit(function () {
+
+
+
+            if (ProductAM != $(".ProductAM").val()) {
+                check_productNameAM();
+            }
+            else {
+                check_productName();
+                //if (productError == true)
+                //{ }
+                //productError = false;
+                $("#Span1").hide();
+            }
+
+            if (productError == true) {
+                return false;
+            }
+            else {
+
+
+                return true;
+            }
+        });
+
+
+    });
+    function check_productName() {
+
+        var spanValue = $(".txtProduct").val();
+        $.ajax({
+            type: "post",
+            url: "/Product/ProductExistance",
+            data: { ProductName: spanValue },
+            async: false,
+            success: function (data) {
+
+                if (data == "message") {
+                    $("#Span1").show();
+                    productError = true;
+                }
+                else {
+
+                    $("#Span1").hide();
+                    productError = false;
+                }
+            },
+            error: function (err) {
+                //alert(err);
+            },
+            failure: function (err) {
+                //alert(err);
+            }
+        });
+    }
+    function check_productNameAM() {
+
+        var spanValue = $(".ProductAM").val();
+        $.ajax({
+            type: "post",
+            url: "/Product/ProductExistance",
+            data: { ProductName: spanValue },
+            async: false,
+            success: function (data) {
+
+                if (data == "message") {
+                    $("#Span1").show();
+                    productError = true;
+                }
+                else {
+
+                    $("#Span1").hide();
+                    productError = false;
+                }
+            },
+            error: function (err) {
+                //alert(err);
+            },
+            failure: function (err) {
+                //alert(err);
+            }
+        });
+    }
+
+
+</script>

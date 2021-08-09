@@ -1,0 +1,128 @@
+﻿@model IEnumerable<Silkways.Models.URLBasedCMSPage>
+
+@{
+    ViewBag.Title = "URLBasedContentPages";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-xs-9">
+    <h2>Manage<strong> CMS Page</strong></h2>
+</div>
+<div class="col-xs-3">
+    <input type="button" value="Add CMS Page" style="float:right;" class="btn btn-dark" data-toggle="modal" data-target="#modal-select" onclick="location.href = '/CMSPages/AddCMSPage'">
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript">
+    function GetImageNameInHiddenBox(ID) {
+        $("#DeleteLink").attr("href", "/CMSPages/Delete?ID=" + ID);
+    }
+</script>
+
+<body>
+    <div class="row">
+        <div class="row" style="margin-left:0px;">
+            <div class="col-md-7" style="margin-top:40px;">
+                <input type="text" class="form-control" style="background-color:white;" id="urlTxt">
+            </div>
+            <div class="col-md-2" style="margin-top:40px;">
+                <input type="button" value="Search Page" style="float:right;" class="btn btn-dark" id="btnSearch">
+            </div>
+        </div>
+        <div class="row" style="margin-left:0px;" id="TxtID">
+        </div>
+        <div class="col-lg-12 portlets" style="margin-top:20px;">
+            <div class="panel" id="TblDiv">
+                <div class="panel-content pagination2 table-responsive" id="tblId">
+                    <table class="table table-hover table-dynamic">
+                        <thead>
+                            <tr>
+                                <th style="display:none;">ID</th>
+                                <th>Page Name</th>
+                                <th>Url</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblBody">
+                            @{
+                                if (Model != null)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td style="display:none;">
+                                                @Html.DisplayFor(modelItem => item.ID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.PageName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.URL)
+                                            </td>
+                                            <td>
+                                                <a href='~/CMSPages/AddCMSPage?ID=@item.ID'>Edit</a>-
+                                                <a class="modal-container" data-toggle="modal" onclick="GetImageNameInHiddenBox(@item.ID);" data-target=" #modal-bottomfull">
+                                                    Delete
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <div class="modal fade modal-bottomfull" id="modal-bottomfull" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                                    <h4 class="modal-title"><strong>Are you</strong> Sure</h4>
+                                </div>
+                                <div class="modal-body">
+                                    You want to delete this info ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal">Cancel</button>
+                                    <a href="" id="DeleteLink" class="btn btn-primary btn-embossed">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $("#btnSearch").click(function () {
+            debugger
+            $("#tblBody").empty();
+            $("#TxtID").empty();
+           
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("SearchByUrl", "CMSPages")',
+                data: { url: $("#urlTxt").val() },
+                success:function(result)
+                {
+                    if (result.trim() == '')
+                    {
+                        $("#TblDiv").hide();
+                        $("#TxtID").append("No Record Found");
+                    }
+                    else
+                    {
+                        $("#TblDiv").show();
+                        $("#tblBody").append(result);
+                    }
+                }
+
+            })
+
+        })
+    })
+</script>

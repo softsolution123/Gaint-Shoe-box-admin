@@ -1,0 +1,158 @@
+﻿@using Silkways.Models
+@model SystemSetting
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Resources/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <title>Step1</title>
+    <style>
+        .setup {
+            padding: 50px 0px;
+        }
+
+            .setup .logo {
+                padding-bottom: 20px;
+            }
+    </style>
+</head>
+<body class="setup">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+                <div class="text-center">
+                    <a href="#" class="show logo"><img src="http://www.softsolutions.com.pk/assets/images/logo.png" /></a>
+                </div>
+                <div class="alertForTask">
+                    <ul class="noty_inline_layout_container i-am-new" style="width: auto; height: auto; margin: 0px; padding: 0px; list-style-type: none; z-index: 9999999; top: 0px; left: 0px;">
+                        <li class="made noty_container_type_alert animated fadeIn" style="cursor: pointer; height: 63px;">
+                            <div class="noty_bar noty_type_alert" id="noty_1004447543995130600">
+                                <div class="noty_message">
+                                    <span class="noty_text">
+                                        <div class="alert alert-info media fade in">
+                                            <p><strong>@TempData["AlertTask"]</strong></p>
+                                        </div>
+                                    </span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-header">
+                        <h4 class="panel-heading">STEP 4 (System Configuration)</h4>
+                        <hr />
+                    </div>
+                    <div class="panel-body">
+                        <form method="post" enctype="multipart/form-data" id="FormUser">
+                            @Html.HiddenFor(a => a.ID)
+                            <div class="row">
+                                <div class="col-lg-12 portlets">
+
+                                    <h4>Email Configuration Setting</h4>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Sender Email</label>
+                                                @Html.TextBoxFor(x => x.SenderEmail, new { @placeholder = "Enter Sender Email", @class = "form-control", @type = "email", required= "required" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Sender Password</label>
+                                                @Html.TextBoxFor(x => x.SenderPassword, new { @placeholder = "Enter Sender Password", @class = "form-control", required = "required" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">SMTP Host</label>
+                                                @Html.TextBoxFor(x => x.SMTPHost, new { @placeholder = "Enter SMTP Host", @class = "form-control", required = "required" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Port</label>
+                                                @Html.TextBoxFor(x => x.Port, new { @placeholder = "Enter Port", @class = "form-control", required = "required" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Email</label>
+                                                @Html.TextBoxFor(x => x.Email, new { @placeholder = "Enter Port", @class = "form-control", @type = "email", required = "required" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">
+                                                    @Html.CheckBoxFor(a => a.IsSSL) IsSSL?
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <h4>FTP Admin Setting</h4>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Ftp IP</label>
+                                                @Html.TextBoxFor(x => x.FTPIP, new { @placeholder = "Enter FTP IP", @class = "form-control", required = "required" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Ftp Name</label>
+                                                @Html.TextBoxFor(x => x.FtpName, new { @placeholder = "Enter Ftp Name", @class = "form-control", required = "required" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Ftp Password</label>
+                                                @Html.TextBoxFor(x => x.FtpPassword, new { @placeholder = "Enter Ftp Password", @class = "form-control", required = "required" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">Ftp FTP Path</label>
+                                                @Html.TextBoxFor(x => x.FTPPath, new { @placeholder = "Enter FTP Path", @class = "form-control", required = "required" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <hr />
+                                        <div class="text-right">
+                                            <a href="/setup/step3" class="btn btn-default">BACK</a> <button type="submit" class="btn btn-primary">FINISH NOW</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Resources/global/plugins/jquery/jquery-1.11.1.min.js"></script>
+    <script src="~/Resources/global/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+         $(document).ready(function () {
+            var alerttexthere = '@Html.Raw(HttpUtility.JavaScriptStringEncode((string)TempData["AlertTask"]))';
+            if (alerttexthere != "") {
+                $('.alertForTask').hide().delay(1000);
+                $('.alertForTask').fadeIn('slow').delay(6000).fadeOut('slow');
+            }
+            else {
+                $('.alertForTask').hide();
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,91 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Resources/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <title>Step1</title>
+    <style>
+        .setup {
+            padding:50px 0px;
+        }
+        .setup .logo{
+            padding-bottom: 20px;
+        }
+
+    </style>
+</head>
+<body class="setup">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+                <div class="text-center">
+                    <a href="#" class="show logo"><img src="http://www.softsolutions.com.pk/assets/images/logo.png" /></a>
+                </div>
+                <div class="alertForTask">
+                    <ul class="noty_inline_layout_container i-am-new" style="width: auto; height: auto; margin: 0px; padding: 0px; list-style-type: none; z-index: 9999999; top: 0px; left: 0px;">
+                        <li class="made noty_container_type_alert animated fadeIn" style="cursor: pointer; height: 63px;">
+                            <div class="noty_bar noty_type_alert" id="noty_1004447543995130600">
+                                <div class="noty_message">
+                                    <span class="noty_text">
+                                        <div class="alert alert-info media fade in">
+                                            <p><strong>@TempData["AlertTask"]</strong></p>
+                                        </div>
+                                    </span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-header">
+                        <h4 class="panel-heading">STEP 1 (Instructions)</h4>
+                        <hr />
+                    </div>
+                    <div class="panel-body">
+                        <p style="font-weight:bold">Please Read following instructions and prerequisites.</p>
+                        <ol start="1" class="list-unstyled">
+                            <li>
+                                <p>You must have domain name and FTP information before setup.</p>
+                            </li>
+                            <li>
+                                <p>Must create an email address in hosting and get password and smtp details for configuration.</p>
+                            </li>
+                            <li>
+                                <p>Upload all Resource Folders to destination hosting.</p>
+                            </li>
+                            <li>
+                                <p>Must create ftp information for main domain where you want to upload your images and setup ftp in configuration.</p>
+                            </li>
+                        </ol>
+                        <hr />
+                        <div class="text-right">
+                            <a href="/setup/step2" class="btn btn-primary">NEXT</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Resources/global/plugins/jquery/jquery-1.11.1.min.js"></script>
+    <script src="~/Resources/global/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+       $(document).ready(function () {
+            var alerttexthere = '@Html.Raw(HttpUtility.JavaScriptStringEncode((string)TempData["AlertTask"]))';
+            if (alerttexthere != "") {
+                $('.alertForTask').hide().delay(1000);
+                $('.alertForTask').fadeIn('slow').delay(6000).fadeOut('slow');
+            }
+            else {
+                $('.alertForTask').hide();
+            }
+        });
+    </script>
+</body>
+
+</html>

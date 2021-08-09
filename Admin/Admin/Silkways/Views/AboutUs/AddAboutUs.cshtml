@@ -1,0 +1,122 @@
+﻿@model Silkways.Models.AboutU
+
+@{
+    ViewBag.Title = "AddAboutUs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#hiddDiv").hide();
+    });
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+
+            $('#erormsg').css('display', 'block');
+            return false;
+        }
+        else {
+            $('#erormsg').css('display', 'none');
+            return true;
+        }
+    }
+
+
+</script>
+<div class="col-xs-9">
+    <h2><strong>About Us</strong></h2>
+</div>
+
+<form method="post" enctype="multipart/form-data" id="FormUser">
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-content">
+                    @Html.HiddenFor(a => a.ID)
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Page Title </label>
+                                @Html.TextAreaFor(x => x.PageHeading, new { @placeholder = "Enter Meta Title", @class = "form-control" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Meta Title</label>
+                                @Html.TextBoxFor(x => x.MetaTitle, new { @placeholder = "Enter Meta Title", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Meta Keyword</label>
+                                @Html.TextBoxFor(x => x.MetaKeyword, new { @placeholder = "Enter Meta Keyword", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Meta Description</label>
+                                @Html.TextAreaFor(x => x.MetaDescription, new { @placeholder = "Enter Meta Description", @class = "form-control", @rows = "4" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label"> Short Description </label>
+                                @Html.TextAreaFor(x => x.Descriptions, new { @class = "form-control " })
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Long Description </label>
+                                @Html.TextAreaFor(x => x.Desciption1, new { @class = "form-control ckeditor", @id = "editorid2" })
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+
+                                <label class="form-label">Select Image</label>
+                                <div>
+                                    <input type="file" id="File1" name="file" class="upload" accept="image/*" />
+                                </div>
+                                <br />
+                                @if (Model != null && !string.IsNullOrEmpty(Model.Image1))
+                                {
+                                    <div style="padding:10px 0px;">
+                                        <img src="@(Constants.PathAboutImage + Model.Image1)" alt="" class="img-thumbnail" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div>
+                                <input type="submit" id="btnSave" class=" btn btn-dark" value="Update" name="Save" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+

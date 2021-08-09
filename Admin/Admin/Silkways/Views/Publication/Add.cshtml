@@ -1,0 +1,309 @@
+﻿@model Silkways.Models.Publication
+
+@{
+    ViewBag.Title = "AddProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>jQuery UI Sortable - Display as grid</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<style>
+    #sortable {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 450px;
+    }
+
+        #sortable li {
+            margin: 3px 3px 3px 0;
+            padding: 1px;
+            float: left;
+            width: 100px;
+            height: 90px;
+            font-size: 4em;
+            text-align: center;
+        }
+</style>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $(function () {
+        $("#proimgs").sortable();
+        $("#proimgs").disableSelection();
+    });
+</script>
+<script>
+    function isNumber(evt, id) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            $('#' + id + '').css('display', 'block');
+            return false;
+        }
+        else {
+            $('#' + id + '').css('display', 'none');
+            return true;
+        }
+    }
+</script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script>
+    function createUrl(evt) {
+        var Value = $("#Name").val();
+        Value = Value.toLowerCase();
+        Value = Value.replace(/[^A-Z0-9]/ig, "-");
+        $("#Url").val(Value);
+    }
+</script>
+<script>
+    function ImageRemove(Image) {
+        debugger;
+        var retVal = confirm("Do you want to Delete ?");
+        var ImageId = $(Image).attr("id");
+        if (retVal == true) {
+            if (ImageId == null) {
+                var Id = $(Image).attr("value");
+                $.ajax({
+
+                    type: "POST",
+                    url: "/Product/DeleteAlbumImage/" + Id,
+                    success: function (data) {
+                        $(Image).parent('li').remove();
+                        alert("All has done");
+                    }
+                });
+            }
+            else {
+                debugger
+                alert("Data has deleted");
+                $('#' + ImageId + '').remove();
+                $('#proimgs #' + ImageId + ' ').remove();
+            }
+        }
+        else {
+
+        }
+    }
+</script>
+<script>
+
+
+</script>
+<div class="col-xs-9">
+    <h2>Add <strong>Publication</strong></h2>
+</div>
+<div class="col-xs-3">
+    <input type="button" value="Manage Product" style="float:right;" class="btn btn-dark" data-toggle="modal" data-target="#modal-select" onclick="location.href = '/Publication/Manage'">
+</div>
+<form method="post" enctype="multipart/form-data" id="FormUser">
+    <input id="HdnName" type="hidden" name="HdnName" value="@ViewBag.Name" />
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                       
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Select Type  *</label>
+                                    <select name="Type" id="Type">
+
+
+                                        <option value="1" @(Model != null && Model.Type.ToString() == "1" ? "selected" : "")>Newsletters</option>
+                                        <option value="2" @(Model != null && Model.Type.ToString() == "2" ? "selected" : "")>Brochure</option>
+                                        <option value="3" @(Model != null && Model.Type.ToString() == "3" ? "selected" : "")>Notices and Tender Documents</option>
+                                     
+
+
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+                      
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Publication Name *</label>
+                                @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @placeholder = "Enter Pubication Name" })
+                            </div>
+
+                        
+
+                            <div class="form-group">
+                                <label class="form-label">Sort Order</label>
+                                @Html.TextBoxFor(x => x.SortOrder, new { @placeholder = "Enter Sort Order", @class = "form-control" })
+                            </div>
+
+
+
+                            <div class="form-group">
+                                <div class="image-editor">
+                                    <input type="file" class="cropit-image-input" name="file" id="file">
+                                    <div id="imgBlock">
+                                        <div class="cropit-image-preview"></div>
+                                        @*<div class="image-size-label">
+            Resize image
+        </div>*@
+
+                                        @if (Model != null && !string.IsNullOrEmpty(Model.Image))
+                                        {
+                                            <div style="padding:10px 0px;">
+                                                <img src="@(Constants.PathPublications + Model.Image)" alt="" width="200px" height="200px" class="img-thumbnail" />
+                                            </div>
+                                        }
+
+                                        @*<input type="range" class="cropit-image-zoom-input">*@
+                                        <input type="hidden" name="Image" id="Image" value="@Model.Image" class="hidden-image-data" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <input type="hidden" name="oldPDF" value="@Model.PdfFile" />
+                            <label class="form-label">Select PDF</label>
+                            <div>
+                                <input type="file" id="File2" name="file2" class="upload" accept="application/pdf" />
+                            </div>
+                            @if (Model.PdfFile != null)
+                            {
+                                <ul class="proimgs" id="proimgs">
+                                    <iframe src="@Constants.PathPublications/@Model.PdfFile" width="50%" height="40%">
+                                    </iframe>
+                                </ul>
+                            }
+
+                        </div>
+                    </div>
+                   
+                  
+                   
+                    
+                    <br />
+                    <input type="hidden" name="SortOrder" id="order" />
+                    <br />
+                   
+                   
+                  
+                    <div>
+                        @{
+                            string Text = "Add product";
+                            if (Model != null)
+                            {
+                                Text = "Update product";
+                            }
+                        }
+                        <br />
+                        <input type="submit" id="btnSave" class=" btn btn-dark" value="@Text" name="Save" onclick="this.form.submit(); this.disabled = true;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+
+        $("#btnSave").click(function () {
+
+            $(this).css("opacity", "0.5");
+
+        })
+        var cloneCount = 0;
+        var source = "";
+        var src = "";
+        var third = "";
+        $("#btnSave").mouseover(function () {
+            $("#order").val("");
+            $("#proimgs li").each(function (i, li) {
+                source = $(this).find('input').val();
+                src = src + "," + source;
+            })
+            $("#order").val(src);
+            src = "";
+        })
+
+        $('#File1').on('change', function () {
+            debugger;
+            var files = $(this).files;
+            var count = '1' + cloneCount;
+            var n = $(this).get(0).files.length;
+
+            imagesPreview(this, 'proimgs', count);
+            var cln = $(this).clone();
+            cln.attr('id', '1' + cloneCount).insertAfter("#id");
+            cloneCount++;
+            $("#hide").append(cln);
+            $("#hide").css("display", "none");
+            $('#File1').val("");
+        });
+        var newFName = "";
+        function imagesPreview(input, placeToInsertImagePreview, count) {
+            debugger
+            if (input.files) {
+                var p = 0;
+                var filesAmount = input.files.length;
+                for (var i = 0 ; i < filesAmount; i++) {
+                    debugger
+                    if (filesAmount > 1) {
+                        var newcount = "file-" + p;
+                        var filename = i + "-" + input.files[i].name;
+                        var reader = new FileReader();
+                        reader.fileName = input.files[i].name;
+                        reader.onload = function (event) {
+                            var image = new Image();
+                            image.src = event.target.result;
+                            image.onload = function () {
+                                var height = this.height;
+                                var width = this.width;
+                                if (height < 450 || width < 450) {
+                                    alert("Image height should be greater than 450px");
+                                    return false;
+                                }
+                                else {
+                                    newcount = "file-" + p;
+                                    $("#proimgs").append('<li  id="' + newcount + '" class="ui-state-default" style="width:215px; height:215px;"><span onclick="ImageRemove(this);" class="close" id="' + newcount + '">X</span><img src="' + event.target.result + '"  width="200px"  height="200px" style="float: left; height:200px; width=200px; margin: 0px;" /> <input id="one" type="text" value="' + event.target.fileName + '" style="display:none;"/></li>');
+                                    p = p + 1;
+                                }
+                            }
+
+                        }
+                        reader.readAsDataURL(input.files[i]);
+                    }
+                    else {
+                        var fileName = input.files[i].name;
+                        var splited = fileName.split('.');
+                        fileName = splited[0] + "." + splited[1];
+                        var reader = new FileReader();
+                        reader.onload = function (event) {
+                            var image = new Image();
+                            image.src = event.target.result;
+                            image.onload = function () {
+                                var height = this.height;
+                                var width = this.width;
+                                if (width < 450) {
+                                    alert("Image Width should be greater than 450px");
+                                    return false;
+                                }
+                                else {
+                                    $("#proimgs").append('<li ondrag="dragging(event)" id="' + count + '" class="ui-state-default" style="width:215px; height:215px;"><span onclick="ImageRemove(this);" ondrag="dragging(event)" class="close" id="' + count + '">X</span><img ondrag="dragging(event)" src="' + event.target.result + '"  width="200px"  height="200px" style="float: left; height:200px; width=200px; margin: 0px;" /> <input id="one" type="text" value="' + fileName + '" style="display:none;"/></li>');
+                                }
+                            }
+                        }
+                        reader.readAsDataURL(input.files[i]);
+                    }
+                }
+            }
+
+        }
+    })
+</script>

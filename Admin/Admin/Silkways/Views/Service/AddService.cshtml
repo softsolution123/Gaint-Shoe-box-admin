@@ -1,0 +1,136 @@
+﻿@model Silkways.Models.Service
+
+@{
+    ViewBag.Title = "AddService";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
+    ViewBag.Title = "AddService";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-xs-7">
+    <h2>Add <strong>Services</strong></h2>
+</div>
+<div class="col-xs-3">
+    <input type="button" value="Manage Services" style="float:right;" class="btn btn-dark" data-toggle="modal" data-target="#modal-select" onclick="location.href = '/Service/ManageService'">
+</div>
+
+
+<form method="post" enctype="multipart/form-data" id="FormUser">
+    <input id="HdnName" type="hidden" name="HdnName" value="@ViewBag.Name" />
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        @Html.HiddenFor(a => a.ID)
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Select Type*</label>
+                                @*<select class="basic-multiple-slection form-control select-2" id="CatagoriesId" name="CategoryID">
+                        @foreach (var itm in Silkways.Controllers.CategoryController.CategoriesByParent())
+                        {
+                            <option @(Model != null && Model.CategoryID == itm.ID ? "selected" : "") value="@itm.ID">@itm.CategoryName</option>
+                        }
+                    </select>*@
+
+                                @*<select class="basic-multiple-slection form-control select-2" id="CatagoriesId" name="CategoryID">
+                        @foreach (var itm in Silkways.Controllers.CategoryController.CategoriesByParent())
+                        {
+                            <option @(Model != null && Model.CategoryID == itm.ID ? "selected" : "") value="@itm.ID">@itm.CategoryName</option>
+                        }
+                    </select>*@
+
+                                <select name="Type" id="Type">
+                                    @*<option value="1" @Model.Type= =itm.ID ? "selected" : "" selected>Services    </option>
+                        <option value="2" @Model.Type= =itm.ID ? "selected" : "">Commercialization tool</option>*@
+
+                                    <option value="1" @(Model != null && Model.Type.ToString() == "1" ? "selected" : "")>Services</option>
+                                    <option value="2" @(Model != null && Model.Type.ToString() == "2" ? "selected" : "")>Commercialization tool</option>
+
+                                </select>
+
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Name *</label>
+                                @Html.TextBoxFor(a => a.Name, new { @class = "form-control", required = "required" })
+                            </div>
+                        </div>
+                        @*<div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Image *</label>
+                    <input type="file" name="file" value="" @(Model != null && Model.ID > 0 ? "" : "required") />
+                    <input type="hidden" name="oldimage" value="@Model.Image" />
+                    @if (Model != null && !string.IsNullOrEmpty(Model.Image))
+                    {
+                        <br />
+                        <br />
+                        <img src="@(Constants.PathServiceImages + Model.Image)" style="max-width:200px" />
+                        <br />
+                    }
+                </div>
+            </div>*@
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Short Description*</label>
+                                @Html.TextBoxFor(model => model.ShortDesc, new { @class = "form-control ProductAM", @placeholder = "Enter Short Desc", max_length = "200" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Sort Number</label>
+                                @Html.TextBoxFor(model => model.SortNumber, new { @class = "form-control ProductAM" })
+                            </div>
+                        </div>
+                        @*<div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">Meta Desc*</label>
+                    @Html.TextBoxFor(model => model.MetaDesc, new { @class = "form-control ProductAM", @placeholder = "Enter Name" })
+                </div>
+            </div>*@
+                    </div>
+                    <br />
+                    <br />
+                    <label class="form-label">Description</label><br />
+                    <div>
+                        @Html.TextAreaFor(x => x.Description, new { @class = "form-control ckeditor", @id = "editorid" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">Image *</label>
+                            <input type="file" name="file" value="" @(Model != null && Model.ID > 0 ? "" : "required") />
+                            <input type="hidden" name="oldimage" value="@Model.Image" />
+                            @if (Model != null && !string.IsNullOrEmpty(Model.Image))
+                            {
+                                <br />
+                                <br />
+                                <img src="@(Constants.PathServiceImages + Model.Image)" style="max-width:200px" />
+                                <br />
+                            }
+                        </div>
+                    </div>
+
+                    <br />
+                    <label class="form-label">Show Home</label><br />
+                                                               <div>
+                                                                   @Html.CheckBoxFor(x => x.ShowHome)<span></span>
+                                                               </div>
+
+
+                    <br />
+                    <div>
+                        <input type="submit" id="btnSave" class=" btn btn-dark" value="Submit" name="Save" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

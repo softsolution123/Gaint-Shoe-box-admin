@@ -1,0 +1,248 @@
+﻿@model Silkways.Models.User
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+@{
+    ViewBag.Title = "Add User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int a = 0;
+           
+}
+
+@if (Model != null)
+{
+    <script>
+        $(document).ready(function () {
+            debugger
+            if('@Model.IsAdmin'!='true'){
+                $("#ManageUser,#Paragraph").hide();
+            }
+        })
+    </script>
+}
+
+
+<div id="ManageUser">
+    <div class="col-xs-9">
+        <h2>Register <strong>New Users</strong></h2>
+    </div>
+    <div class="col-xs-3">
+        <input type="button" value="Manage Users" style="float:right;" class="btn btn-dark" data-toggle="modal" data-target="#modal-select" onclick="location.href = '/User/ManageUsers'">
+    </div>
+</div>
+<style>
+    .scrollC {
+        overflow-x: scroll;
+    }
+
+    .cropit-image-preview {
+        background-color: #f8f8f8;
+        background-size: cover;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin-top: 7px;
+        width: 423px;
+        height: 250px;
+        cursor: move;
+    }
+
+    .cropit-image-background {
+        opacity: .2;
+        cursor: auto;
+    }
+
+    .image-size-label {
+        margin-top: 10px;
+    }
+
+    input {
+        display: block;
+    }
+
+    .export {
+        margin-top: 10px;
+    }
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+
+<script>
+    $(function () {
+        $("#imgBlock").hide();
+        $("#file").click(function () {
+            $("#imgBlock").show();
+        });
+        $('.image-editor').cropit();
+        $('form').submit(function () {
+            var imageData = $('.image-editor').cropit('export');
+            $('.hidden-image-data').val(imageData);
+            document.getElementById('Image').value = imageData;
+            return true;
+        });
+    });
+</script>
+
+
+
+<form method="post" enctype="multipart/form-data" id="FormUser">
+
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+
+                <div class="panel-content">
+                    <p id="Paragraph">Here you can define different System users who can access this system</p>
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label class="form-label">Name</label>
+                                @Html.TextBoxFor(x => x.FullName, new { @placeholder = "Enter Name", @class = "form-control", @required = "required" })
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                @Html.TextBoxFor(x => x.Email, new { @placeholder = "Enter Email Address", @class = "form-control", @required = "required", @type = "Email" })
+                                @Html.ValidationMessageFor(x => x.Email, null, new { @class = "redText" })
+                                @{
+                                    if (ViewBag.Exists == "Email")
+                                    {
+                                        <p style="color:red">Email is already Exists</p>
+                                    }
+                                }
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Contact</label>
+                                @Html.TextBoxFor(x => x.ContactNo, new { @placeholder = "Enter Contact No", @class = "form-control", @required = "required" })
+                            </div>
+
+                            @Html.HiddenFor(x => x.Image)
+                            <div class="form-group">
+
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <p><strong>Image uploader</strong></p>
+                                    <div id="uploaderrr" class="fileinput-new thumbnail">
+                                        @{
+                                            if (Model != null)
+                                            {
+                                                <img data-src="" src="@Model.Image" class="img-responsive" alt="gallery 3">
+                                            }
+                                            else
+                                            {
+                                                <img data-src="" src="~/Resources/AdminPictures/NoImage.jpg" class="img-responsive" alt="gallery 3">
+                                            }
+                                        }
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="image-editor">
+                                    <input type="file" class="cropit-image-input" name="file" id="file">
+                                    <div id="imgBlock">
+                                        <div class="cropit-image-preview"></div>
+                                        <div class="image-size-label">
+                                            Resize image
+                                        </div>
+                                        <input type="range" class="cropit-image-zoom-input">
+                                        <input type="hidden" id="Image" class="hidden-image-data" />
+                                    </div>
+                                </div>
+
+                            </div>
+                           @{
+                               if(Model != null && Model.IsAdmin != false)
+                               {
+                                      <div class="form-group" style="display:none;">
+                                            <div class="input-group">
+                                                <div class="icheck-inline">
+                                                    @{
+                                        if (ViewBag.Active == false)
+                                        {
+                                            <label>
+                                                <input type="checkbox" name="Active" data-checkbox="icheckbox_square-blue"> Active
+                                            </label>
+                                        }
+                                        else
+                                        {
+                                            <label>
+                                                <input type="checkbox" name="Active" checked data-checkbox="icheckbox_square-blue"> Active
+                                            </label>
+                                        }
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                               }
+                               else
+                               {
+                                   <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="icheck-inline">
+                                                    @{
+                                        if (ViewBag.Active == false)
+                                        {
+                                            <label>
+                                                <input type="checkbox" name="Active" data-checkbox="icheckbox_square-blue"> Active
+                                            </label>
+                                        }
+                                        else
+                                        {
+                                            <label>
+                                                <input type="checkbox" name="Active" checked data-checkbox="icheckbox_square-blue"> Active
+                                            </label>
+                                        }
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                               }
+                           }
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Set a Username</label>
+                                @Html.TextBoxFor(x => x.UserName, new { @placeholder = "Enter Username", @class = "form-control", @required = "required" })
+                                @if (ViewBag.Exists == "Username")
+                                {
+                                    <p style="color:red">Username is already Exists</p>
+                                }
+
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Password</label>
+                                @Html.TextBoxFor(x => x.Password, new { @placeholder = "Enter Password", @type = "password", @class = "form-control", @required = "required" })
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Address</label>
+                                @Html.TextBoxFor(x => x.Address, new { @placeholder = "Enter Address", @class = "form-control" })
+                            </div>
+
+
+
+
+                        </div>
+
+
+
+                    </div>
+                    <div>
+                        @{
+                            string Text = "Create User";
+                            if (Model != null)
+                            {
+                                Text = "Update User";
+                            }
+                        }
+
+
+                        <input type="submit" id="btnSave" class=" btn btn-dark" value="@Text" name="Save" onclick="this.form.submit(); this.disabled = true;" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>

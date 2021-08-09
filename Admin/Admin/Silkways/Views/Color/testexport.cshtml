@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "testexport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" enctype="multipart/form-data" id="FormUser">
+    <input type="submit" id="btnSave" class=" btn btn-dark" value="Export to Excel" />
+    @{
+        if (ViewBag.ID == 1)
+        {
+            <a href="@ViewBag.pathValue">Click to download file</a>
+        }
+    }
+    
+</form>
+

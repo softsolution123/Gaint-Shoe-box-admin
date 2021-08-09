@@ -1,0 +1,155 @@
+﻿
+@using Silkways.Models
+@model List<PanelMenu>
+
+
+@{
+    /**/
+
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Resources/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <title>Step 3</title>
+    <style>
+        .setup {
+            padding: 50px 0px;
+        }
+
+            .setup .logo {
+                padding-bottom: 20px;
+            }
+
+        ul.cardlist {
+            font-size: 0px;
+            max-height: 300px;
+            overflow-y: scroll;
+        }
+
+            ul.cardlist > li {
+                margin: 0px;
+                padding: 0px;
+                width: 50%;
+                padding: 0px 5px;
+                border-collapse: separate;
+            }
+
+                ul.cardlist > li label {
+                    cursor: pointer;
+                    margin: 0px;
+                    padding: 0px;
+                    border: 1px solid #ddd;
+                    font-size: 15px;
+                    display: block;
+                    line-height: 44px;
+                    padding: 0px 15px;
+                    font-weight: normal;
+                    margin-bottom: 10px;
+                }
+
+                ul.cardlist > li input {
+                    margin-right: 5px;
+                }
+    </style>
+</head>
+<body class="setup">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+                <div class="text-center">
+                    <a href="#" class="show logo"><img src="http://www.softsolutions.com.pk/assets/images/logo.png" /></a>
+                </div>
+                <div class="alertForTask">
+                    <ul class="noty_inline_layout_container i-am-new" style="width: auto; height: auto; margin: 0px; padding: 0px; list-style-type: none; z-index: 9999999; top: 0px; left: 0px;">
+                        <li class="made noty_container_type_alert animated fadeIn" style="cursor: pointer; height: 63px;">
+                            <div class="noty_bar noty_type_alert" id="noty_1004447543995130600">
+                                <div class="noty_message">
+                                    <span class="noty_text">
+                                        <div class="alert alert-info media fade in">
+                                            <p><strong>@TempData["AlertTask"]</strong></p>
+                                        </div>
+                                    </span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-header">
+                        <h4 class="panel-heading">STEP 3 (Setup Menu Panels (Allowed Services))</h4>
+                        <hr />
+                    </div>
+                    <div class="panel-body">
+                        @if (Model != null && Model.Count > 0)
+                        {
+                            <form method="post" autocomplete="off" id="frmPanels" enctype="multipart/form-data">
+                                <input type="hidden" name="adminuser" value="@ViewBag.UserID" />
+                                <input type="hidden" name="selectedpanels" id="txtselectedpanels" value="" />
+                                <ul class="list-inline cardlist">
+                                    @foreach (var item in Model)
+                                    {
+                                        string menu = "";
+                                        if (item.PanelMenuLinks != null && item.PanelMenuLinks.Count > 0)
+                                        {
+                                            foreach (var subitem in item.PanelMenuLinks.OrderBy(a => a.Title))
+                                            {
+                                                menu += "<li>" + subitem.Title + "</li>";
+                                            }
+                                        }
+                                        <li>
+                                            <label role="button" data-placement="top" data-trigger="hover" data-html="true" data-toggle="popover" title="<b>Inside Menu</b>" data-content="@("<ol>"+menu+"</ol>")"><input @(item.IsActive ? "checked='checked'" : "") type="checkbox" class="panelmenu" name="panel" value="@item.ID" />@item.Name</label>
+                                        </li>
+                                    }
+                                </ul>
+                                <div>
+                                    <hr />
+                                    <div class="text-right">
+                                        <a href="/setup/step2" class="btn btn-default">BACK</a> <button type="submit" class="btn btn-primary">SAVE & NEXT</button>
+                                    </div>
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <div class="jumbotron">
+                                <h1>No Data !</h1>
+                                <p>
+                                    Kindly add all menu panels in database you created for project under PanelMenu table, So all panels will automatically visible here for selection.
+                                </p>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Resources/global/plugins/jquery/jquery-1.11.1.min.js"></script>
+    <script src="~/Resources/global/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+        $("[data-toggle=popover]").popover();
+            $("#frmPanels").on("submit", function () {
+                var count = $('.panelmenu:checked').length;
+                if (count <= 0) {
+                    alert("You have not selected any Panel");
+                    return false;
+                }
+            });
+            var alerttexthere = '@Html.Raw(HttpUtility.JavaScriptStringEncode((string)TempData["AlertTask"]))';
+        if (alerttexthere != "") {
+            $('.alertForTask').hide().delay(1000);
+            $('.alertForTask').fadeIn('slow').delay(6000).fadeOut('slow');
+        }
+        else {
+            $('.alertForTask').hide();
+        }
+        });
+    </script>
+</body>
+</html>

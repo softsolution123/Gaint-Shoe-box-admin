@@ -1,0 +1,116 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Admin Penal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="" name="description" />
+    <meta content="themes-lab" name="author" />
+    <link rel="shortcut icon" href="~/Resources/global/images/favicon.png">
+    <link href="~/Resources/global/css/style.css" rel="stylesheet">
+    <link href="~/Resources/global/css/ui.css" rel="stylesheet">
+    <link href="~/Resources/global/plugins/bootstrap-loading/lada.min.css" rel="stylesheet">
+    @{
+        Silkways.Models.GaintShoeBoxEntities db = new Silkways.Models.GaintShoeBoxEntities();
+        var logo = db.Settings.FirstOrDefault();
+        var l = "";
+        if (logo.WebLogo != "")
+        {
+            l = @Constants.WebLogos2 + logo.WebLogo;
+        }
+        else
+        {
+            l = "";
+        }
+
+    }
+    
+         @if (l == "")
+    {
+        
+<style>
+    .account2 .account-info .logo {
+        color: #ffffff;
+        font-family: 'Lato', arial, sans-serif;
+        font-weight: 900;
+        font-size: 25px;
+        background: url(../images/logo/InnerLogo.png) no-repeat;
+        height: 150px;
+        margin-bottom: 15px;
+        display: block;
+        background-size: contain;
+        background-position: center center;
+    }
+</style>
+}
+else
+{
+<style>
+        .account2 .account-info .logo {
+        color: #ffffff;
+        font-family: 'Lato', arial, sans-serif;
+        font-weight: 900;
+        font-size: 25px;
+        background: url(@l) no-repeat;
+        height: 150px;
+        margin-bottom: 15px;
+        display: block;
+        background-size: contain;
+        background-position: center center;
+    }
+</style>
+}
+        
+ 
+</head>
+<body class="account2" data-page="login">
+    <!-- BEGIN LOGIN BOX -->
+    <div class="container" id="login-block">
+        <i class="user-img icons-faces-users-03"></i>
+        <div class="account-info">
+            <a class="logo"  style="margin-left:-23px;margin-top:12px;"></a>
+        </div>
+        <div class="account-form">
+            <form method="post" class="form-signin" enctype="multipart/form-data" id="FormUser">
+                <h3><strong>Sign in</strong> to your account</h3>
+                <div class="append-icon">
+                    <input type="text" name="Username" id="Username" class="form-control form-white username" placeholder="Username" required="">
+                    <i class="icon-user"></i>
+                </div>
+                <div class="append-icon m-b-20">
+                    <input type="password" name="password" class="form-control form-white password" placeholder="Password" required="">
+                    <i class="icon-lock"></i>
+                </div>
+                <input type="submit" id="btnSave" class="btn btn-lg btn-dark btn-rounded ladda-button" data-style="expand-left" value="Sign In" onclick="this.form.submit(); this.disabled = true;" />
+                <span><a href="/user/forgotpassword">Forgot password?</a></span>
+                @{
+                    if (ViewBag.Validation == "False")
+                    {
+                        <p style="color:red;" id="ErrorMsg"> Invalid Email or Password</p>
+                    }
+                    else if (ViewBag.Validation == "Deactive")
+                    {
+                        <p style="color:red;" id="ErrorMsg"> You are not Authorized to Access</p>
+                    }
+                    else
+                    { 
+                    
+                    }
+                }
+
+            </form>
+        </div>
+
+    </div>
+    <!-- END LOCKSCREEN BOX -->
+
+    <script src="~/Resources/global/plugins/jquery/jquery-1.11.1.min.js"></script>
+    <script src="~/Resources/global/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Resources/global/plugins/backstretch/backstretch.min.js"></script>
+    <script src="~/Resources/global/js/pages/login-v2.js"></script>
+</body>
+</html>

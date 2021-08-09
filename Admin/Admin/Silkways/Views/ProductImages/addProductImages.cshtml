@@ -1,0 +1,111 @@
+﻿@model Silkways.Models.Product
+@{
+    ViewBag.Title = "AddProductImages";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+<script>
+    $(document).ready(function () {
+        $(function () {
+            $("#proimgs").sortable();
+            $("#proimgs").disableSelection();
+        });
+    });
+</script>
+<script>
+    function ImageRemove(Image) {
+        var retVal = confirm("Do you want to Delete ?");
+        debugger
+        if (retVal == true){
+        var ImageId = $(Image).attr("value");
+        $.ajax({
+
+            type: "POST",
+            url: "/ProductImages/DeleteAlbumImage",
+            data: { ID: ImageId },
+            success: function (data) {
+                debugger;
+                alert("Product Image Deleted !");
+
+            }
+        });
+        $(Image).parent('li').remove();
+    }
+    else
+    {
+
+    }
+    }
+</script>
+
+@*<script type="text/javascript">
+    function GetImageNameInHiddenBox() {
+
+        var Name = $("#hdn_albumname").val();
+        if (Name != "Choose..." && Name != "") {
+            var Img = "";
+            var desc = "";
+            $("#proimgs li").each(function (i, li) {
+                debugger;
+                Img += $(li).children('img').attr('src');
+                Img += "/*/*/*";
+                Img += $(li).children('textarea').attr('value');
+                Img += "#####";
+            });
+            $("#hdnImages").val(Img);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+</script>*@
+
+
+<div class="col-xs-9">
+    <h2>Add <strong> Images </strong>of product <strong>"@ViewBag.ProductName"</strong></h2>
+</div>
+
+<form method="post" action="/ProductImages/addProductImages" enctype="multipart/form-data" id="FormUser">
+
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+
+                <div class="panel-content">
+
+                    <div class="row">
+
+                        <div class="form-group">
+                            <label class="form-label">Select Image:</label>
+                            <input type="file" id="File1" name="file" class="upload" accept="image/*" />
+                            <input id="ProductID" name="ProductID" type="hidden" value="@ViewBag.AlbumID" />
+                            <ul class="proimgs" id="proimgs">
+                                @Html.Raw(ViewBag.img)
+                            </ul>
+
+                        </div>
+                    </div>
+                    <div>
+                        @{
+                            string Text = "Add Images";
+                            if (Model != null)
+                            {
+                                Text = "Update Images";
+                            }
+                        }
+                        <br /><br />
+                        <input type="submit" id="btnSave"  class=" btn btn-dark" value="@Text" name="Save" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>

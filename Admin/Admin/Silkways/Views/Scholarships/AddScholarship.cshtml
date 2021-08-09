@@ -1,0 +1,169 @@
+﻿@model Silkways.Models.Scholarship
+@{
+    ViewBag.Title = "AddScholarship";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-xs-9">
+    <h2>Add <strong>Scholarships</strong></h2>
+</div>
+<div class="col-xs-3">
+    <input type="button" value="Manage Scholarships" style="float:right;" class="btn btn-dark" data-toggle="modal" data-target="#modal-select" onclick="location.href = '/Scholarships/ManageScholarship'">
+</div>
+<style>
+    .scrollC {
+        overflow-x: scroll;
+    }
+
+    .cropit-image-preview {
+        background-color: #f8f8f8;
+        background-size: cover;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin-top: 7px;
+        width: 550px;
+        height: 327px;
+        cursor: move;
+    }
+
+    .cropit-image-background {
+        opacity: .2;
+        cursor: auto;
+    }
+
+    .image-size-label {
+        margin-top: 10px;
+    }
+
+    input {
+        display: block;
+    }
+
+    .export {
+        margin-top: 10px;
+    }
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+    function createUrl(evt) {
+        var Value = $("#Heading").val();
+        Value = Value.toLowerCase();
+        Value = Value.replace(/[^A-Z0-9]/ig, "-");
+        $("#Url").val(Value);
+    }
+</script>
+
+<script>
+    $(function () {
+        $("#imgBlock").hide();
+        $("#file").click(function () {
+
+            $("#imgBlock").show();
+            //$(".image-editor").addClass("scrollC");
+        });
+        $('.image-editor').cropit();
+
+        $('form').submit(function () {
+            // Move cropped image data to hidden input
+            var imageData = $('.image-editor').cropit('export');
+            $('.hidden-image-data').val(imageData);
+
+            document.getElementById('Image').value = imageData;
+            return true;
+        });
+    });
+</script>
+
+
+<form method="post" enctype="multipart/form-data" id="FormUser">
+
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Heading</label>
+                                @Html.TextBoxFor( x => x.Heading, new { @placeholder = "Enter Heading", @class = "form-control", @required = "required", @onkeyup = "return createUrl(event)" } )
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Url</label>
+                                @Html.TextBoxFor( x => x.Url, new { @placeholder = "Enter Url", @class = "form-control", @required = "required" } )
+                            </div>
+                            @Html.HiddenFor( m => m.Image )
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">MetaTitle</label>
+                                @Html.TextBoxFor( x => x.MetaTitle, new { @placeholder = "Enter MetaTitle", @class = "form-control" } )
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">MetaKeyword</label>
+                                @Html.TextBoxFor( x => x.MetaKeyword, new { @placeholder = "Enter MetaKeyword", @class = "form-control" } )
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">MetaDescription</label>
+                                @Html.TextAreaFor( x => x.MetaDescription, new { @placeholder = "Enter MetaDescription", rows = "6", cols = "10", @class = "form-control" } )
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        @Html.TextAreaFor( model => model.Description, new { @class = "form-control ckeditor", @id = "editorid" } )
+                    </div>
+                    <div class="form-group">
+
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                            <p><strong>Image uploader</strong></p>
+                            <div id="uploaderrr" class="fileinput-new thumbnail">
+                                @{
+                                    if( Model != null )
+                                    {
+                                        <img data-src="" src="@Model.Image" class="img-responsive" style="height:327px; width:550px" alt="gallery 3">
+                                    }
+                                    else
+                                    {
+                                        <img data-src="" src="~/Resources/News/NoImage.jpg" style="height:327px; width:550px" class="img-responsive" alt="gallery 3">
+                                    }
+                                }
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="form-group">
+                        <div class="image-editor">
+                            <input type="file" class="cropit-image-input" name="file" id="file">
+                            <div id="imgBlock">
+                                <div class="cropit-image-preview"></div>
+                                <div class="image-size-label">
+                                    Resize image
+                                </div>
+                                <input type="range" class="cropit-image-zoom-input">
+                                <input type="hidden" name="Image" id="Image" class="hidden-image-data" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div>
+                        @{
+                            string Text = "Add Scholarship";
+                            if( Model != null )
+                            {
+                                Text = "Update Scholarship";
+                            }
+                        }
+
+
+                        <input type="submit" id="btnSave" onclick="this.form.submit(); this.disabled = true; GetImageNameInHiddenBox();" class=" btn btn-dark" value="@Text" name="Save" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>

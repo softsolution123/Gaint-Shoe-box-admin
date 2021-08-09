@@ -1,0 +1,109 @@
+﻿@model Silkways.Models.URLBasedCMSPage
+@{
+    ViewBag.Title = "AddCMSPage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var ID = $('#hdn_login_UserID').val();
+        $('#hdn_UserID').val(ID);
+    });
+</script>
+<script>
+    function ImageRemove(Image) {
+        debugger;
+        var retVal = confirm("Do you want to Delete ?");
+        var ImageId = $(Image).attr("id");
+        if (retVal == true) {
+            if (ImageId == null) {
+                var Id = $(Image).attr("value");
+                $.ajax({
+
+                    type: "POST",
+                    url: "/CMSPages/DeleteImage/" + Id,
+                    success: function (data) {
+                        $(Image).parent('li').remove();
+                        alert("All has done");
+                    }
+                });
+            }
+        }
+    }
+</script>
+<div class="col-xs-9">
+    <h2>Add <strong>CMS Page</strong></h2>
+</div>
+<div class="col-xs-3">
+    <input type="button" value="Manage CMS Page" style="float:right;" class="btn btn-dark" data-toggle="modal" data-target="#modal-select" onclick="location.href = '/CMSPages/URLBasedCMSPages'">
+</div>
+<form method="post" enctype="multipart/form-data" id="FormUser">
+
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input id="hdn_UserID" type="hidden" name="hdn_UserID" />
+                                <label class="form-label">Page Name</label>
+                                @Html.TextBoxFor(x => x.PageName, new { @placeholder = "Enter Page Name", @class = "form-control", @required = "required" })
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Heading</label>
+                                @Html.TextBoxFor(x => x.Heading, new { @placeholder = "Enter Page Heading", @class = "form-control", @required = "required", @onkeyup = "return createUrl(event)" })
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">URL</label>
+                                @Html.TextBoxFor(x => x.URL, new { @placeholder = "Enter Url", @class = "form-control", @required = "required" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input id="hdn_UserID" type="hidden" name="hdn_UserID" />
+                                <label class="form-label">MetaTitle</label>
+                                @Html.TextBoxFor(x => x.MetaTitle, new { @placeholder = "Enter MetaTitle", @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">MetaKeyword</label>
+                                @Html.TextBoxFor(x => x.MetaKeyword, new { @placeholder = "Enter MetaKeyword", @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">MetaDescription</label>
+                                @Html.TextAreaFor(x => x.MetaDescription, new { @placeholder = "Enter MetaDescription", @class = "form-control", @rows="3" })
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control ckeditor", @id = "editorid" })
+                    </div>
+                    <h2>Upload Page Photos</h2>
+                    <br />
+                    <label class="form-label">Select Image</label>
+                    <div>
+                        <input type="file" id="File1" name="file" multiple class="upload" accept="image/*" />
+                    </div>
+                    <br />
+                    <ul class="proimgs" id="proimgs">
+                        @Html.Raw(ViewBag.img)
+                    </ul>
+                    <br /><br />
+                    <div>
+                        @{
+                            string Text = "Add Page";
+                            if (Model != null)
+                            {
+                                Text = "Update Page";
+                            }
+                        }
+
+                        <input type="submit" id="btnSave" class=" btn btn-dark" value="@Text" name="Save" onclick="this.form.submit(); this.disabled = true;" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+

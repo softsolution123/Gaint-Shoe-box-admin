@@ -1,0 +1,543 @@
+﻿@*@model Silkways.Models.Order
+    @using Silkways.Models
+    @{
+        ViewBag.Title = "Details";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    <div class="panel">
+
+
+            <div class="row" style="margin-bottom:20px; line-height:28px; font-size:17px">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6">Date</div>
+                        <div class="col-md-6">@{DateTime Date = Convert.ToDateTime(@Model.OrderDate);@Date.ToString("dd-MMM-yyyy")}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">Customer Name</div>
+                        <div class="col-md-6">@Model.CustomerName</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">Email</div>
+                        <div class="col-md-6">@Model.Email</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">Quantity</div>
+                        <div class="col-md-6">@Model.Quantity</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">Size</div>
+                        <div class="col-md-6">@Model.ProductSize.Size</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">Address</div>
+                        <div class="col-md-6">@Model.Address</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">Comments</div>
+                        <div class="col-md-6">@Model.AdditionalComments</div>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-4">Order Status</div>
+                        @if (Model.DliveryStatu.Name == "Pending")
+                        {
+                            <div class="col-md-8"><span id="DeliveryStatusText" style="color:#ff0000">@Model.DliveryStatu.Name </span><a class="modal-container" data-toggle="modal" data-target=" #colored-header">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp &nbsp &nbsp Change Status</a></div>
+                        }
+                        else if (Model.DliveryStatu.Name == "Shipped")
+                        {
+                            <div class="col-md-8"><span id="DeliveryStatusText" style="color: #4c9e61">@Model.DliveryStatu.Name </span><a class="modal-container" data-toggle="modal" data-target=" #colored-header">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp &nbsp &nbsp Change Status</a></div>
+                        }
+                        else
+                        {
+                            <div class="col-md-8"><span id="DeliveryStatusText" style="color: #FF0000">@Model.DliveryStatu.Name </span><a class="modal-container" data-toggle="modal" data-target=" #colored-header">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp &nbsp &nbsp Change Status</a></div>
+                        }
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Contact #</div>
+                        <div class="col-md-8">@Model.ContactNo</div>
+                    </div>
+                </div>
+            </div>
+            <div style="border-right: 1px solid #d3d5d7; border-left: 1px solid #d3d5d7">
+
+                @{
+                    GaintShoeBoxEntities db = new GaintShoeBoxEntities();
+                    List<OrderDetail> Details = db.OrderDetails.Where(x => x.OrderId == Model.Id).ToList();
+                    foreach (var item in Details)
+                    {
+                        <div class="row cart-row">
+                            <div class="col-md-3">
+                                <div class="cart-img">
+                                    @foreach (var itm in item.Product.ProductPhotos.Take(1))
+                                    {
+                                        <img src="http://www.chapter2.pk/Resources/ProductsImages/Chapter2/@itm.Thumbnail">
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h3><b>@item.Product.ProductName</b></h3>
+                                <h4>@item.Product.Model</h4>
+                                <p style="width:400px;">
+                                    @Html.Raw(item.Product.ShortDescription)
+                                </p>
+                            </div>
+                            <div class="col-md-3 text-right">
+                                <ul class="list-cart-total">
+                                    <li>
+                                        <span class="opt-left">Qty</span>
+                                        @if (item.Product.Quantity == null)
+                                        {
+                                            <span class="opt-right"> N/A </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="opt-right"> @item.Qty </span>
+                                        }
+                                    </li>
+                                    <li>
+                                        @{
+                                            decimal tprice = (decimal)(item.Product.Price * item.Qty);
+                                        }
+                                        <span class="opt-left">Price</span>
+                                        <span class="opt-right">@tprice</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                }
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12" style="text-align:right">
+                            <ul class="list-cart-total-footer">
+
+                                <li>
+
+                                </li>
+                                <li>
+
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer cart-oder-detail">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h4>Shipping Address</h4>
+                            @Html.Raw(Model.Address)
+
+                        </div>
+
+                        <div class="col-md-4">
+                            <h4>Customer Support</h4>
+                            Chapter2.pk Customer Support<br />
+                            <strong>061 6222637</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade in" id="colored-header" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-blue">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                            <h4 class="modal-title"><strong>Order</strong> Status</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <form action="/User/ChangeOrderStatus" enctype="multipart/form-data" id="FormUser">
+                                <div class="form-group">
+                                    <input type="hidden" value="@Model.Id" name="OrderID" id="OrderID" />
+                                    <label class="form-label">Order Status</label>
+                                    <select name="StatusID" id="StatusID" class="form-control">
+                                        @if (ViewBag.DeliveryStatus != null)
+                                        {
+                                            foreach (var item in ViewBag.DeliveryStatus)
+                                            {
+                                                <option value="@item.Id">@item.Name</option>
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal">Close</button>
+                            <button type="submit" id="SaveChange" class="btn btn-primary btn-embossed">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#SaveChange").click(function () {
+                debugger;
+                var StatusID = $("#StatusID").val();
+                var OrderID = $("#OrderID").val();
+                $("#colored-header").hide();
+                $.ajax({
+                    url: '/PlugNPointService.asmx/ChangeOrderStatus',
+                    method: 'post',
+                    contentType: 'application/json;charset=utf-8',
+                    data: JSON.stringify({ OrderID: OrderID, StatusID: StatusID }),
+
+                    dataType: 'json',
+                    success: function (data) {
+                        debugger;
+                        $("#DeliveryStatusText").text(data.d);
+                        alert("Status changed !");
+                        window.location.reload();
+                    },
+                    error: function (err) {
+                        alert(err);
+                    }
+                });
+            });
+        });
+
+    </script>*@
+
+
+
+@model Silkways.Models.Order
+@{
+    ViewBag.Title = "Order Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+
+}
+
+
+<div class="col-xs-9">
+    <h2>@Model.CustomerName<strong> Order Detail</strong></h2>
+</div>
+<div class="col-xs-3">
+    <input type="button" value="Manage Orders" style="float:right;" class="btn btn-dark" data-toggle="modal" data-target="#modal-select" onclick="location.href = '/User/DashboardIndex'">
+</div>
+
+
+<body>
+    <div class="row">
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-content pagination2 table-responsive">
+
+                    <table class="table table-hover">
+
+
+                        @{
+
+                            if (Model.MemberId == 1)
+                            {
+
+                                                <tbody>
+                                                    <tr><th>Name</th><td>@Model.CustomerName</td></tr>
+                                                    @*<tr><th>Email</th><td>@Model.Email</td><th>Status</th><td>@(Model.Status == 1 ? "pending" : "complete")</td></tr>*@
+
+                                                    <tr>
+                                                        <th>Email</th>
+                                                        <td>@Model.Email</td>
+
+                                                        <div class="row">
+                                                            <div class="col-md-4">Order Status</div>
+                                                            @if (Model.DliveryStatu.Name == "Pending")
+                                                            {
+                                                                <div class="col-md-8"><span id="DeliveryStatusText" style="color:#ff0000">@Model.DliveryStatu.Name </span><a class="modal-container" data-toggle="modal" data-target=" #colored-header">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp &nbsp &nbsp Change Status</a></div>
+                                                            }
+                                                            else if (Model.DliveryStatu.Name == "Shipped")
+                                                            {
+                                                                <div class="col-md-8"><span id="DeliveryStatusText" style="color: #4c9e61">@Model.DliveryStatu.Name </span><a class="modal-container" data-toggle="modal" data-target=" #colored-header">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp &nbsp &nbsp Change Status</a></div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="col-md-8"><span id="DeliveryStatusText" style="color: #FF0000">@Model.DliveryStatu.Name </span><a class="modal-container" data-toggle="modal" data-target=" #colored-header">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp &nbsp &nbsp Change Status</a></div>
+                                                            }
+                                                        </div>
+
+                                                        <th>Status</th>
+
+
+                                                        @if (Model.DliveryStatusId == 1)
+                                                        {
+                                                            <td> pending</td>
+                                                        }
+                                                        else if (Model.DliveryStatusId == 2)
+                                                        {
+                                                            <td> Complete </td>
+                                                        }
+                                                        else if (Model.DliveryStatusId == 3)
+                                                        {
+                                                            <td> Cancel</td>
+                                                        }
+                                                    </tr>
+
+                                                    <tr>
+                                                        <th>Phone No</th>
+                                                        <td>@Model.ContactNo</td>
+                                                        <th>Price</th>
+                                                        <td>@Model.TotalPrice</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Shipping Charges:</th>
+                                                        @{
+
+
+                                                            if (Model.TotalPrice >= 2000)
+                                                            {
+
+                                                                <td> 0 </td>
+
+                                                            }
+                                                            else if (Model.TotalPrice < 2000)
+                                                            {
+                                                                <td>150</td>
+
+
+                                                            }
+                                                        }
+
+                                                        @{
+
+                                                            if (Model.TotalPrice >= 2000)
+                                                            {
+
+                                                                decimal shipping = 0;
+
+                                                                int result = Convert.ToInt32(shipping) + Convert.ToInt32(Model.TotalPrice);
+
+                                                                <th>Total Price</th>
+                                                                <td>@result</td>
+
+                                                                @*<th>Total Price</th>
+                    <td>@Convert.ToInt32(Model.TotalPrice)+@Convert.ToInt32(0)</td>*@
+
+                                                            }
+                                                            else
+                                                            {
+                                                                decimal shipping = 150;
+
+                                                                int result = Convert.ToInt32(shipping) + Convert.ToInt32(Model.TotalPrice);
+
+                                                                <th>Total Price</th>
+                                                                <td>@result</td>
+
+                                                            }
+
+
+
+                                                        }
+
+
+
+
+                                                    </tr>
+
+                                                    @if (Model.tblPromoCode != null)
+
+                                                    {
+                                                        <tr><th> Promo Code</th><td colspan="3">@Model.tblPromoCode.PromoCodeName ,     @Model.tblPromoCode.DiscountPercentage %,  </td></tr>
+                                                        <tr><th>Total Price After Promo Code</th><td colspan="3">@Model.TotalPriceAfterPromoCode</td></tr>
+                                                    }
+
+
+                                                    @if (Model.Address != null)
+                                                    {
+
+                                                        <tr><th>Address</th><td colspan="3">@Model.Address , </tr>
+
+
+                                                    }
+                                                    else
+                                                    {
+
+
+                                                        <tr><th>Address</th><td colspan="3">@Model.Address</td></tr>
+                                                    }
+                                                    <tr><th>Order Date</th><td colspan="3">@Model.OrderDate.ToString()</td></tr>
+
+
+
+
+
+
+
+                                                </tbody>
+
+                            }
+
+
+                        }
+
+
+
+                    </table>
+
+
+
+                    <div class="modal fade in" id="colored-header" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header bg-blue">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+                                    <h4 class="modal-title"><strong>Order</strong> Status</h4>
+                                </div>
+                                <div class="modal-body">
+                                    @*<p>Order Status</p>
+                        <div class="p-t-20 m-b-20 p-l-40">
+                            <ul class="colors-list color-header">
+                                <li class="dark"></li>
+                                <li class="red"></li>
+                                <li class="green"></li>
+                                <li class="blue active"></li>
+                                <li class="aero"></li>
+                                <li class="gray"></li>
+                                <li class="orange"></li>
+                                <li class="pink"></li>
+                                <li class="purple"></li>
+                            </ul>
+                        </div>*@
+                                    <form action="/User/ChangeOrderStatus" enctype="multipart/form-data" id="FormUser">
+                                        <div class="form-group">
+                                            <input type="hidden" value="@Model.Id" name="OrderID" id="OrderID" />
+                                            <label class="form-label">Order Status</label>
+                                            <select name="StatusID" id="StatusID" class="form-control">
+                                                @if (ViewBag.DeliveryStatus != null)
+                                                {
+                                                    foreach (var item in ViewBag.DeliveryStatus)
+                                                    {
+                                                        <option value="@item.Id">@item.Name</option>
+                                                    }
+                                                }
+                                            </select>
+                                            @*<input type="submit" value="submit" />*@
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-embossed" data-dismiss="modal">Close</button>
+                                    <button type="submit" id="SaveChange" @*form="FormUser"*@ class="btn btn-primary btn-embossed">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                
+            </div>
+            @{
+                var carts = Model.OrderCarts.Select(x => x.tblcart).ToList();
+                if (carts != null && carts.Count() > 0)
+                {
+                    <div class="panel">
+                        <div class="panel-content pagination2 table-responsive">
+
+                            <table class="table table-hover">
+                                <thead>
+                                                <tr>
+                                                    <th>Product Name</th>
+                                                    <th>Size</th>
+                                                    <th>Quantity</th>
+                                                    <th>Color</th>
+                                                    <th>SuggestedColor</th>
+                                                    <th>Suggested Name</th>
+                                                    <th>Suggested Logo</th>
+
+
+                                                </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in carts)
+                                    {
+
+
+                                        if (item.SuggestedName == null)
+
+                                        {
+                                    <tr>
+                                        <td>@item.Product.ProductName</td>
+                                        <td>@item.Size</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@item.Color</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                    </tr>
+
+                                        }
+                                        else
+
+                                        {
+                                <tr>
+                                    <td>@item.Product.ProductName</td>
+                                    <td>@item.Size</td>
+                                    <td>@item.Quantity</td>
+                                    <td>@item.Color</td>
+                                    <td>@item.SuggestedColor</td>
+                                    <td>@item.SuggestedName</td>
+                                    <td><img src="http://giantshoebox.entrytest.pk/images/@item.SuggestedLogo"></td>
+                                </tr>
+
+                                        }
+
+
+
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
+</body>
+
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#SaveChange").click(function () {
+            debugger;
+            var StatusID = $("#StatusID").val();
+            var OrderID = $("#OrderID").val();
+            $("#colored-header").hide();
+            $.ajax({
+                url: '/PlugNPointService.asmx/ChangeOrderStatus',
+                method: 'post',
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify({ OrderID: OrderID, StatusID: StatusID }),
+
+                dataType: 'json',
+                success: function (data) {
+                    debugger;
+                    $("#DeliveryStatusText").text(data.d);
+                    alert("Status changed !");
+                    window.location.reload();
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        });
+    });
+
+</script>
+
+
+
