@@ -5,7 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="fa0ecdf330de46699a95980e502ae81c" Name="Diagram1" ZoomLevel="49">
-        <EntityTypeShape EntityType="GaintShoeBoxModel.AboutU" Width="1.5" PointX="5.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GaintShoeBoxModel.AboutU" Width="1.5" PointX="6.75" PointY="0.875" IsExpanded="true" />
         <EntityTypeShape EntityType="GaintShoeBoxModel.BookRequest" Width="1.5" PointX="11.75" PointY="1.75" IsExpanded="true" />
         <EntityTypeShape EntityType="GaintShoeBoxModel.Category" Width="1.5" PointX="9" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="GaintShoeBoxModel.Client" Width="1.5" PointX="2.75" PointY="1.75" IsExpanded="true" />
